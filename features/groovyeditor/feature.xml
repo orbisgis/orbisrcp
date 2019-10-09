@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="groovyeditor"
+      label="Groovy editor"
+      version="1.0.0.qualifier"
+      provider-name="OrbisGIS">
+
+   <description url="http://www.example.com/description">
+      Groovy editor feature
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      LGPL V3
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      Agree LGPL V3
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.expressions"/>
+      <import plugin="org.eclipse.core.filesystem"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.jkiss.dbeaver.ui.navigator"/>
+      <import plugin="org.jkiss.dbeaver.model"/>
+      <import plugin="org.jkiss.dbeaver.ui.editors.sql"/>
+      <import plugin="dependencies" version="1.0.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="org.orbisgis.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.orbisgis.groovyeditor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="dependencies"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+</feature>

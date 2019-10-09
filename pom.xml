@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.orbisgis</groupId>
+		<artifactId>orbisparent</artifactId>
+		<version>1.0.3-SNAPSHOT</version>
+	</parent>
+
+	<groupId>org.orbisgis.rcp</groupId>
+	<artifactId>orbisrcp</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<modules>
+		<module>plugins</module>
+		<module>features</module>
+		<module>p2</module>
+	</modules>
+	<packaging>pom</packaging>
+
+	<properties>
+		<eclipse-p2-repo.url>http://download.eclipse.org/releases/2019-06/</eclipse-p2-repo.url>
+		<dbeaver-p2-repo.url>https://dbeaver.io/eclipse-repo</dbeaver-p2-repo.url>
+		<orbisgis-nexus-snapshot.url>http://nexus-ng.orbisgis.org/repository/orbisgis-snapshot/</orbisgis-nexus-snapshot.url>
+		<orbisgis-nexus-release.url>http://nexus-ng.orbisgis.org/repository/orbisgis-release/</orbisgis-nexus-release.url>
+		<tycho-version>1.4.0</tycho-version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>eclipse-p2-repo</id>
+			<url>http://download.eclipse.org/releases/2019-06/</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>local-contrib</id>
+			<url>https://dbeaver.io/eclipse-repo</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>orbisgis-release</id>
+			<url>http://nexus-ng.orbisgis.org/repository/orbisgis-release/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>orbisgis-snapshot</id>
+			<url>http://nexus-ng.orbisgis.org/repository/orbisgis-snapshot/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
+
+	<build>
+		<sourceDirectory>${project.basedir}/src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<environments>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<useProjectSettings>false</useProjectSettings>
+					<source>1.8</source>
+					<target>1.8</target>
+					<compilerArgument>-warn:+discouraged,forbidden</compilerArgument>
+				</configuration>
+			</plugin>
+
+			<!-- Set Built-By info -->
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-packaging-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Built-By>org.orbisgis</Built-By>
+							<Created-By>org.orbisgis</Created-By>
+							<Build-Time>${maven.build.timestamp}</Build-Time>
+						</manifestEntries>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
