@@ -4,10 +4,10 @@ jdk:
   - oraclejdk8
   - openjdk8
 install:
-  git clone https://github.com/dbeaver/dbeaver
-  cd dbeaver
-  mvn clean install -Dmaven.test.skip=true
-  cd ..
+  - git clone https://github.com/dbeaver/dbeaver
+  - cd dbeaver
+  - mvn clean install -Dmaven.test.skip=true
+  - cd ..
 script: mvn clean package
 maven:
   version: 3.6.0
