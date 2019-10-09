@@ -1,8 +1,7 @@
 dist: precise
 language: java
 jdk:
-  - oraclejdk8
-  - openjdk8
+  - openjdk11
 install:
   - git clone https://github.com/dbeaver/dbeaver
   - cd dbeaver
