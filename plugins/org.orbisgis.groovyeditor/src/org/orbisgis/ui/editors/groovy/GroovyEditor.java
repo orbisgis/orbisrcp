@@ -14,6 +14,7 @@ import org.orbisgis.core.logger.Logger;
 import org.orbisgis.core.ui.Toolbar;
 import org.orbisgis.core.ui.ToolbarButton;
 import org.orbisgis.ui.editors.groovy.sql.DataSource;
+import org.orbisgis.ui.editors.groovy.syntax.GroovySourceViewerConfiguration;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -33,6 +34,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
     public GroovyEditor(){
         super();
         setKeyBindingScopes(new String[]{"org.orbisgis.ui.editors.groovy"});
+        setSourceViewerConfiguration(new GroovySourceViewerConfiguration());
     }
 
     @Override

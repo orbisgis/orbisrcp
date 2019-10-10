@@ -30,7 +30,6 @@
       <import plugin="org.jkiss.dbeaver.ui.navigator"/>
       <import plugin="org.jkiss.dbeaver.model"/>
       <import plugin="org.jkiss.dbeaver.ui.editors.sql"/>
-      <import plugin="dependencies" version="1.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -49,6 +48,12 @@
 
    <plugin
          id="dependencies"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="groovy-dependencies"
          download-size="0"
          install-size="0"
          version="0.0.0"/>

@@ -19,7 +19,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jkiss.dbeaver.model,
  org.jkiss.dbeaver.ui.editors.sql,
  org.orbisgis.core,
- dependencies;bundle-version="1.0.0"
+ dependencies
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.orbisgis.ui.editors.groovy.GroovyActivator
 
