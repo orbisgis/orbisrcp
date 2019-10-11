@@ -61,19 +61,23 @@ public class GroovyJob extends Job {
         GroovyRunnable run = new GroovyRunnable(engine, shell, name, script, binding);
         t = new Thread(run);
         t.start();
+        int status = IStatus.ERROR;
         try {
             t.join();
+            status = run.getStatus();
         } catch (InterruptedException e) {
             LOGGER.error("Unable to execute the Groovy script thread.", e);
         } catch (Exception e){
             LOGGER.error("Error while execution the Groovy script.", e);
         }
         Object result = run.getResult();
-        String message =  "Groovy script successfully executed";
+        String message =  "Groovy script successfully executed.";
         if(result != null){
-            message += " with result '" + result.toString() + "'";
+            message = result.toString();
         }
-        message += ".";
+        if(status == IStatus.OK) {
+            LOGGER.info(message);
+        }
         return new Status(IStatus.OK, GroovyJob.class.getName(), message);
     }
 
@@ -93,6 +97,7 @@ public class GroovyJob extends Job {
         private GroovyScriptEngine engine;
         private Binding binding;
         private String name;
+        private int status;
 
         public GroovyRunnable(GroovyScriptEngine engine, GroovyShell shell, String name, String script, Binding binding){
             this.shell = shell;
@@ -111,21 +116,29 @@ public class GroovyJob extends Job {
                 else {
                     result = shell.evaluate(script);
                 }
+                status = IStatus.OK;
             } catch (MissingPropertyException e){
                 String property = e.getProperty();
                 if(closedDatasources.contains(property)){
                     LOGGER.error("The datasource '"+property+"' is closed.");
+                    status = IStatus.ERROR;
                 }
                 else{
                     LOGGER.error("Error while execution the Groovy script.", e);
+                    status = IStatus.ERROR;
                 }
             } catch(Exception e){
                 LOGGER.error("Error while executing the groovy script.", e);
+                status = IStatus.ERROR;
             }
         }
 
         public Object getResult(){
             return result;
+        }
+
+        public int getStatus(){
+            return status;
         }
     }
 }

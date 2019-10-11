@@ -5,12 +5,18 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
     <dependencies>
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy</artifactId>
-            <version>2.5.7</version>
-            <scope>compile</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy</artifactId>
+			<version>2.5.7</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-sql</artifactId>
+			<version>2.5.7</version>
+			<scope>compile</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.orbisgis.rcp</groupId>
 			<artifactId>org.orbisgis.core</artifactId>
