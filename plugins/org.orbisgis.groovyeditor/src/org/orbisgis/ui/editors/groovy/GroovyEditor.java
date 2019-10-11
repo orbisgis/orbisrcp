@@ -1,5 +1,6 @@
 package org.orbisgis.ui.editors.groovy;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
@@ -10,10 +11,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISaveablePart2;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
 import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.jkiss.dbeaver.model.runtime.VoidProgressMonitor;
 import org.orbisgis.core.logger.Logger;
 import org.orbisgis.core.ui.Toolbar;
 import org.orbisgis.core.ui.ToolbarButton;
 import org.orbisgis.ui.editors.groovy.sql.DataSource;
+import org.orbisgis.ui.editors.groovy.syntax.GroovySourceViewerConfiguration;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -33,6 +36,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
     public GroovyEditor(){
         super();
         setKeyBindingScopes(new String[]{"org.orbisgis.ui.editors.groovy"});
+        setSourceViewerConfiguration(new GroovySourceViewerConfiguration());
     }
 
     @Override
@@ -95,6 +99,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
     }
 
     public void execute(Map<String, DataSource> dataSources, List<String> closedDatasources){
+        this.doSave(new NullProgressMonitor());
         IDocument document = getDocument();
         if(document != null){
             job = new GroovyJob(getPartName(), document.get(), dataSources, closedDatasources);
@@ -103,6 +108,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
     }
 
     public void executeSelection(Map<String, DataSource> dataSources, List<String> closedDatasources){
+        this.doSave(new NullProgressMonitor());
         IDocument document = getDocument();
         if(document != null){
             ITextSelection selection = (ITextSelection) getSelectionProvider().getSelection();

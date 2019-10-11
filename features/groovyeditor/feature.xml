@@ -30,7 +30,6 @@
       <import plugin="org.jkiss.dbeaver.ui.navigator"/>
       <import plugin="org.jkiss.dbeaver.model"/>
       <import plugin="org.jkiss.dbeaver.ui.editors.sql"/>
-      <import plugin="dependencies" version="1.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -41,14 +40,13 @@
          unpack="false"/>
 
    <plugin
-         id="org.orbisgis.groovyeditor"
+         id="dependencies"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
-         id="dependencies"
+         id="org.orbisgis.groovyeditor"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
