@@ -431,7 +431,7 @@ public abstract class Sql implements ISql{
 
     @Override
     public GroovyRowResult firstRow(String sql) throws SQLException, DBCException {
-        List rows = this.rows(sql, 1, 1, null);
+        List rows = this.rows(sql, 0, 1, null);
         return rows.isEmpty() ? null : (GroovyRowResult)rows.get(0);
     }
 
