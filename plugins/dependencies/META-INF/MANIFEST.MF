@@ -26,11 +26,7 @@ Export-Package:
  groovy.ui,
  groovy.util,
  groovy.util.logging,
- groovy.util.slurpersupport,
  groovy.xml,
- groovy.xml.dom,
- groovy.xml.jaxb,
- groovy.xml.streamingmarkupsupport,
  groovyjarjarantlr,
  groovyjarjarantlr.ASdebug,
  groovyjarjarantlr.actions.cpp,
@@ -170,7 +166,6 @@ Export-Package:
  org.codehaus.groovy.tools.javac,
  org.codehaus.groovy.tools.shell,
  org.codehaus.groovy.tools.shell.util,
- org.codehaus.groovy.tools.xml,
  org.codehaus.groovy.transform,
  org.codehaus.groovy.transform.sc,
  org.codehaus.groovy.transform.sc.transformers,
@@ -242,11 +237,10 @@ Export-Package:
  org.orbisgis.datamanagerapi.datasource,
  org.orbisgis.datamanagerapi.dsl
 Bundle-ClassPath: 
- libs/jts-core-1.16.1.jar,
  libs/data-manager-api-1.0.0-SNAPSHOT.jar,
+ libs/ivy-2.4.0.jar,
+ libs/jts-core-1.16.1.jar,
  libs/groovy-2.5.7.jar,
  libs/groovy-sql-2.5.7.jar,
- libs/groovy-templates-2.5.7.jar,
- libs/ivy-2.4.0.jar,
- libs/groovy-xml-2.5.7.jar
+ libs/groovy-templates-2.5.7.jar
 

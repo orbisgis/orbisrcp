@@ -11,7 +11,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISaveablePart2;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
 import org.eclipse.ui.texteditor.IDocumentProvider;
-import org.jkiss.dbeaver.model.runtime.VoidProgressMonitor;
 import org.orbisgis.core.logger.Logger;
 import org.orbisgis.core.ui.Toolbar;
 import org.orbisgis.core.ui.ToolbarButton;
