@@ -13,7 +13,7 @@ public class GroovyUtils {
     public static final String SCRIPT_FILE_EXTENSION = "groovy";
 
     public static IFile createNewScript(ICoreWorkspace workspace) throws CoreException {
-        final IFolder folder = workspace.getFolder(GroovyWorkspaceExtension.GROOVY_SCRIPT);
+        final IFolder folder = workspace.getFolder(GroovyWorkspaceExtension.GROOVY_ROOT);
         // Make new script file
         IFile tempFile = getUniqueFile(folder, "Script", SCRIPT_FILE_EXTENSION);
         tempFile.create(new ByteArrayInputStream(new byte[]{}), true, new NullProgressMonitor());

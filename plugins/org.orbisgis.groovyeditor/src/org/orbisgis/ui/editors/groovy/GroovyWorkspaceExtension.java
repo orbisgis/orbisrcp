@@ -16,7 +16,7 @@ public class GroovyWorkspaceExtension implements ICoreWorkspaceExtension {
         List<String> paths = new ArrayList<>();
         paths.add(GROOVY_ROOT);
         //paths.add(GROOVY_DATA);
-        paths.add(GROOVY_SCRIPT);
+        //paths.add(GROOVY_SCRIPT);
         return paths;
     }
 }
