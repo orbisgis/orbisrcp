@@ -210,6 +210,16 @@ public class Table extends AbstractTable implements IJdbcTable{
         return list;
     }
 
+    @Override
+    public IJdbcTable columns(String... columns){
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public IJdbcTable columns(List<String> columns){
+        throw new UnsupportedOperationException();
+    }
+
     //TODO
     @Override
     public IConditionOrOptionBuilder where(String condition) {

@@ -1,8 +1,10 @@
 package org.orbisgis.ui.editors.groovy;
 
 import groovy.lang.Binding;
+import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyShell;
 import groovy.lang.MissingPropertyException;
+import groovy.sql.Sql;
 import groovy.transform.ThreadInterrupt;
 import groovy.util.GroovyScriptEngine;
 import org.codehaus.groovy.control.CompilerConfiguration;
