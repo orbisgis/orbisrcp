@@ -72,6 +72,11 @@ public class DataSource extends Sql implements IJdbcDataSource {
     }
 
     @Override
+    public boolean hasTable(String s) {
+        return getTableNames().contains(s);
+    }
+
+    @Override
     public boolean save(String tableName, String filePath) {
         return save(tableName, filePath, null);
     }
