@@ -6,7 +6,7 @@
       provider-name="OrbisGIS">
 
    <description url="http://orbisgis.org/">
-      Groovy Editor (GE) is a UI console to run Groovy script in an RCP eclipse environement.
+Groovy Editor (GE) is a UI console to run Groovy script in an RCP eclipse environement.
 GE is developped by the OrbisGIS team.
    </description>
 
