@@ -65,7 +65,7 @@ public class GroovyJob extends Job {
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
 
         try {
-            String root = new File(CoreActivator.getInstance().getCoreWorkspace().getFolder("groovy").getFolder("script").getLocationURI()).getAbsolutePath() + File.separator;
+            String root = new File(CoreActivator.getInstance().getCoreWorkspace().getFolder("groovy").getLocationURI()).getAbsolutePath() + File.separator;
             engine = new GroovyScriptEngine(root);
             engine.setConfig(configuratorConfig);
         } catch (IOException e) {
