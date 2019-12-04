@@ -34,10 +34,10 @@ import org.orbisgis.core.logger.Logger;
 import org.orbisgis.ui.editors.groovy.logger.GroovyLogger;
 import org.orbisgis.ui.editors.groovy.sql.DataSource;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.io.File;
 
 public class GroovyJob extends Job {
 
