@@ -4,7 +4,7 @@ import org.jkiss.dbeaver.model.exec.DBCException;
 import org.jkiss.dbeaver.model.exec.DBCResultSet;
 import org.jkiss.dbeaver.model.exec.jdbc.JDBCResultSet;
 import org.orbisgis.core.logger.Logger;
-import org.orbisgis.datamanagerapi.dataset.IJdbcTable;
+import org.orbisgis.orbisdata.datamanager.api.dataset.IJdbcTable;
 
 import java.io.InputStream;
 import java.io.Reader;

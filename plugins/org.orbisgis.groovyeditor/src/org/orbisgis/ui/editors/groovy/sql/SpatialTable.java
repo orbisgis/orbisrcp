@@ -4,7 +4,8 @@ import org.jkiss.dbeaver.model.DBPDataSourceContainer;
 import org.jkiss.dbeaver.model.exec.DBCException;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.orbisgis.datamanagerapi.dataset.ISpatialTable;
+import org.orbisgis.orbisdata.datamanager.api.dataset.IRaster;
+import org.orbisgis.orbisdata.datamanager.api.dataset.ISpatialTable;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -72,6 +73,31 @@ public class SpatialTable extends Table implements ISpatialTable {
         return null;
     }
 
+    @Override
+    public IRaster getRaster(int i) {
+        return null;
+    }
+
+    @Override
+    public IRaster getRaster(String s) {
+        return null;
+    }
+
+    @Override
+    public IRaster getRaster() {
+        return null;
+    }
+
+    @Override
+    public List<String> getSpatialColumns() {
+        return getGeometricColumns();
+    }
+
+    @Override
+    public List<String> getRasterColumns() {
+        return null;
+    }
+
     private int getFirstGeometryFieldIndex() throws SQLException {
         if (firstGeometryFieldIndex == -1) {
             for(int idColumn = 1; idColumn <= getColumnCount(); ++idColumn) {
@@ -87,7 +113,7 @@ public class SpatialTable extends Table implements ISpatialTable {
     @Override
     public List<String> getGeometricColumns(){
         List<String> list = new ArrayList<>();
-        getColumns().forEach((name, type) -> {
+        getColumnsTypes().forEach((name, type) -> {
             if(type.equalsIgnoreCase("geometry")){
                 list.add(name);
             }
