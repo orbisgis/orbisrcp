@@ -26,9 +26,9 @@ import org.jkiss.dbeaver.model.exec.jdbc.JDBCResultSet;
 import org.jkiss.dbeaver.model.impl.AbstractExecutionSource;
 import org.jkiss.dbeaver.model.runtime.VoidProgressMonitor;
 import org.orbisgis.core.logger.Logger;
-import org.orbisgis.datamanagerapi.dataset.*;
-import org.orbisgis.datamanagerapi.dsl.IConditionOrOptionBuilder;
-import org.orbisgis.datamanagerapi.dsl.IOptionBuilder;
+import org.orbisgis.orbisdata.datamanager.api.dataset.*;
+import org.orbisgis.orbisdata.datamanager.api.dsl.IConditionOrOptionBuilder;
+import org.orbisgis.orbisdata.datamanager.api.dsl.IOptionBuilder;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -118,7 +118,7 @@ public class Table extends AbstractTable implements IJdbcTable{
     }
 
     @Override
-    public Collection<String> getColumnNames() {
+    public List<String> getColumns() {
         try {
             return getResultSet()
                     .getMeta()
@@ -133,7 +133,7 @@ public class Table extends AbstractTable implements IJdbcTable{
     }
 
     @Override
-    public Map<String, String> getColumns() {
+    public Map<String, String> getColumnsTypes() {
         try {
             Map<String, String> map = new HashMap<>();
             for (int i = getColumnCount(); i > 0; i--) {
@@ -148,7 +148,7 @@ public class Table extends AbstractTable implements IJdbcTable{
     }
 
     @Override
-    public String getColumnsType(String columnName) {
+    public String getColumnType(String columnName) {
         int index = -1;
         try {
             for (int i = getColumnCount(); i > 0; i--) {
@@ -166,7 +166,7 @@ public class Table extends AbstractTable implements IJdbcTable{
 
     @Override
     public boolean hasColumn(String columnName, Class clazz) {
-        String type = getColumns().get(columnName);
+        String type = getColumnsTypes().get(columnName);
         return type != null && type.equalsIgnoreCase(clazz.getTypeName());
     }
 
@@ -217,7 +217,7 @@ public class Table extends AbstractTable implements IJdbcTable{
         List<Object> list = new ArrayList<>();
         try {
             getResultSet().nextRow();
-            for (String colName : getColumnNames()) {
+            for (String colName : getColumns()) {
                 list.add(getResultSet(1).getAttributeValue(colName));
             }
             invalidateResultSet();

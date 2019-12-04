@@ -18,8 +18,8 @@
  */
 package org.orbisgis.ui.editors.groovy.sql;
 
-import org.orbisgis.datamanagerapi.dataset.DataBaseType;
-import org.orbisgis.datamanagerapi.dataset.ITableLocation;
+import org.orbisgis.orbisdata.datamanager.api.dataset.DataBaseType;
+import org.orbisgis.orbisdata.datamanager.api.dataset.ITableLocation;
 
 public class TableLocation implements ITableLocation {
 

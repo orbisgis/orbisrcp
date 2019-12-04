@@ -19,7 +19,7 @@
 package org.orbisgis.ui.editors.groovy.sql;
 
 import org.jkiss.dbeaver.model.DBPDataSourceFolder;
-import org.orbisgis.datamanagerapi.datasource.IDataSourceLocation;
+import org.orbisgis.orbisdata.datamanager.api.datasource.IDataSourceLocation;
 import java.io.File;
 
 public class DataSourceLocation implements IDataSourceLocation {

@@ -26,19 +26,23 @@ import org.jkiss.dbeaver.model.DBPDataSourceContainer;
 import org.jkiss.dbeaver.model.DBUtils;
 import org.jkiss.dbeaver.model.exec.*;
 import org.jkiss.dbeaver.model.exec.jdbc.JDBCResultSet;
+import org.jkiss.dbeaver.model.exec.jdbc.JDBCSession;
 import org.jkiss.dbeaver.model.impl.AbstractExecutionSource;
 import org.jkiss.dbeaver.model.runtime.VoidProgressMonitor;
 import org.orbisgis.core.logger.Logger;
-import org.orbisgis.datamanagerapi.dataset.IDataSet;
-import org.orbisgis.datamanagerapi.dataset.ISpatialTable;
-import org.orbisgis.datamanagerapi.dataset.ITable;
-import org.orbisgis.datamanagerapi.datasource.IDataSourceLocation;
-import org.orbisgis.datamanagerapi.datasource.IJdbcDataSource;
+import org.orbisgis.orbisdata.datamanager.api.dataset.IDataSet;
+import org.orbisgis.orbisdata.datamanager.api.dataset.ISpatialTable;
+import org.orbisgis.orbisdata.datamanager.api.dataset.ITable;
+import org.orbisgis.orbisdata.datamanager.api.datasource.IDataSourceLocation;
+import org.orbisgis.orbisdata.datamanager.api.datasource.IJdbcDataSource;
 
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -85,7 +89,7 @@ public class DataSource extends Sql implements IJdbcDataSource {
     @Override
     public Collection<String> getTableNames() {
         UnsupportedOperationException e = new UnsupportedOperationException();
-        LOGGER.error("Unsupported operation 'getTableNames'");
+        LOGGER.error("Unsupported operation 'getTableNames'", e);
         throw e;
     }
 
@@ -103,7 +107,7 @@ public class DataSource extends Sql implements IJdbcDataSource {
     @Override
     public boolean save(String tableName, String filePath, String encoding) {
         UnsupportedOperationException e = new UnsupportedOperationException();
-        LOGGER.error("Unsupported operation 'save'");
+        LOGGER.error("Unsupported operation 'save'", e);
         throw e;
         //return IOMethods.saveAsFile(getConnection(), tableName, filePath, encoding);
     }
@@ -156,7 +160,7 @@ public class DataSource extends Sql implements IJdbcDataSource {
     @Override
     public ITable link(String filePath, String tableName, boolean delete) {
         UnsupportedOperationException e = new UnsupportedOperationException();
-        LOGGER.error("Unsupported operation 'link'");
+        LOGGER.error("Unsupported operation 'link'", e);
         throw e;
         //IOMethods.link(filePath, tableName, delete, this);
     }
@@ -281,7 +285,7 @@ public class DataSource extends Sql implements IJdbcDataSource {
     @Override
     public ITable load(Map<String, String> properties, String inputTableName, String outputTableName, boolean delete) {
         UnsupportedOperationException e = new UnsupportedOperationException();
-        LOGGER.error("Unsupported operation 'load'");
+        LOGGER.error("Unsupported operation 'load'", e);
         throw e;
         //IOMethods.loadTable(properties, inputTableName, outputTableName, delete, this);
     }
@@ -290,7 +294,7 @@ public class DataSource extends Sql implements IJdbcDataSource {
     @Override
     public ITable load(String filePath, String tableName, String encoding, boolean delete) {
         UnsupportedOperationException e = new UnsupportedOperationException();
-        LOGGER.error("Unsupported operation 'load'");
+        LOGGER.error("Unsupported operation 'load'", e);
         throw e;
         //IOMethods.loadFile(filePath, tableName, encoding, delete, this);
     }
@@ -504,5 +508,66 @@ public class DataSource extends Sql implements IJdbcDataSource {
     @Override
     public void setMetaClass(MetaClass metaClass) {
         this.metaClass = metaClass;
+    }
+
+    @Override
+    public Connection getConnection() throws SQLException {
+        DBCExecutionContext context = DBUtils.getDefaultContext(container.getDataSource(), false);
+        return (JDBCSession)context.openSession(new VoidProgressMonitor(), DBCExecutionPurpose.USER, "SQL Query");
+    }
+
+    @Override
+    public Connection getConnection(String s, String s1) throws SQLException {
+        DBCExecutionContext context = DBUtils.getDefaultContext(container.getDataSource(), false);
+        return (JDBCSession)context.openSession(new VoidProgressMonitor(), DBCExecutionPurpose.USER, "SQL Query");
+    }
+
+    @Override
+    public PrintWriter getLogWriter() throws SQLException {
+        UnsupportedOperationException e = new UnsupportedOperationException();
+        LOGGER.error("Unsupported operation 'getLogWriter'", e);
+        throw e;
+    }
+
+    @Override
+    public void setLogWriter(PrintWriter printWriter) throws SQLException {
+        UnsupportedOperationException e = new UnsupportedOperationException();
+        LOGGER.error("Unsupported operation 'setLogWriter'", e);
+        throw e;
+    }
+
+    @Override
+    public void setLoginTimeout(int i) throws SQLException {
+        UnsupportedOperationException e = new UnsupportedOperationException();
+        LOGGER.error("Unsupported operation 'setLoginTimeout'", e);
+        throw e;
+    }
+
+    @Override
+    public int getLoginTimeout() throws SQLException {
+        UnsupportedOperationException e = new UnsupportedOperationException();
+        LOGGER.error("Unsupported operation 'getLoginTimeout'", e);
+        throw e;
+    }
+
+    @Override
+    public java.util.logging.Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        UnsupportedOperationException e = new UnsupportedOperationException();
+        LOGGER.error("Unsupported operation 'getParentLogger'", e);
+        throw e;
+    }
+
+    @Override
+    public <T> T unwrap(Class<T> aClass) throws SQLException {
+        UnsupportedOperationException e = new UnsupportedOperationException();
+        LOGGER.error("Unsupported operation 'unwrap'", e);
+        throw e;
+    }
+
+    @Override
+    public boolean isWrapperFor(Class<?> aClass) throws SQLException {
+        UnsupportedOperationException e = new UnsupportedOperationException();
+        LOGGER.error("Unsupported operation 'isWrapperFor'", e);
+        throw e;
     }
 }
