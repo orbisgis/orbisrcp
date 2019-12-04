@@ -1,3 +1,21 @@
+/*
+ * Groovy Editor (GE) is a library that brings a groovy console to the Eclipse RCP. 
+ * GE is developed by CNRS http://www.cnrs.fr/.
+ *
+ * GE is part of the OrbisGIS project. GE is free software;
+ * you can redistribute it and/or modify it under the terms of the GNU Lesser 
+ * General Public License as published by the Free Software Foundation;
+ * version 3.0 of the License.
+ *
+ * GE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details http://www.gnu.org/licenses.
+ *
+ *
+ *For more information, please consult: http://www.orbisgis.org
+ *or contact directly: info_at_orbisgis.org
+ */
 package org.orbisgis.ui.editors.groovy.handlers;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -54,12 +72,12 @@ public class GroovyEditorActionHandler extends AbstractHandler {
         return null;
     }
 
-    private List<DBPDataSourceContainer> getContainers(ExecutionEvent event){
+    private List<DBPDataSourceContainer> getContainers(ExecutionEvent event) {
         List<DBPDataSourceContainer> list = new ArrayList<>();
         IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-        if(window != null) {
+        if (window != null) {
             IWorkbenchPage page = window.getActivePage();
-            if(page != null) {
+            if (page != null) {
                 IViewPart nav = window.getActivePage().findView(DatabaseNavigatorView.VIEW_ID);
                 if (nav instanceof DatabaseNavigatorView) {
                     for (TreeItem item : ((DatabaseNavigatorView) nav).getNavigatorViewer().getTree().getItems()) {
@@ -67,25 +85,20 @@ public class GroovyEditorActionHandler extends AbstractHandler {
                             Object data = item.getData();
                             if (data instanceof DBNDataSource) {
                                 list.add(((DBNDataSource) data).getDataSourceContainer());
-                            }
-                            else{
+                            } else {
                                 LOGGER.warn("No data source found");
                             }
-                        }
-                        else{
+                        } else {
                             LOGGER.warn("No tree item found");
                         }
                     }
-                }
-                else{
+                } else {
                     LOGGER.warn("No DatabaseNavigatorView found");
                 }
-            }
-            else{
+            } else {
                 LOGGER.warn("No IWorkbenchPage found");
             }
-        }
-        else{
+        } else {
             LOGGER.warn("No IWorkbenchWindow found");
         }
         return list;
@@ -93,7 +106,7 @@ public class GroovyEditorActionHandler extends AbstractHandler {
 
     private Map<String, DataSource> getDataSources(ExecutionEvent event) {
         Map<String, DataSource> map = new HashMap<>();
-        for(DBPDataSourceContainer container : getContainers(event)) {
+        for (DBPDataSourceContainer container : getContainers(event)) {
             if (container.isConnected()) {
                 map.put(container.getName().replaceAll("\\W+", "_"), new DataSource(container));
             }
@@ -103,7 +116,7 @@ public class GroovyEditorActionHandler extends AbstractHandler {
 
     private List<String> getClosedDataSources(ExecutionEvent event) {
         List<String> list = new ArrayList<>();
-        for(DBPDataSourceContainer container : getContainers(event)) {
+        for (DBPDataSourceContainer container : getContainers(event)) {
             if (!container.isConnected()) {
                 list.add(container.getName().replaceAll("\\W+", "_"));
             }
