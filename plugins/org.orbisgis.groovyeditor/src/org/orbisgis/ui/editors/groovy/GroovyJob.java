@@ -64,14 +64,14 @@ public class GroovyJob extends Job {
         CompilerConfiguration configuratorConfig = new CompilerConfiguration();
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
 
-        try {
+        /*try {
             String root = new File(CoreActivator.getInstance().getCoreWorkspace().getFolder("groovy").getLocationURI().toString() + File.separator).getAbsolutePath() + File.separator;
             engine = new GroovyScriptEngine(root);
             engine.setConfig(configuratorConfig);
         } catch (IOException e) {
-            LOGGER.warn("Unable to create the groovy engine, use GroovyShell instead.");
+            LOGGER.warn("Unable to create the groovy engine, use GroovyShell instead.");*/
             shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
-        }
+        //}
     }
 
     @Override
