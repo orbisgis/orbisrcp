@@ -22,6 +22,7 @@ import org.jkiss.dbeaver.model.DBPDataSourceContainer;
 import org.jkiss.dbeaver.model.exec.DBCException;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
+import org.orbisgis.orbisdata.datamanager.api.dataset.IJdbcSpatialTable;
 import org.orbisgis.orbisdata.datamanager.api.dataset.IRaster;
 import org.orbisgis.orbisdata.datamanager.api.dataset.ISpatialTable;
 
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class SpatialTable extends Table implements ISpatialTable {
+public class SpatialTable extends Table implements IJdbcSpatialTable {
 
     private int firstGeometryFieldIndex = -1;
 
