@@ -30,9 +30,7 @@ import org.jkiss.dbeaver.model.exec.jdbc.JDBCSession;
 import org.jkiss.dbeaver.model.impl.AbstractExecutionSource;
 import org.jkiss.dbeaver.model.runtime.VoidProgressMonitor;
 import org.orbisgis.core.logger.Logger;
-import org.orbisgis.orbisdata.datamanager.api.dataset.IDataSet;
-import org.orbisgis.orbisdata.datamanager.api.dataset.ISpatialTable;
-import org.orbisgis.orbisdata.datamanager.api.dataset.ITable;
+import org.orbisgis.orbisdata.datamanager.api.dataset.*;
 import org.orbisgis.orbisdata.datamanager.api.datasource.IDataSourceLocation;
 import org.orbisgis.orbisdata.datamanager.api.datasource.IJdbcDataSource;
 
@@ -61,7 +59,7 @@ public class DataSource extends Sql implements IJdbcDataSource {
     }
 
     @Override
-    public IDataSet getDataSet(String name) {
+    public IJdbcTable getDataSet(String name) {
         return getTable(name);
     }
 
@@ -76,12 +74,12 @@ public class DataSource extends Sql implements IJdbcDataSource {
     }
 
     @Override
-    public ITable getTable(String tableName) {
+    public IJdbcTable getTable(String tableName) {
         return new Table(tableName, container);
     }
 
     @Override
-    public ISpatialTable getSpatialTable(String tableName) {
+    public IJdbcSpatialTable getSpatialTable(String tableName) {
         return new SpatialTable(tableName, container);
     }
 
@@ -158,7 +156,7 @@ public class DataSource extends Sql implements IJdbcDataSource {
 
     //TODO
     @Override
-    public ITable link(String filePath, String tableName, boolean delete) {
+    public IJdbcTable link(String filePath, String tableName, boolean delete) {
         UnsupportedOperationException e = new UnsupportedOperationException();
         LOGGER.error("Unsupported operation 'link'", e);
         throw e;
@@ -166,12 +164,12 @@ public class DataSource extends Sql implements IJdbcDataSource {
     }
 
     @Override
-    public ITable link(String filePath, String tableName) {
+    public IJdbcTable link(String filePath, String tableName) {
         return link(filePath, tableName, false);
     }
 
     @Override
-    public ITable link(String filePath, boolean delete) {
+    public IJdbcTable link(String filePath, boolean delete) {
         String tableName = getTableNameFromPath(filePath);
         if (Pattern.compile("^[a-zA-Z][a-zA-Z0-9_]*$").matcher(tableName).find()) {
             return link(filePath, tableName, delete);
@@ -182,12 +180,12 @@ public class DataSource extends Sql implements IJdbcDataSource {
     }
 
     @Override
-    public ITable link(String filePath) {
+    public IJdbcTable link(String filePath) {
         return link(filePath, false);
     }
 
     @Override
-    public ITable link(URL url, String tableName, boolean delete) {
+    public IJdbcTable link(URL url, String tableName, boolean delete) {
         try {
             return link(url.toURI(), tableName, delete);
         } catch (URISyntaxException e) {
@@ -197,7 +195,7 @@ public class DataSource extends Sql implements IJdbcDataSource {
     }
 
     @Override
-    public ITable link(URL url, String tableName) {
+    public IJdbcTable link(URL url, String tableName) {
         try {
             return link(url.toURI(), tableName);
         } catch (URISyntaxException e) {
@@ -207,7 +205,7 @@ public class DataSource extends Sql implements IJdbcDataSource {
     }
 
     @Override
-    public ITable link(URL url, boolean delete) {
+    public IJdbcTable link(URL url, boolean delete) {
         try {
             return link(url.toURI(), delete);
         } catch (URISyntaxException e) {
@@ -217,7 +215,7 @@ public class DataSource extends Sql implements IJdbcDataSource {
     }
 
     @Override
-    public ITable link(URL url) {
+    public IJdbcTable link(URL url) {
         try {
             return link(url.toURI());
         } catch (URISyntaxException e) {
@@ -227,63 +225,63 @@ public class DataSource extends Sql implements IJdbcDataSource {
     }
 
     @Override
-    public ITable link(URI uri, String tableName, boolean delete) {
+    public IJdbcTable link(URI uri, String tableName, boolean delete) {
         return link(new File(uri), tableName, delete);
     }
 
     @Override
-    public ITable link(URI uri, String tableName) {
+    public IJdbcTable link(URI uri, String tableName) {
         return link(new File(uri), tableName);
     }
 
     @Override
-    public ITable link(URI uri, boolean delete) {
+    public IJdbcTable link(URI uri, boolean delete) {
         return link(new File(uri), delete);
     }
 
     @Override
-    public ITable link(URI uri) {
+    public IJdbcTable link(URI uri) {
         return link(new File(uri));
     }
 
     @Override
-    public ITable link(File file, String tableName, boolean delete) {
+    public IJdbcTable link(File file, String tableName, boolean delete) {
         return link(file.getAbsolutePath(), tableName, delete);
     }
 
     @Override
-    public ITable link(File file, String tableName) {
+    public IJdbcTable link(File file, String tableName) {
         return link(file.getAbsolutePath(), tableName);
     }
 
     @Override
-    public ITable link(File file, boolean delete) {
+    public IJdbcTable link(File file, boolean delete) {
         return link(file.getAbsolutePath(), delete);
     }
 
     @Override
-    public ITable link(File file) {
+    public IJdbcTable link(File file) {
         return link(file.getAbsolutePath());
     }
 
     @Override
-    public ITable load(Map<String, String> properties, String inputTableName) {
+    public IJdbcTable load(Map<String, String> properties, String inputTableName) {
         return load(properties, inputTableName, inputTableName, false);
     }
 
     @Override
-    public ITable load(Map<String, String> properties, String inputTableName, boolean delete) {
+    public IJdbcTable load(Map<String, String> properties, String inputTableName, boolean delete) {
         return load(properties, inputTableName, inputTableName, delete);
     }
 
     @Override
-    public ITable load(Map<String, String> properties, String inputTableName, String outputTableName) {
+    public IJdbcTable load(Map<String, String> properties, String inputTableName, String outputTableName) {
         return load(properties, inputTableName, outputTableName, false);
     }
 
     //TODO
     @Override
-    public ITable load(Map<String, String> properties, String inputTableName, String outputTableName, boolean delete) {
+    public IJdbcTable load(Map<String, String> properties, String inputTableName, String outputTableName, boolean delete) {
         UnsupportedOperationException e = new UnsupportedOperationException();
         LOGGER.error("Unsupported operation 'load'", e);
         throw e;
@@ -292,7 +290,7 @@ public class DataSource extends Sql implements IJdbcDataSource {
 
     //TODO
     @Override
-    public ITable load(String filePath, String tableName, String encoding, boolean delete) {
+    public IJdbcTable load(String filePath, String tableName, String encoding, boolean delete) {
         UnsupportedOperationException e = new UnsupportedOperationException();
         LOGGER.error("Unsupported operation 'load'", e);
         throw e;
@@ -300,22 +298,22 @@ public class DataSource extends Sql implements IJdbcDataSource {
     }
 
     @Override
-    public ITable load(String filePath, String tableName) {
+    public IJdbcTable load(String filePath, String tableName) {
         return load(filePath, tableName, null, false);
     }
 
     @Override
-    public ITable load(String filePath, String tableName, boolean delete) {
+    public IJdbcTable load(String filePath, String tableName, boolean delete) {
         return load(filePath, tableName, null, delete);
     }
 
     @Override
-    public ITable load(String filePath) {
+    public IJdbcTable load(String filePath) {
         return load(filePath, false);
     }
 
     @Override
-    public ITable load(String filePath, boolean delete) {
+    public IJdbcTable load(String filePath, boolean delete) {
         String tableName = getTableNameFromPath(filePath);
         if (Pattern.compile("^[a-zA-Z][a-zA-Z0-9_]*$").matcher(tableName).find()) {
             return load(filePath,tableName, null, delete);
@@ -326,7 +324,7 @@ public class DataSource extends Sql implements IJdbcDataSource {
     }
 
     @Override
-    public ITable load(URL url, String tableName) {
+    public IJdbcTable load(URL url, String tableName) {
         try {
             return load(url.toURI(), tableName, null, false);
         } catch (URISyntaxException e) {
@@ -336,7 +334,7 @@ public class DataSource extends Sql implements IJdbcDataSource {
     }
 
     @Override
-    public ITable load(URL url, String tableName, boolean delete) {
+    public IJdbcTable load(URL url, String tableName, boolean delete) {
         try {
             return load(url.toURI(), tableName, null, delete);
         } catch (URISyntaxException e) {
@@ -346,7 +344,7 @@ public class DataSource extends Sql implements IJdbcDataSource {
     }
 
     @Override
-    public ITable load(URL url) {
+    public IJdbcTable load(URL url) {
         try {
             return load(url.toURI(), false);
         } catch (URISyntaxException e) {
@@ -356,7 +354,7 @@ public class DataSource extends Sql implements IJdbcDataSource {
     }
 
     @Override
-    public ITable load(URL url, boolean delete) {
+    public IJdbcTable load(URL url, boolean delete) {
         try {
             return load(url.toURI(), delete);
         } catch (URISyntaxException e) {
@@ -366,7 +364,7 @@ public class DataSource extends Sql implements IJdbcDataSource {
     }
 
     @Override
-    public ITable load(URL url, String tableName, String encoding, boolean delete) {
+    public IJdbcTable load(URL url, String tableName, String encoding, boolean delete) {
         try {
             return load(url.toURI(), tableName, encoding, delete);
         } catch (URISyntaxException e) {
@@ -376,52 +374,52 @@ public class DataSource extends Sql implements IJdbcDataSource {
     }
 
     @Override
-    public ITable load(URI uri, String tableName) {
+    public IJdbcTable load(URI uri, String tableName) {
         return load(new File(uri), tableName, null, false);
     }
 
     @Override
-    public ITable load(URI uri, String tableName, boolean delete) {
+    public IJdbcTable load(URI uri, String tableName, boolean delete) {
         return load(new File(uri), tableName, null, delete);
     }
 
     @Override
-    public ITable load(URI uri) {
+    public IJdbcTable load(URI uri) {
         return load(new File(uri), false);
     }
 
     @Override
-    public ITable load(URI uri, boolean delete) {
+    public IJdbcTable load(URI uri, boolean delete) {
         return load(new File(uri), delete);
     }
 
     @Override
-    public ITable load(URI uri, String tableName, String encoding, boolean delete) {
+    public IJdbcTable load(URI uri, String tableName, String encoding, boolean delete) {
         return load(new File(uri), tableName, encoding, delete);
     }
 
     @Override
-    public ITable load(File file, String tableName) {
+    public IJdbcTable load(File file, String tableName) {
         return load(file.getAbsolutePath(), tableName, null, false);
     }
 
     @Override
-    public ITable load(File file, String tableName, boolean delete) {
+    public IJdbcTable load(File file, String tableName, boolean delete) {
         return load(file.getAbsolutePath(), tableName, null, delete);
     }
 
     @Override
-    public ITable load(File file) {
+    public IJdbcTable load(File file) {
         return load(file.getAbsolutePath(), false);
     }
 
     @Override
-    public ITable load(File file, boolean delete) {
+    public IJdbcTable load(File file, boolean delete) {
         return load(file.getAbsolutePath(), delete);
     }
 
     @Override
-    public ITable load(File file, String tableName, String encoding, boolean delete) {
+    public IJdbcTable load(File file, String tableName, String encoding, boolean delete) {
         return load(file.getAbsolutePath(), tableName, encoding, delete);
     }
 
@@ -476,6 +474,11 @@ public class DataSource extends Sql implements IJdbcDataSource {
             }
         }
         return true;
+    }
+
+    @Override
+    public DataBaseType getDataBaseType() {
+        throw new UnsupportedOperationException();
     }
 
     @Override

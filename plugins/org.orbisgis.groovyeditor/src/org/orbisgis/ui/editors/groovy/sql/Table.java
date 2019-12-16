@@ -281,6 +281,11 @@ public class Table extends AbstractTable implements IJdbcTable{
     }
 
     @Override
+    public IJdbcTableSummary getSummary() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     protected JDBCResultSet getResultSet() throws DBCException {
         return getResultSet(-1);
     }
