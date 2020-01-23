@@ -27,6 +27,7 @@ import org.orbisgis.orbisdata.datamanager.api.dataset.IRaster;
 import org.orbisgis.orbisdata.datamanager.api.dataset.ISpatialTable;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -206,6 +207,29 @@ public class SpatialTable extends Table implements IJdbcSpatialTable {
     @Override
     public Map<String, String> getGeometryTypes() {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ISpatialTable reproject(int srid) {
+        try {
+            ResultSetMetaData meta = getMetaData();
+            int columnCount = meta.getColumnCount();
+            String[] fieldNames = new String[columnCount];
+            for (int i = 1; i <= columnCount; i++) {
+                String columnName = meta.getColumnName(i);
+                if (meta.getColumnTypeName(i).equalsIgnoreCase("geometry")) {
+                    fieldNames[i - 1] = "ST_TRANSFORM(" + columnName + ", " + srid + ") AS " + columnName;
+                } else {
+                    fieldNames[i - 1] = columnName;
+                }
+            }
+
+            String query = "SELECT " + String.join(",", fieldNames) + " FROM " + getTableLocation().toString();
+            return new SpatialTable(null, query, container);
+        } catch (SQLException e) {
+            getLogger().error("Cannot reproject the table '" + getLocation() + "' in the SRID '" + srid + "'.\n", e);
+            return null;
+        }
     }
 
     @Override
