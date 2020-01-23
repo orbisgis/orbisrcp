@@ -36,11 +36,8 @@ import org.jkiss.dbeaver.model.sql.*;
 import org.jkiss.dbeaver.model.struct.DBSDataContainer;
 import org.jkiss.dbeaver.runtime.jobs.DataSourceJob;
 import org.jkiss.dbeaver.runtime.sql.SQLResultsConsumer;
-import org.jkiss.dbeaver.runtime.sql.SQLScriptErrorHandling;
 import org.jkiss.dbeaver.ui.editors.sql.SQLPreferenceConstants;
 import org.jkiss.dbeaver.ui.editors.sql.internal.SQLEditorActivator;
-import org.jkiss.dbeaver.ui.editors.sql.registry.SQLCommandHandlerDescriptor;
-import org.jkiss.dbeaver.ui.editors.sql.registry.SQLCommandsRegistry;
 import org.jkiss.dbeaver.utils.RuntimeUtils;
 import org.jkiss.utils.CommonUtils;
 
@@ -67,7 +64,6 @@ public class SqlQueryJob extends DataSourceJob
     private DBDDataFilter dataFilter;
     private boolean connectionInvalidated = false;
 
-    private SQLScriptErrorHandling errorHandling;
     private boolean fetchResultSets;
     private long rsOffset;
     private long rsMaxRows;
@@ -96,7 +92,6 @@ public class SqlQueryJob extends DataSourceJob
         {
             // Read config form preference store
             DBPPreferenceStore preferenceStore = getDataSourceContainer().getPreferenceStore();
-            this.errorHandling = SQLScriptErrorHandling.valueOf(preferenceStore.getString(SQLPreferenceConstants.SCRIPT_ERROR_HANDLING));
             this.fetchResultSets = true;
             this.rsMaxRows = preferenceStore.getInt("resultset.maxrows");
         }
@@ -236,7 +231,7 @@ public class SqlQueryJob extends DataSourceJob
             scriptContext.clearStatementContext();
         }
 
-        return curResult.getError() == null || errorHandling == SQLScriptErrorHandling.IGNORE;
+        return curResult.getError() == null;
         // Success
     }
 
@@ -332,17 +327,6 @@ public class SqlQueryJob extends DataSourceJob
                 closeStatement();
             }
         }
-    }
-
-    public boolean executeControlCommand(SQLControlCommand command) throws DBException {
-        if (command.isEmptyCommand()) {
-            return true;
-        }
-        SQLCommandHandlerDescriptor commandHandler = SQLCommandsRegistry.getInstance().getCommandHandler(command.getCommandId());
-        if (commandHandler == null) {
-            throw new DBException("Command '" + command.getCommand() + "' not supported");
-        }
-        return commandHandler.createHandler().handleCommand(command, scriptContext);
     }
 
     private void fetchExecutionResult(@NotNull DBCSession session, @NotNull DBDDataReceiver dataReceiver, @NotNull SQLQuery query) throws DBCException

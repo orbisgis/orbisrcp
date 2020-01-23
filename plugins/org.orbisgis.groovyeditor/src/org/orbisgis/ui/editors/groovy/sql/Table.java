@@ -38,7 +38,7 @@ public class Table extends AbstractTable implements IJdbcTable{
 
     private static final Logger LOGGER = new Logger(Table.class);
     protected ITableLocation location;
-    private DBPDataSourceContainer container;
+    protected DBPDataSourceContainer container;
 
     public Table(String tableName, DBPDataSourceContainer container){
         location = new TableLocation(container.getName(), tableName);
