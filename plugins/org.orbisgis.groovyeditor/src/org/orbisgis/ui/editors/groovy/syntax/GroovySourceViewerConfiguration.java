@@ -27,7 +27,6 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
-import org.jkiss.dbeaver.ui.editors.sql.syntax.rules.LineCommentRule;
 
 import java.util.Arrays;
 import java.util.List;
@@ -73,13 +72,13 @@ public class GroovySourceViewerConfiguration extends SourceViewerConfiguration {
         IToken numberToken = new Token(new TextAttribute(blue));
         IToken commentToken = new Token(new TextAttribute(gray));
 
-        IRule commentLineRule = new LineCommentRule("//", commentToken);
+        IRule commentLineRule = new SingleLineRule("//", "\n", commentToken);
         IRule commentBlockRule = new MultiLineRule("/*", "*/", commentToken);
         IRule groovyDocBlockRule = new MultiLineRule("/**", "*/", groovyDocToken);
         IRule keywordRule = new KeywordRule(list, keywordToken);
         IRule multiLineDoubleQuoteStringRule = new MultiLineRule("\"", "\"", stringToken, '\\');
         IRule multiLineSingleQuoteStringRule = new MultiLineRule("'", "'", stringToken, '\u0000');
-        IRule annotationRule = new LineCommentRule("@", annotationToken);
+        IRule annotationRule = new SingleLineRule("@", "\n", annotationToken);
         IRule numberRule = new NumberRule(numberToken);
 
         return new IRule[] {commentLineRule, commentBlockRule, groovyDocBlockRule, keywordRule,
