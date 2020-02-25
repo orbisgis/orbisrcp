@@ -32,12 +32,10 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.orbisgis.core.CoreActivator;
 import org.orbisgis.core.logger.Logger;
 import org.orbisgis.ui.editors.groovy.logger.GroovyLogger;
-import org.orbisgis.ui.editors.groovy.sql.DataSource;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public class GroovyJob extends Job {
 
@@ -49,16 +47,13 @@ public class GroovyJob extends Job {
     private Binding binding;
     private String name;
     private Thread t;
-    private List<String> closedDatasources;
 
-    public GroovyJob(String name, String script, Map<String, DataSource> dataSources, List<String> closedDatasources){
+    public GroovyJob(String name, String script){
         super(name);
         this.script = script;
-        this.closedDatasources = closedDatasources;
         this.name = name;
 
         binding = new Binding();
-        dataSources.forEach(binding::setProperty);
         binding.setProperty("logger", new GroovyLogger(GroovyShell.class));
 
         CompilerConfiguration configuratorConfig = new CompilerConfiguration();
@@ -138,14 +133,8 @@ public class GroovyJob extends Job {
                 status = IStatus.OK;
             } catch (MissingPropertyException e){
                 String property = e.getProperty();
-                if(closedDatasources.contains(property)){
-                    LOGGER.error("The datasource '"+property+"' is closed.");
-                    status = IStatus.ERROR;
-                }
-                else{
-                    LOGGER.error("Error while execution the Groovy script.", e);
-                    status = IStatus.ERROR;
-                }
+                LOGGER.error("Error while execution the Groovy script.", e);
+                status = IStatus.ERROR;
             } catch(Exception e){
                 LOGGER.error("Error while executing the groovy script.", e);
                 status = IStatus.ERROR;

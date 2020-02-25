@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+
+<plugin>
+
+<extension point="org.jkiss.dbeaver.dataSourceProvider">
+
+        <!-- H2GIS driver -->
+        <datasource
+                class="org.orbisgis.h2gis.H2GISDataSourceProvider"
+                description="%datasource.h2gis.description"
+                id="h2gis"
+                parent="generic"
+                label="H2GIS"
+                icon="icons/h2gis_icon.png"
+                dialect="h2">
+            <drivers managable="true">
+
+                <driver
+                    id="h2gis_embedded"
+                    label="H2GIS Embedded2"
+                    icon="icons/h2gis_icon.png"
+                    iconBig="icons/h2gis_icon_big.png"
+                    category="H2"
+                    class="org.h2.Driver"
+                    sampleURL="jdbc:h2:{file}"
+                    webURL="http://www.h2gis.org/"
+                    embedded="true"
+                    description="H2GIS Embedded"
+                    categories="spatial,sql,embedded">
+
+                    <file type="jar" path="https://nexus-ng.orbisgis.org/repository/orbisgis-release/com/h2database/h2/1.4.201-RC2/h2-1.4.201-RC2.jar"/>
+                    <file type="jar" path="https://nexus-ng.orbisgis.org/repository/orbisgis-release/org/orbisgis/h2gis-api/2.0.0-RC1/h2gis-api-2.0.0-RC1.jar"/>
+                    <file type="jar" path="https://nexus-ng.orbisgis.org/repository/orbisgis-release/org/orbisgis/h2gis-network/2.0.0-RC1/h2gis-network-2.0.0-RC1.jar"/>
+                    <file type="jar" path="https://nexus-ng.orbisgis.org/repository/orbisgis-release/org/orbisgis/h2gis-osgi/2.0.0-RC1/h2gis-osgi-2.0.0-RC1.jar"/>
+                    <file type="jar" path="https://nexus-ng.orbisgis.org/repository/orbisgis-release/org/orbisgis/h2gis-test-utilities/2.0.0-RC1/h2gis-test-utilities-2.0.0-RC1.jar"/>
+                    <file type="jar" path="https://nexus-ng.orbisgis.org/repository/orbisgis-release/org/orbisgis/h2gis-utilities/2.0.0-RC1/h2gis-utilities-2.0.0-RC1.jar"/>
+                    <file type="jar" path="https://nexus-ng.orbisgis.org/repository/orbisgis-release/org/orbisgis/postgis-jts/2.0.0-RC1/postgis-jts-2.0.0-RC1.jar"/>
+                    <file type="jar" path="https://nexus-ng.orbisgis.org/repository/orbisgis-release/org/orbisgis/postgis-jts-osgi/2.0.0-RC1/postgis-jts-osgi-2.0.0-RC1.jar"/>
+
+                    <parameter name="query-get-active-db" value="SELECT SCHEMA()"/>
+                    <parameter name="query-set-active-db" value="SET SCHEMA = ?"/>
+                    <parameter name="query-shutdown" value="shutdown"/>
+                    <parameter name="omit-catalog" value="true"/>
+                </driver>
+
+		        <driver
+                    id="h2gis_server"
+                    label="H2GIS Server2"
+                    icon="icons/h2gis_icon.png"
+                    iconBig="icons/h2gis_icon_big.png"
+                    category="H2"
+                    class="org.h2.Driver"
+                    sampleURL="jdbc:h2:tcp://{host}[:{port}]/{database}"
+                    defaultPort="9092"
+                    webURL="http://www.h2gis.org/"
+                    description="H2GIS Embedded"
+                    categories="spatial,sql,server">
+
+                    <file type="jar" path="https://nexus-ng.orbisgis.org/repository/orbisgis-release/com/h2database/h2/1.4.201-RC2/h2-1.4.201-RC2.jar"/>
+                    <file type="jar" path="https://nexus-ng.orbisgis.org/repository/orbisgis-release/org/orbisgis/h2gis-api/2.0.0-RC1/h2gis-api-2.0.0-RC1.jar"/>
+                    <file type="jar" path="https://nexus-ng.orbisgis.org/repository/orbisgis-release/org/orbisgis/h2gis-network/2.0.0-RC1/h2gis-network-2.0.0-RC1.jar"/>
+                    <file type="jar" path="https://nexus-ng.orbisgis.org/repository/orbisgis-release/org/orbisgis/h2gis-osgi/2.0.0-RC1/h2gis-osgi-2.0.0-RC1.jar"/>
+                    <file type="jar" path="https://nexus-ng.orbisgis.org/repository/orbisgis-release/org/orbisgis/h2gis-test-utilities/2.0.0-RC1/h2gis-test-utilities-2.0.0-RC1.jar"/>
+                    <file type="jar" path="https://nexus-ng.orbisgis.org/repository/orbisgis-release/org/orbisgis/h2gis-utilities/2.0.0-RC1/h2gis-utilities-2.0.0-RC1.jar"/>
+                    <file type="jar" path="https://nexus-ng.orbisgis.org/repository/orbisgis-release/org/orbisgis/postgis-jts/2.0.0-RC1/postgis-jts-2.0.0-RC1.jar"/>
+                    <file type="jar" path="https://nexus-ng.orbisgis.org/repository/orbisgis-release/org/orbisgis/postgis-jts-osgi/2.0.0-RC1/postgis-jts-osgi-2.0.0-RC1.jar"/>
+
+                    <parameter name="query-get-active-db" value="SELECT SCHEMA()"/>
+                    <parameter name="query-set-active-db" value="SET SCHEMA = ?"/>
+                    <parameter name="query-shutdown" value="shutdown"/>
+                    <parameter name="omit-catalog" value="true"/>
+                </driver>
+
+            </drivers>
+
+        </datasource>
+    </extension>
+
+    <extension point="org.jkiss.dbeaver.dataTypeProvider">
+        <provider
+                class="org.orbisgis.h2gis.data.H2GISValueHandlerProvider"
+                description="H2GIS data types provider"
+                id="org.orbisgis.h2gis.data.H2GISValueHandlerProvider"
+                label="H2GIS data types provider">
+
+            <datasource id="h2gis"/>
+
+            <type name="GEOMETRY"/>
+
+        </provider>
+    </extension>
+
+</plugin>

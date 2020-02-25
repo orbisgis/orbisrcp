@@ -32,13 +32,10 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.orbisgis.core.logger.Logger;
 import org.orbisgis.core.ui.Toolbar;
 import org.orbisgis.core.ui.ToolbarButton;
-import org.orbisgis.ui.editors.groovy.sql.DataSource;
 import org.orbisgis.ui.editors.groovy.syntax.GroovySourceViewerConfiguration;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
 
 public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveablePart2 {
 
@@ -115,22 +112,22 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         }
     }
 
-    public void execute(Map<String, DataSource> dataSources, List<String> closedDatasources){
+    public void execute(){
         this.doSave(new NullProgressMonitor());
         IDocument document = getDocument();
         if(document != null){
-            job = new GroovyJob(getPartName(), document.get(), dataSources, closedDatasources);
+            job = new GroovyJob(getPartName(), document.get());
             job.schedule();
         }
     }
 
-    public void executeSelection(Map<String, DataSource> dataSources, List<String> closedDatasources){
+    public void executeSelection(){
         this.doSave(new NullProgressMonitor());
         IDocument document = getDocument();
         if(document != null){
             ITextSelection selection = (ITextSelection) getSelectionProvider().getSelection();
             if (!selection.getText().isEmpty()) {
-                job = new GroovyJob(getPartName(), selection.getText(), dataSources, closedDatasources);
+                job = new GroovyJob(getPartName(), selection.getText());
                 job.schedule();
             }
         }
