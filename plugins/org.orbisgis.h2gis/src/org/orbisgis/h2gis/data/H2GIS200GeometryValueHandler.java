@@ -27,9 +27,9 @@ import java.sql.SQLException;
 /**
  * H2GIS Server geometry handler
  */
-public class H2GISGeometryValueHandler extends GISGeometryValueHandler {
+public class H2GIS200GeometryValueHandler extends GISGeometryValueHandler {
 
-    public static final H2GISGeometryValueHandler INSTANCE = new H2GISGeometryValueHandler();
+    public static final H2GIS200GeometryValueHandler INSTANCE = new H2GIS200GeometryValueHandler();
 
     @Override
     protected Object fetchColumnValue(DBCSession session, JDBCResultSet resultSet, DBSTypedObject type, int index) throws DBCException, SQLException {
