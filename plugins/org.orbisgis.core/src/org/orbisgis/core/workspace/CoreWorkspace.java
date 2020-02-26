@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.orbisgis.core.logger.Logger;
 
 import java.io.ByteArrayInputStream;
-import java.util.Arrays;
 
 public class CoreWorkspace implements ICoreWorkspace {
 

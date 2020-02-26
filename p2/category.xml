@@ -6,5 +6,8 @@
    <feature url="features/groovyeditor_1.0.0.qualifier.jar" id="groovyeditor" version="1.0.0.qualifier">
       <category name="org.orbisgis.rcp"/>
    </feature>
+   <feature url="features/h2gis_1.0.0.qualifier.jar" id="h2gis" version="1.0.0.qualifier">
+      <category name="org.orbisgis.rcp"/>
+   </feature>
    <category-def name="org.orbisgis.rcp" label="OrbisGIS"/>
 </site>

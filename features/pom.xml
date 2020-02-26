@@ -15,6 +15,7 @@
 
 	<modules>
 		<module>groovyeditor</module>
+		<module>h2gis</module>
 	</modules>
 
 </project>

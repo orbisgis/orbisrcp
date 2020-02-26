@@ -32,12 +32,9 @@ import org.jkiss.dbeaver.utils.RuntimeUtils;
 import org.orbisgis.core.logger.Logger;
 import org.orbisgis.ui.editors.groovy.GroovyEditor;
 import org.orbisgis.ui.editors.groovy.GroovyEditorCommands;
-import org.orbisgis.ui.editors.groovy.sql.DataSource;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GroovyEditorActionHandler extends AbstractHandler {
 
@@ -56,10 +53,10 @@ public class GroovyEditorActionHandler extends AbstractHandler {
                 editor.clear();
                 break;
             case GroovyEditorCommands.CMD_EXECUTE_SCRIPT:
-                editor.execute(getDataSources(executionEvent), getClosedDataSources(executionEvent));
+                editor.execute();
                 break;
             case GroovyEditorCommands.CMD_EXECUTE_SELECTION:
-                editor.executeSelection(getDataSources(executionEvent), getClosedDataSources(executionEvent));
+                editor.executeSelection();
                 break;
             case GroovyEditorCommands.CMD_EXECUTE_STOP:
                 editor.stop();
@@ -100,26 +97,6 @@ public class GroovyEditorActionHandler extends AbstractHandler {
             }
         } else {
             LOGGER.warn("No IWorkbenchWindow found");
-        }
-        return list;
-    }
-
-    private Map<String, DataSource> getDataSources(ExecutionEvent event) {
-        Map<String, DataSource> map = new HashMap<>();
-        for (DBPDataSourceContainer container : getContainers(event)) {
-            if (container.isConnected()) {
-                map.put(container.getName().replaceAll("\\W+", "_"), new DataSource(container));
-            }
-        }
-        return map;
-    }
-
-    private List<String> getClosedDataSources(ExecutionEvent event) {
-        List<String> list = new ArrayList<>();
-        for (DBPDataSourceContainer container : getContainers(event)) {
-            if (!container.isConnected()) {
-                list.add(container.getName().replaceAll("\\W+", "_"));
-            }
         }
         return list;
     }

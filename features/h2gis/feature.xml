@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="groovyeditor"
-      label="Groovy editor"
+      id="h2gis"
+      label="H2GIS driver"
       version="1.0.0.qualifier"
       provider-name="OrbisGIS">
 
@@ -52,33 +52,8 @@ or contact directly: info_at_orbisgis.org
       <update label="OrbisGIS" url="http://orbisgis.org/"/>
    </url>
 
-   <requires>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.core.expressions"/>
-      <import plugin="org.eclipse.core.filesystem"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.jface.text"/>
-      <import plugin="org.eclipse.ui.editors"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.ui.workbench.texteditor"/>
-   </requires>
-
    <plugin
-         id="org.orbisgis.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="dependencies"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-           id="org.orbisgis.groovyeditor"
+           id="org.orbisgis.h2gis"
            download-size="0"
            install-size="0"
            version="0.0.0"/>
