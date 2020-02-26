@@ -17,7 +17,7 @@
             <drivers managable="true">
 
                 <driver
-                    id="h2gis_embedded"
+                    id="h2gis_embedded_2_0_0"
                     label="H2GIS Embedded 2.0.0"
                     icon="icons/h2gis_icon_16.png"
                     iconBig="icons/h2gis_icon_64.png"
@@ -45,7 +45,7 @@
                 </driver>
 
 		        <driver
-                    id="h2gis_server"
+                    id="h2gis_server_2_0_0"
                     label="H2GIS Server 2.0.0"
                     icon="icons/h2gis_16.png"
                     iconBig="icons/h2gis_icon_64.png"
