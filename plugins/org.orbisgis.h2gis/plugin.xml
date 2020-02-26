@@ -18,9 +18,9 @@
 
                 <driver
                     id="h2gis_embedded"
-                    label="H2GIS Embedded2"
-                    icon="icons/h2gis_icon.png"
-                    iconBig="icons/h2gis_icon_big.png"
+                    label="H2GIS Embedded 2.0.0"
+                    icon="icons/h2gis_icon_16.png"
+                    iconBig="icons/h2gis_icon_64.png"
                     category="H2"
                     class="org.h2.Driver"
                     sampleURL="jdbc:h2:{file}"
@@ -46,9 +46,9 @@
 
 		        <driver
                     id="h2gis_server"
-                    label="H2GIS Server2"
-                    icon="icons/h2gis_icon.png"
-                    iconBig="icons/h2gis_icon_big.png"
+                    label="H2GIS Server 2.0.0"
+                    icon="icons/h2gis_16.png"
+                    iconBig="icons/h2gis_icon_64.png"
                     category="H2"
                     class="org.h2.Driver"
                     sampleURL="jdbc:h2:tcp://{host}[:{port}]/{database}"
