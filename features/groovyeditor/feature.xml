@@ -2,7 +2,7 @@
 <feature
       id="groovyeditor"
       label="Groovy editor"
-      version="1.0.0.RC1"
+      version="1.0.0.qualifier"
       provider-name="OrbisGIS">
 
    <description url="http://orbisgis.org/">
