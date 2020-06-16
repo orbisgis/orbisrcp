@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.orbisgis.h2gis;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.0-RC1
 Bundle-Release-Date: 20200302
 Require-Bundle: org.jkiss.dbeaver.model,org.jkiss.dbeaver.data.gis,org
  .jkiss.dbeaver.ext.generic,org.jkiss.dbeaver.ext.h2
