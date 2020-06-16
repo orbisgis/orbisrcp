@@ -2,7 +2,7 @@
 <feature
       id="h2gis"
       label="H2GIS driver"
-      version="1.0.0.qualifier"
+      version="1.0.0"
       provider-name="OrbisGIS">
 
    <description url="http://orbisgis.org/">
