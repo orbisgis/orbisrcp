@@ -150,4 +150,5 @@ public class GroovyLogger extends Logger implements IGroovyLogger, GroovyObject 
     @Override
     public void setMetaClass(MetaClass metaClass) {
         this.metaClass = metaClass != null ? metaClass : InvokerHelper.getMetaClass(this.getClass());
+    }
 }
