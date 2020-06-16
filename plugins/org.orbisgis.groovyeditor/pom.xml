@@ -20,21 +20,21 @@
 		<dependency>
 			<groupId>org.orbisgis.rcp</groupId>
 			<artifactId>org.orbisgis.core</artifactId>
-			<version>1.0.0.RC1</version>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.orbisgis.orbisdata.datamanager</groupId>
 			<artifactId>api</artifactId>
-			<version>1.0.1-RC1</version>
+			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
     <parent>
 		<groupId>org.orbisgis.rcp</groupId>
 		<artifactId>plugins</artifactId>
-		<version>1.0.0.RC1</version>
+		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
 	<artifactId>org.orbisgis.groovyeditor</artifactId>
-	<version>1.0.0.RC1</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 </project>
