@@ -237,10 +237,10 @@ Export-Package:
  org.orbisgis.orbisdata.datamanager.api.datasource,
  org.orbisgis.orbisdata.datamanager.api.dsl
 Bundle-ClassPath: 
- libs/api-1.0.1-RC1.jar,
+ libs/api-1.0.1-SNAPSHOT.jar,
  libs/ivy-2.4.0.jar,
  libs/jts-core-1.16.1.jar,
- libs/groovy-3.0.1.jar,
- libs/groovy-sql-3.0.1.jar,
- libs/groovy-templates-3.0.1.jar
+ libs/groovy-3.0.4.jar,
+ libs/groovy-sql-3.0.4.jar,
+ libs/groovy-templates-3.0.4.jar
 
