@@ -6,12 +6,12 @@
 	<parent>
 		<groupId>org.orbisgis.rcp</groupId>
 		<artifactId>orbisrcp</artifactId>
-		<version>1.0.0-RC1</version>
+		<version>1.0.0.RC1</version>
 		<relativePath>../</relativePath>
 	</parent>
 
 	<artifactId>p2</artifactId>
-	<version>1.0.0-RC1</version>
+	<version>1.0.0.RC1</version>
 	<packaging>eclipse-repository</packaging>
     <name>OrbisGIS Repository</name>
 
