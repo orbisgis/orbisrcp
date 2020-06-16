@@ -19,10 +19,15 @@
 package org.orbisgis.ui.editors.groovy.logger;
 
 import groovy.lang.GString;
+import groovy.lang.GroovyObject;
+import groovy.lang.MetaClass;
+import org.codehaus.groovy.runtime.InvokerHelper;
 import org.eclipse.core.runtime.IStatus;
 import org.orbisgis.core.logger.Logger;
 
-public class GroovyLogger extends Logger implements IGroovyLogger {
+public class GroovyLogger extends Logger implements IGroovyLogger, GroovyObject {
+
+    private MetaClass metaClass = InvokerHelper.getMetaClass(this.getClass());
 
     public GroovyLogger(Class clazz) {
         super(clazz);
@@ -135,5 +140,15 @@ public class GroovyLogger extends Logger implements IGroovyLogger {
     @Override
     public void error(Object obj, Throwable throwable) {
         log(IStatus.ERROR, obj != null ? obj.toString() : "null", throwable);
+    }
+
+    @Override
+    public MetaClass getMetaClass() {
+        return metaClass;
+    }
+
+    @Override
+    public void setMetaClass(MetaClass metaClass) {
+        this.metaClass = metaClass != null ? metaClass : InvokerHelper.getMetaClass(this.getClass());
     }
 }
