@@ -9,7 +9,7 @@ Please look at the readme file available in the directory of the plugins you wan
 If you have any questions, comments or troubles with the plugins, feel free to push an issue. We will do our best to address them.
 
 
-**Note
+## Note
 
 Two repositories are available to install the OrbisRCP plugins.
 
