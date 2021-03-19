@@ -24,8 +24,8 @@
 	<properties>
 		<eclipse-p2-repo.url>http://download.eclipse.org/releases/2019-06/</eclipse-p2-repo.url>
 		<dbeaver-p2-repo.url>https://dbeaver.io/eclipse-repo</dbeaver-p2-repo.url>
-		<orbisgis-nexus-snapshot.url>http://nexus-ng.orbisgis.org/repository/orbisgis-snapshot/</orbisgis-nexus-snapshot.url>
-		<orbisgis-nexus-release.url>http://nexus-ng.orbisgis.org/repository/orbisgis-release/</orbisgis-nexus-release.url>
+		<orbisgis-nexus-snapshot.url>http://nexus.orbisgis.org/repository/orbisgis-snapshot/</orbisgis-nexus-snapshot.url>
+		<orbisgis-nexus-release.url>http://nexus.orbisgis.org/repository/orbisgis-release/</orbisgis-nexus-release.url>
 		<tycho-version>1.4.0</tycho-version>
 	</properties>
 
@@ -42,7 +42,7 @@
 		</repository>
 		<repository>
 			<id>orbisgis-release</id>
-			<url>http://nexus-ng.orbisgis.org/repository/orbisgis-release/</url>
+			<url>http://nexus.orbisgis.org/repository/orbisgis-release/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
@@ -52,7 +52,7 @@
 		</repository>
 		<repository>
 			<id>orbisgis-snapshot</id>
-			<url>http://nexus-ng.orbisgis.org/repository/orbisgis-snapshot/</url>
+			<url>http://nexus.orbisgis.org/repository/orbisgis-snapshot/</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
