@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-      - name: checkout Maven project
+      - name: checkout dbeaver project
         uses: actions/checkout@v2
         with:
           repository: dbeaver/dbeaver
@@ -16,11 +16,12 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Build with maven
+      - name: Build dbeaver with maven
         working-directory: dbeaver/
         run: mvn clean install
     
-      - uses: actions/checkout@v2
+      - name: checkout orbisrcp project
+        uses: actions/checkout@v2
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
