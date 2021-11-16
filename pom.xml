@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.orbisgis</groupId>
 		<artifactId>orbisparent</artifactId>
-		<version>1.0.3-SNAPSHOT</version>
+		<version>1.0.4-SNAPSHOT</version>
 	</parent>
 
 	<groupId>org.orbisgis.rcp</groupId>
@@ -24,8 +24,8 @@
 	<properties>
 		<eclipse-p2-repo.url>http://download.eclipse.org/releases/2019-06/</eclipse-p2-repo.url>
 		<dbeaver-p2-repo.url>https://dbeaver.io/eclipse-repo</dbeaver-p2-repo.url>
-		<orbisgis-nexus-snapshot.url>https://nexus.orbisgis.org/repository/orbisgis-snapshot/</orbisgis-nexus-snapshot.url>
-		<orbisgis-nexus-release.url>https://nexus.orbisgis.org/repository/orbisgis-release/</orbisgis-nexus-release.url>
+		<orbisgis-nexus-snapshot.url>https://oss.sonatype.org/content/repositories/snapshots/</orbisgis-nexus-snapshot.url>
+		<orbisgis-nexus-release.url>https://oss.sonatype.org/content/repositories/releases/</orbisgis-nexus-release.url>
 		<tycho-version>1.4.0</tycho-version>
 	</properties>
 
@@ -40,30 +40,31 @@
 			<url>https://dbeaver.io/eclipse-repo</url>
 			<layout>p2</layout>
 		</repository>
-		<repository>
-			<id>orbisgis-release</id>
-			<url>https://nexus.orbisgis.org/repository/orbisgis-release/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>orbisgis-snapshot</id>
-			<url>https://nexus.orbisgis.org/repository/orbisgis-snapshot/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
+        <repository>
+            <id>orbisgis-release</id>
+            <url>https://oss.sonatype.org/content/repositories/releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>orbisgis-snapshot</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
 	</repositories>
 
 	<build>
 		<sourceDirectory>${project.basedir}/src</sourceDirectory>
+	
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -101,7 +102,7 @@
 				<version>${tycho-version}</version>
 				<extensions>true</extensions>
 			</plugin>
-
+			
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-compiler-plugin</artifactId>
@@ -113,6 +114,7 @@
 					<compilerArgument>-warn:+discouraged,forbidden</compilerArgument>
 				</configuration>
 			</plugin>
+			
 
 			<!-- Set Built-By info -->
 			<plugin>
@@ -147,7 +149,23 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
+			<plugin>
+			  <groupId>org.reficio</groupId>
+			  <artifactId>p2-maven-plugin</artifactId>
+			  <version>1.3.0</version>
+			  <executions>
+			    <execution>
+			      <id>default-cli</id>
+			      <phase>package</phase>
+			      <goals>
+			        <goal>site</goal>
+			      </goals>
+			      <!--... -->
+			    </execution>
+			  </executions>
+			</plugin>
 		</plugins>
+		
 	</build>
 
 </project>

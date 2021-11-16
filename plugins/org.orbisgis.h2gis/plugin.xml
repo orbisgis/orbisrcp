@@ -66,16 +66,15 @@
                     description="H2GIS Embedded"
                     categories="spatial,sql,server">
 
-                    <file type="jar" path="https://nexus.orbisgis.org/repository/orbisgis-release/com/h2database/h2/1.4.201-RC2/h2-1.4.201-RC2.jar"/>
-                    <file type="jar" path="https://nexus.orbisgis.org/repository/orbisgis-release/org/orbisgis/h2gis/2.0.0-SNAPSHOT/h2gis-2.0.0-SNAPSHOT.jar"/>
-                    <file type="jar" path="https://nexus.orbisgis.org/repository/orbisgis-release/org/orbisgis/h2gis-api/2.0.0-SNAPSHOT/h2gis-api-2.0.0-SNAPSHOT.jar"/>
-                    <file type="jar" path="https://nexus.orbisgis.org/repository/orbisgis-release/org/orbisgis/h2gis-network/2.0.0-SNAPSHOT/h2gis-network-2.0.0-SNAPSHOT.jar"/>
-                    <file type="jar" path="https://nexus.orbisgis.org/repository/orbisgis-release/org/orbisgis/h2gis-osgi/2.0.0-SNAPSHOT/h2gis-osgi-2.0.0-SNAPSHOT.jar"/>
-                    <file type="jar" path="https://nexus.orbisgis.org/repository/orbisgis-release/org/orbisgis/h2gis-test-utilities/2.0.0-SNAPSHOT/h2gis-test-utilities-2.0.0-SNAPSHOT.jar"/>
-                    <file type="jar" path="https://nexus.orbisgis.org/repository/orbisgis-release/org/orbisgis/h2gis-utilities/2.0.0-SNAPSHOT/h2gis-utilities-2.0.0-SNAPSHOT.jar"/>
-                    <file type="jar" path="https://nexus.orbisgis.org/repository/orbisgis-release/org/orbisgis/postgis-jts/2.0.0-SNAPSHOT/postgis-jts-2.0.0-SNAPSHOT.jar"/>
-                    <file type="jar" path="https://nexus.orbisgis.org/repository/orbisgis-release/org/orbisgis/postgis-jts-osgi/2.0.0-SNAPSHOT/postgis-jts-osgi-2.0.0-SNAPSHOT.jar"/>
-                    <file type="jar" path="https://nexus.orbisgis.org/repository/orbisgis-release/org/orbisgis/cts/1.6.0-SNAPSHOT/cts-1.6.0-SNAPSHOT.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/releases/org/orbisgis/h2/2.0.201-SNAPSHOT/h2-2.0.201-SNAPSHOT.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/releases/org/orbisgis/h2gis/2.0.0-SNAPSHOT/h2gis-2.0.0-SNAPSHOT.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/releases/org/orbisgis/h2gis-network/2.0.0-SNAPSHOT/h2gis-network-2.0.0-SNAPSHOT.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/releases/org/orbisgis/h2gis-osgi/2.0.0-SNAPSHOT/h2gis-osgi-2.0.0-SNAPSHOT.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/releases/org/orbisgis/h2gis-test-utilities/2.0.0-SNAPSHOT/h2gis-test-utilities-2.0.0-SNAPSHOT.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/releases/org/orbisgis/h2gis-utilities/2.0.0-SNAPSHOT/h2gis-utilities-2.0.0-SNAPSHOT.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/releases/org/orbisgis/postgis-jts/2.0.0-SNAPSHOT/postgis-jts-2.0.0-SNAPSHOT.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/releases/org/orbisgis/postgis-jts-osgi/2.0.0-SNAPSHOT/postgis-jts-osgi-2.0.0-SNAPSHOT.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/releases/org/orbisgis/cts/1.6.0-SNAPSHOT/cts-1.6.0-SNAPSHOT.jar"/>
                     <file type="jar" path="maven:/org.slf4j:slf4j-simple:1.7.20"/>
                     <file type="jar" path="maven:/org.slf4j:slf4j-api:1.7.20"/>
                     <file type="jar" path="maven:/org.orbisgis:poly2tri-core:0.1.2"/>
