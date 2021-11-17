@@ -26,10 +26,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Build with Maven
+      - name: Build orbisrcp with Maven
         run: mvn clean install
         
-      - name: Compress
+      - name: Unzip p2-1.0.0-SNAPSHOT.zip
         uses: TonyBogdanov/zip@1.0
         with:
           args: zip -qq -r ./p2/target/p2-1.0.0-SNAPSHOT.zip ./
