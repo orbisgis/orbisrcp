@@ -9,7 +9,7 @@
         <datasource
                 class="org.orbisgis.h2gis.H2GIS200DataSourceProvider"
                 description="%datasource.h2gis.description"
-                id="h2gis 2.0.0"
+                id="h2gis"
                 parent="generic"
                 label="H2GIS"
                 icon="icons/h2gis_icon.png"
