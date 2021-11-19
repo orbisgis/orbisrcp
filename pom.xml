@@ -149,21 +149,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
-			<plugin>
-			  <groupId>org.reficio</groupId>
-			  <artifactId>p2-maven-plugin</artifactId>
-			  <version>1.3.0</version>
-			  <executions>
-			    <execution>
-			      <id>default-cli</id>
-			      <phase>package</phase>
-			      <goals>
-			        <goal>site</goal>
-			      </goals>
-			      <!--... -->
-			    </execution>
-			  </executions>
-			</plugin>
+
 		</plugins>
 		
 	</build>

@@ -9,7 +9,7 @@
         <datasource
                 class="org.orbisgis.h2gis.H2GIS200DataSourceProvider"
                 description="%datasource.h2gis.description"
-                id="h2gis"
+                id="h2gis_2.0.0"
                 parent="generic"
                 label="H2GIS"
                 icon="icons/h2gis_icon.png"
@@ -102,7 +102,7 @@
                 id="org.orbisgis.h2gis.data.H2GIS200ValueHandlerProvider"
                 label="H2GIS 2.0.0 data types provider">
 
-            <datasource id="h2gis"/>
+            <datasource id="h2gis_2.0.0"/>
 
             <type name="GEOMETRY"/>
 
