@@ -232,15 +232,11 @@ Export-Package:
  org.locationtech.jts.simplify,
  org.locationtech.jts.triangulate,
  org.locationtech.jts.triangulate.quadedge,
- org.locationtech.jts.util,
- org.orbisgis.orbisdata.datamanager.api.dataset,
- org.orbisgis.orbisdata.datamanager.api.datasource,
- org.orbisgis.orbisdata.datamanager.api.dsl
+ org.locationtech.jts.util
 Bundle-ClassPath: 
- libs/commons-1.0.3-SNAPSHOT.jar,
- libs/api-1.0.1-SNAPSHOT.jar,
+ libs/commons-1.0.4-SNAPSHOT.jar,
  libs/ivy-2.4.0.jar,
- libs/jts-core-1.16.1.jar,
+ libs/jts-core-1.18.2.jar,
  libs/groovy-3.0.7.jar,
  libs/groovy-sql-3.0.7.jar,
  libs/groovy-templates-3.0.7.jar
