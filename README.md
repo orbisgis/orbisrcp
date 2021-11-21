@@ -1,2 +1,2 @@
 # orbisrcp
-Repository for all RCP plugins, features and repositories.
+Branche to store the Eclipse P2 repository
