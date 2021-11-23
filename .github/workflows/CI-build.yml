@@ -32,16 +32,14 @@ jobs:
         run: mvn clean install
           
       - name: Unzip p2-1.0.0-SNAPSHOT.zip
-        uses: TonyBogdanov/zip@1.0
-        with:
-          args: zip -qq -r ./p2/target/p2-1.0.0-SNAPSHOT.zip ./
+        run: 7z x ./p2/target/p2-1.0.0-SNAPSHOT.zip
           
       - name: Push to another branch
         uses: s0/git-publish-subdir-action@master
         env:
-          REPO: git@github.com:adrbessy/orbisrcp.git
+          REPO: self
           BRANCH: p2-repository # The branch name where you want to push the assets
-          FOLDER: . # The directory where your assets are generated
+          FOLDER: ./p2/target/p2-1.0.0-SNAPSHOT # The directory where your assets are generated
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub will automatically add this - you don't need to bother getting a token
           MESSAGE: "Build: plugins available from p2-repository" # The commit message
           
