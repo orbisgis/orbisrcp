@@ -34,7 +34,7 @@ jobs:
       - name: Unzip p2-1.0.0-SNAPSHOT.zip
         uses: TonyBogdanov/zip@1.0
         with:
-          args: zip -qq -r ./p2/target/p2-1.0.0-SNAPSHOT.zip ./
+          args: zip -qq -r ./p2/target/p2-1.0.0-SNAPSHOT.zip ./p2-1.0.0-SNAPSHOT
           
       - name: Push to another branch
         uses: s0/git-publish-subdir-action@develop
