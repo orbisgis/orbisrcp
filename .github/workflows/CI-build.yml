@@ -41,7 +41,7 @@ jobs:
         env:
           REPO: self
           BRANCH: p2-repository # The branch name where you want to push the assets
-          FOLDER: build # The directory where your assets are generated
+          FOLDER: . # The directory where your assets are generated
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub will automatically add this - you don't need to bother getting a token
           MESSAGE: "Build: plugins available from p2-repository" # The commit message
           
