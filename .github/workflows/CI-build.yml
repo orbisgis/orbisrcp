@@ -28,8 +28,30 @@ jobs:
           java-version: 1.8
       - name: Build orbisrcp with Maven
         run: mvn clean install
+       
+      - name: Create a p2-repository branch
+        uses: peterjgrainger/action-create-branch@v2.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: 'p2-repository'
         
+      - name : Switch branch  
+        uses: actions/checkout@v2    
+        with:
+          ref: 'p2-repository'
+          
       - name: Unzip p2-1.0.0-SNAPSHOT.zip
         uses: TonyBogdanov/zip@1.0
         with:
           args: zip -qq -r ./p2/target/p2-1.0.0-SNAPSHOT.zip ./
+          
+      - name : Add and commit changes    
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: '.'
+          author_name: 'Bessy'
+          author_email: 'adrienbessy@hotmail.com'
+          branch: 'p2-repository'
+          message: 'plugins available from p2-repository'
+          
