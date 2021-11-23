@@ -30,7 +30,7 @@ jobs:
         with:
           branch: 'p2-repository'
     
-      - name: Switch orbisrcp branch
+      - name: Switch to orbisrcp branch
         uses: actions/checkout@v2
         with:
           ref: p2-repository
@@ -38,6 +38,15 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
+          
+      - name: Merge master -> p2-repository
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: master
+          target_branch: p2-repository
+          github_token: ${{ github.token }}   
+          
       - name: Build orbisrcp with Maven
         run: mvn clean install
           
