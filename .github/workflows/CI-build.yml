@@ -39,7 +39,7 @@ jobs:
       - name: Push to another branch
         uses: s0/git-publish-subdir-action@master
         env:
-          REPO: self
+          REPO: git@github.com:adrbessy/orbisrcp.git
           BRANCH: p2-repository # The branch name where you want to push the assets
           FOLDER: . # The directory where your assets are generated
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub will automatically add this - you don't need to bother getting a token
