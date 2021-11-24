@@ -36,11 +36,14 @@ jobs:
         with:
           args: unzip -qq ./p2/target/p2-1.0.0-SNAPSHOT.zip -d ./p2/target/p2-1.0.0-SNAPSHOT
           
-      - name: Copy p2 build to p2-repository branch
-        uses: andstor/copycat-action@v3
+      - name: Push p2 build to a directory in p2-repository branch
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          personal_token: ${{ secrets.PERSONAL_TOKEN }}
-          src_path: ./p2/target/p2-1.0.0-SNAPSHOT
-          dst_path: ./
-          dst_branch : p2-repository
+          source-directory: 'p2-1.0.0-SNAPSHOT'
+          destination-github-username: 'adrbessy'
+          destination-repository-name: 'orbisrcp'
+          user-email: adrienbessy@hotmail.com
+          target-branch: p2-repository
           
