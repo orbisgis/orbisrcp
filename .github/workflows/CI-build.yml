@@ -36,12 +36,10 @@ jobs:
         with:
           args: unzip -qq ./p2/target/p2-1.0.0-SNAPSHOT.zip -d ./p2/target/p2-1.0.0-SNAPSHOT
           
-      - name: Push to another branch
-        uses: s0/git-publish-subdir-action@master
-        env:
-          REPO: self
-          BRANCH: p2-repository # The branch name where you want to push the assets
-          FOLDER: ./p2/target/p2-1.0.0-SNAPSHOT # The directory where your assets are generated
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub will automatically add this - you don't need to bother getting a token
-          MESSAGE: "Build: plugins available from p2-repository" # The commit message
+      - name: Copy p2 build to p2-repository branch
+        with:
+          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+          src_path: ./p2/target/p2-1.0.0-SNAPSHOT
+          dst_path: ./
+          dst_branch : p2-repository
           
