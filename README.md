@@ -11,7 +11,7 @@ If you have any questions, comments or troubles with the plugins, feel free to p
 
 ## Note
 
-THe repository to install the OrbisRCP plugins is  : https://raw.githubusercontent.com/orbisgis/orbisrcp/p2-repository/ 
+The repository to install the OrbisRCP plugins is  : https://raw.githubusercontent.com/orbisgis/orbisrcp/p2-repository/ 
 
 It contains  the current snaphot versions (deployed after each PR).
 
