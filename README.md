@@ -15,5 +15,5 @@ Two repositories are available to install the OrbisRCP plugins.
 
 http://devs.orbisgis.org/eclipse-repo  that contains released versions
 
-https://raw.githubusercontent.com/adrbessy/orbisrcp/p2-repository/ that contains current snaphot versions (deployed after each PR).
+https://raw.githubusercontent.com/orbisgis/orbisrcp/p2-repository/ that contains current snaphot versions (deployed after each PR).
 
