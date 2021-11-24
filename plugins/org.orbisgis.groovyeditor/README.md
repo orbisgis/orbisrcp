@@ -10,7 +10,7 @@ For example, DBeaver supports the [H2GIS](http://h2gis.org/)-[H2 database](https
 To install the Groovy console
 
 1. Go to the Main menu `Help` -> `Install New Software...`
-2. In the `Work with` field, paste the following URL http://devs.orbisgis.org/eclipse-repo (which is an extension P2 repository URL) and press `Enter`
+2. In the `Work with` field, paste the following URL https://raw.githubusercontent.com/orbisgis/orbisrcp/p2-repository/ (which is an extension P2 repository URL) and press `Enter`
 3. Check the `OrbisGIS` item  and check  the `Groovy Editor` plugin.  You can select the `H2GIS driver` too.
 4. Click `Next` -> `Finish` and Restart DBeaver.
 
