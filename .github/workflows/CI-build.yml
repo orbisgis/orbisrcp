@@ -37,6 +37,7 @@ jobs:
           args: unzip -qq ./p2/target/p2-1.0.0-SNAPSHOT.zip -d ./p2/target/p2-1.0.0-SNAPSHOT
           
       - name: Copy p2 build to p2-repository branch
+        uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.PERSONAL_TOKEN }}
           src_path: ./p2/target/p2-1.0.0-SNAPSHOT
