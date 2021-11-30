@@ -13,6 +13,9 @@
             <command
                   commandId="org.orbisgis.ui.editor.groovy.editor.open">
             </command>
+			<command
+                  commandId="org.orbisgis.ui.browser.open">
+            </command>
          </menu>
       </menuContribution>
    </extension>
@@ -26,6 +29,11 @@
             description="Open a new editor"
             id="org.orbisgis.ui.editor.groovy.editor.open"
             name="Open editor"> </command>
+      <command
+            categoryId="org.eclipse.ui.category.edit"
+            description="Open a new browser"
+            id="org.orbisgis.ui.browser.open"
+            name="Open browser"> </command>
       <command
             categoryId="org.orbisgis.ui.editors.groovy"
             description="Execute the script"
@@ -55,6 +63,10 @@
       <handler
             class="org.orbisgis.ui.editors.groovy.handlers.OpenHandler"
             commandId="org.orbisgis.ui.editor.groovy.editor.open">
+      </handler>
+      <handler
+            class="org.orbisgis.ui.browser.OpenHandler"
+            commandId="org.orbisgis.ui.browser.open">
       </handler>
       <handler
             class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
