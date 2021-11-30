@@ -52,7 +52,7 @@ public class ChartExtension {
 	public static void open(Chart chart) {
 		File outputFile = null;
         try {
-            outputFile = File.createTempFile("demat", ".html", checkShowDir());
+            outputFile = File.createTempFile("demat", ".html", Chart.checkShowDir());
             save(outputFile, true);
         } catch (Exception e) {
             throw new RuntimeException(e);
