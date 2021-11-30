@@ -16,7 +16,7 @@
  *For more information, please consult: http://www.orbisgis.org
  *or contact directly: info_at_orbisgis.org
  */
-package org.orbisgis.ui.browser;
+package org.orbisgis.demat;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -53,7 +53,6 @@ public class ChartExtension {
 		File outputFile = null;
         try {
             outputFile = File.createTempFile("demat", ".html", Chart.checkShowDir());
-            save(outputFile, true);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -77,4 +76,5 @@ public class ChartExtension {
 			LOGGER.error("Unable to open a new browser.", e);
 		}
 	}
+	
 }
