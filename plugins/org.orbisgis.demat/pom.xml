@@ -14,5 +14,13 @@
 	<artifactId>org.orbisgis.demat</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
+	
+	    <dependencies>
+		<dependency>
+			<groupId>org.orbisgis</groupId>
+			<artifactId>demat</artifactId>
+			<version>0.0.7-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 
 </project>

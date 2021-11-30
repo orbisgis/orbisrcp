@@ -16,7 +16,7 @@
  *For more information, please consult: http://www.orbisgis.org
  *or contact directly: info_at_orbisgis.org
  */
-package org.orbisgis.demat;
+package org.orbisgis.ui.browser;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -43,12 +43,11 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.orbisgis.core.CoreActivator;
 import org.orbisgis.core.logger.Logger;
 import org.orbisgis.core.workspace.ICoreWorkspace;
-import org.orbisgis.ui.editors.groovy.GroovyEditor;
-import org.orbisgis.ui.editors.groovy.GroovyUtils;
+import org.orbisgis.demat.Chart;
 
 public class ChartExtension {
 
-	private static final Logger LOGGER = new Logger(OpenHandler.class);
+	private static final Logger LOGGER = new Logger(ChartExtension.class);
 
 	public static void open(Chart chart) {
 		File outputFile = null;
