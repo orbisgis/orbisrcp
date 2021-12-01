@@ -22,34 +22,19 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.equinox.internal.app.Activator;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTError;
-import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.program.Program;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
+//import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
-import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.ui.part.FileEditorInput;
-import org.orbisgis.core.CoreActivator;
-import org.orbisgis.core.logger.Logger;
-import org.orbisgis.core.workspace.ICoreWorkspace;
+//import org.orbisgis.core.logger.Logger;
 import org.orbisgis.demat.Chart;
+import groovy.transform.Field
 
-public class ChartExtension {
+//public class ChartExtension {
 
-	private static final Logger LOGGER = new Logger(ChartExtension.class);
+	//@Field static final Logger LOGGER = new Logger(ChartExtension.class);
 
-	public static void open(Chart chart) {
+	static void open(Chart chart) {
 		File outputFile = null;
         try {
             outputFile = File.createTempFile("demat", ".html", Chart.checkShowDir());
@@ -61,20 +46,20 @@ public class ChartExtension {
 			IWebBrowser browser = null;
 			try {
 				browser = support.createBrowser("someId");
-			} catch (PartInitException e) {
-				LOGGER.error("Unable to open a new browser.", e);
+			} catch (Exception e) {
+				//LOGGER.error("Unable to create a new browser.", e);
 			}
 			try {
 				//browser.openURL(new URL("http://www.eclipse.org"));
 				browser.openURL(new URL(outputFile.getAbsolutePath()));
-			} catch (PartInitException e) {
-				LOGGER.error("Unable to open a new browser.", e);
+			} catch (Exception e) {
+				//LOGGER.error("Unable to open a new browser.", e);
 			} catch (MalformedURLException e) {
-				LOGGER.error("Unable to open a new browser.", e);
+				//LOGGER.error("Unable to open a new browser.", e);
 			}
-		} catch (SWTError e) {
-			LOGGER.error("Unable to open a new browser.", e);
+		} catch (Exception e) {
+			//LOGGER.error("Unable to get a browser support.", e);
 		}
 	}
 	
-}
+//}
