@@ -22,27 +22,31 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-//import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
-//import org.orbisgis.core.logger.Logger;
 import org.orbisgis.demat.Chart;
 import groovy.transform.Field
-
-//public class ChartExtension {
+import groovy.lang.GroovyShell;
+import org.orbisgis.ui.editors.groovy.logger.GroovyLogger;
+import groovy.lang.Binding;
+import org.codehaus.groovy.control.CompilerConfiguration;
+import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
+import groovy.transform.ThreadInterrupt;
+import groovy.util.GroovyScriptEngine;
 
 	//@Field static final Logger LOGGER = new Logger(ChartExtension.class);
 
 	static void open(Chart chart) {
+		
 		File outputFile = null;
         try {
-            outputFile = File.createTempFile("demat", ".html", Chart.checkShowDir());
+            outputFile = File.createTempFile("demat", ".html", chart.checkShowDir());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 		try {
-			IWorkbenchBrowserSupport support = PlatformUI.getWorkbench().getBrowserSupport();
+			IWorkbenchBrowserSupport support = PlatformUI.getWorkbench().getBrowserSupport()
 			IWebBrowser browser = null;
 			try {
 				browser = support.createBrowser("someId");
@@ -50,7 +54,6 @@ import groovy.transform.Field
 				//LOGGER.error("Unable to create a new browser.", e);
 			}
 			try {
-				//browser.openURL(new URL("http://www.eclipse.org"));
 				browser.openURL(new URL(outputFile.getAbsolutePath()));
 			} catch (Exception e) {
 				//LOGGER.error("Unable to open a new browser.", e);
@@ -60,6 +63,7 @@ import groovy.transform.Field
 		} catch (Exception e) {
 			//LOGGER.error("Unable to get a browser support.", e);
 		}
+	
 	}
 	
 //}

@@ -58,7 +58,7 @@ public class GroovyJob extends Job {
 
         CompilerConfiguration configuratorConfig = new CompilerConfiguration();
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
-
+        /*
         try {
             String root = CoreActivator.getInstance().getCoreWorkspace().getFolder("Groovy").getLocation().toString() + File.separator;
             System.out.println(root);
@@ -68,6 +68,9 @@ public class GroovyJob extends Job {
             LOGGER.warn("Unable to create the groovy engine, use GroovyShell instead.");
             shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
         }
+        */
+        shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
+        
     }
 
     @Override

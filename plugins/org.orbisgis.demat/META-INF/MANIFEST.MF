@@ -20,3 +20,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.orbisgis.core,
  dependencies
 Bundle-ActivationPolicy: lazy
+Export-Package: org.orbisgis.demat
