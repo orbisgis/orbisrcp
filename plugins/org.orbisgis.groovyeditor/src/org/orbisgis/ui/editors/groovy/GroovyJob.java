@@ -19,12 +19,18 @@
 package org.orbisgis.ui.editors.groovy;
 
 import groovy.lang.Binding;
+import groovy.lang.GroovyClassLoader;
+import groovy.lang.GroovyCodeSource;
 import groovy.lang.GroovyShell;
 import groovy.lang.MissingPropertyException;
+import groovy.lang.Script;
 import groovy.transform.ThreadInterrupt;
 import groovy.util.GroovyScriptEngine;
+
+import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
+import org.codehaus.groovy.runtime.InvokerHelper;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -58,19 +64,73 @@ public class GroovyJob extends Job {
 
         CompilerConfiguration configuratorConfig = new CompilerConfiguration();
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
-        /*
+       /*
         try {
             String root = CoreActivator.getInstance().getCoreWorkspace().getFolder("Groovy").getLocation().toString() + File.separator;
-            System.out.println(root);
+            System.out.println("root : " + root);
             engine = new GroovyScriptEngine(root);
             engine.setConfig(configuratorConfig);
         } catch (IOException e) {
             LOGGER.warn("Unable to create the groovy engine, use GroovyShell instead.");
             shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
         }
-        */
+       */
+        System.out.println("in GroovyJob method");
+        System.out.println("this.getClass().getClassLoader() : " + this.getClass().getClassLoader());
+        System.out.println("binding : " + binding);
+        System.out.println("configuratorConfig : " + configuratorConfig);
+        System.out.println("name : " + name);
+        String root = CoreActivator.getInstance().getCoreWorkspace().getFolder("Groovy").getLocation().toString() + File.separator + name;
+
         shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
+        File f = new File(root);
+        try {
+			shell.evaluate(f);
+		} catch (CompilationFailedException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        /*
+        try {
+			shell.parse(new File(root));
+		} catch (CompilationFailedException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		*/
         
+        /*
+        GroovyClassLoader groovyClassLoader = new GroovyClassLoader();
+        try {
+			Script script1 = InvokerHelper.createScript(groovyClassLoader.parseClass(new
+			        File(root)), binding);
+			LOGGER.info("getEndpointService().script1 : " + script1);
+			Object responseObj = script1.run();
+			LOGGER.info("getEndpointService().responseObj : " + responseObj);
+		} catch (CompilationFailedException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+		
+        /*
+        GroovyCodeSource groovyCodeSource;
+		try {
+			groovyCodeSource = new GroovyCodeSource(new File(root));
+		    GroovyClassLoader groovyClassLoader = new GroovyClassLoader();
+
+	        Script script1 = InvokerHelper.createScript(groovyClassLoader.parseClass(groovyCodeSource), binding);
+	        LOGGER.info("getEndpointService().script : " + script);
+
+	        Object responseObj = script1.run();
+
+	        LOGGER.info("getEndpointService().responseObj : " + responseObj);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+
     }
 
     @Override

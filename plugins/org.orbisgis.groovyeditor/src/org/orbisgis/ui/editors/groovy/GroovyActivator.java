@@ -26,6 +26,12 @@ public class GroovyActivator extends AbstractUIPlugin {
 
     @Override
     public void start(BundleContext context) throws Exception {
+    	System.out.println("*******************************************"
+    			+ "\n\n\n"
+    			+ "in start method in GroovyActivator class"
+    			+ "*********************************************************"
+    			+ "\n\n\n"
+    			+ "****************************************************");
         super.start(context);
         CoreActivator.getInstance().getCoreWorkspace().extend(new GroovyWorkspaceExtension());
     }

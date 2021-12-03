@@ -113,15 +113,26 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
     }
 
     public void execute(){
+    	System.out.println("in execute");
         this.doSave(new NullProgressMonitor());
         IDocument document = getDocument();
         if(document != null){
+       
             job = new GroovyJob(getPartName(), document.get());
             job.schedule();
+       
+        	/*
+        	ITextSelection selection = (ITextSelection) getSelectionProvider().getSelection();
+            if (!selection.getText().isEmpty()) {
+                job = new GroovyJob(getPartName(), selection.getText());
+                job.schedule();
+            }
+            */
         }
     }
 
     public void executeSelection(){
+    	System.out.println("in executeSelection method");
         this.doSave(new NullProgressMonitor());
         IDocument document = getDocument();
         if(document != null){

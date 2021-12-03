@@ -35,6 +35,7 @@ import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
 import groovy.transform.ThreadInterrupt;
 import groovy.util.GroovyScriptEngine;
 
+
 	//@Field static final Logger LOGGER = new Logger(ChartExtension.class);
 
 	static void open(Chart chart) {
@@ -65,5 +66,3 @@ import groovy.util.GroovyScriptEngine;
 		}
 	
 	}
-	
-//}
