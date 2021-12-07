@@ -27,17 +27,26 @@ import groovy.lang.Script;
 import groovy.transform.ThreadInterrupt;
 import groovy.util.GroovyScriptEngine;
 
+import org.apache.ivy.util.StringUtils;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
 import org.codehaus.groovy.runtime.InvokerHelper;
+import org.eclipse.core.runtime.IBundleGroup;
+import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.orbisgis.core.CoreActivator;
 import org.orbisgis.core.logger.Logger;
+import org.orbisgis.core.service.definition.GroovyGrab;
 import org.orbisgis.ui.editors.groovy.logger.GroovyLogger;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 import java.io.File;
 import java.io.IOException;
@@ -75,61 +84,28 @@ public class GroovyJob extends Job {
             shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
         }
        */
-        System.out.println("in GroovyJob method");
-        System.out.println("this.getClass().getClassLoader() : " + this.getClass().getClassLoader());
-        System.out.println("binding : " + binding);
-        System.out.println("configuratorConfig : " + configuratorConfig);
-        System.out.println("name : " + name);
-        String root = CoreActivator.getInstance().getCoreWorkspace().getFolder("Groovy").getLocation().toString() + File.separator + name;
+        
+        //String root = CoreActivator.getInstance().getCoreWorkspace().getFolder("Groovy").getLocation().toString() + File.separator + name;
 
         shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
-        File f = new File(root);
-        try {
-			shell.evaluate(f);
-		} catch (CompilationFailedException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        /*
-        try {
-			shell.parse(new File(root));
-		} catch (CompilationFailedException | IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		*/
-        
-        /*
-        GroovyClassLoader groovyClassLoader = new GroovyClassLoader();
-        try {
-			Script script1 = InvokerHelper.createScript(groovyClassLoader.parseClass(new
-			        File(root)), binding);
-			LOGGER.info("getEndpointService().script1 : " + script1);
-			Object responseObj = script1.run();
-			LOGGER.info("getEndpointService().responseObj : " + responseObj);
-		} catch (CompilationFailedException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
-		
-        /*
-        GroovyCodeSource groovyCodeSource;
-		try {
-			groovyCodeSource = new GroovyCodeSource(new File(root));
-		    GroovyClassLoader groovyClassLoader = new GroovyClassLoader();
-
-	        Script script1 = InvokerHelper.createScript(groovyClassLoader.parseClass(groovyCodeSource), binding);
-	        LOGGER.info("getEndpointService().script : " + script);
-
-	        Object responseObj = script1.run();
-
-	        LOGGER.info("getEndpointService().responseObj : " + responseObj);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
+        Bundle plugin = Platform.getBundle("org.orbisgis.demat");
+        System.out.println("plugin : " + plugin);
+        //shell.evaluate("groovy.grape.Grape.grab(group:'org.orbisgis',module:'demat', version:'0.0.7-SNAPSHOT')");
+        for (IBundleGroupProvider provider : Platform.getBundleGroupProviders()) {
+    	   for (IBundleGroup feature : provider.getBundleGroups()) {
+    		   System.out.println("feature : " + feature);
+    		   String providerName = feature.getProviderName();
+    		   String featureId = feature.getIdentifier();
+    		   System.out.println("providerName : " + providerName);
+    		   System.out.println("featureId : " + featureId);
+    	      for (Bundle bundle : feature.getBundles()) {
+    	    	  System.out.println("bundle : " + bundle);
+    	      }
+    	   }
+        }
+        BundleContext ctx =  FrameworkUtil.getBundle(this.getClass()).getBundleContext();
+		Bundle[] bundles = ctx.getBundles();
+		System.out.println("bundles : " + bundles);
 
     }
 
@@ -191,7 +167,16 @@ public class GroovyJob extends Job {
                     result = engine.run(name, binding);
                 }
                 else {
-                    result = shell.evaluate(script);
+                    // result = shell.evaluate(script);
+                    for(String s : script.split("\n")) {
+                    	System.out.println("string before if : " + s);
+                    	if(s.contains("@Grab") && !s.contains("//") && !s.contains("/*")) {
+                    		String[] parts = s.split("'");
+                    		s = "groovy.grape.Grape.grab(group:'" + parts[1] + "',module:'" + parts[3] + "', version:'" + parts[5] + "')" ;
+                    		System.out.println("string AFTER Grab Change : " + s);
+                    	}
+                    	shell.evaluate(s);
+                    }
                 }
                 status = IStatus.OK;
             } catch (MissingPropertyException e){

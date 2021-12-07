@@ -20,12 +20,50 @@ package org.orbisgis.ui.editors.groovy;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.orbisgis.core.CoreActivator;
+import org.orbisgis.core.service.definition.GroovyGrab;
+import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceEvent;
+import org.osgi.framework.ServiceListener;
+import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTracker;
 
-public class GroovyActivator extends AbstractUIPlugin {
+public class GroovyActivator extends AbstractUIPlugin implements BundleActivator, ServiceListener{
+	
+	private BundleContext context;
+	private ServiceReference serviceReference;
+	
+	private ServiceTracker groovyGrabTracker;
 
     @Override
     public void start(BundleContext context) throws Exception {
+    	this.context = context;
+    	try {
+            context.addServiceListener(
+              this, "(objectclass=" + GroovyGrab.class.getName() + ")");
+            
+            groovyGrabTracker = new ServiceTracker(context, GroovyGrab.class.getName(), null);
+            groovyGrabTracker.open();
+            GroovyGrab groovyGrab = (GroovyGrab) groovyGrabTracker.getService();
+            
+            if (groovyGrab == null) {
+    			System.out.println("********"
+    					+ "\n\n"
+    					+ "groovyGrab service unavailable on GroovyActivator start"
+    					+ "\n\n"
+    					+ "*****************");
+    		} else {
+    			System.out.println("********"
+    					+ "\n\n"
+    					+ "groovyGrab.getResolverName() : " + groovyGrab.getResolverName()
+    					+"\n\n"
+    					+ "*******************");
+    		}
+        			
+        } catch (InvalidSyntaxException ise) {
+            ise.printStackTrace();
+        }
     	System.out.println("*******************************************"
     			+ "\n\n\n"
     			+ "in start method in GroovyActivator class"
@@ -34,10 +72,35 @@ public class GroovyActivator extends AbstractUIPlugin {
     			+ "****************************************************");
         super.start(context);
         CoreActivator.getInstance().getCoreWorkspace().extend(new GroovyWorkspaceExtension());
+        
     }
 
     @Override
     public void stop(BundleContext context) throws Exception {
+    	 if(serviceReference != null) {
+             context.ungetService(serviceReference);
+         }
         super.stop(context);
     }
+    
+    @Override
+	public void serviceChanged(ServiceEvent serviceEvent) {
+        int type = serviceEvent.getType();
+        switch (type){
+            case(ServiceEvent.REGISTERED):
+                System.out.println("Notification of service registered.");
+                serviceReference = serviceEvent.getServiceReference();
+                GroovyGrab service = (GroovyGrab)(context.getService(serviceReference));
+                System.out.println("********\\n\\n\\n service.getResolverName() : " + service.getResolverName() + "\n\n\n********");
+                break;
+            case(ServiceEvent.UNREGISTERING):
+                System.out.println("Notification of service unregistered.");
+                context.ungetService(serviceEvent.getServiceReference());
+                break;
+            default:
+                break;
+        }
+    }
+
+    
 }
