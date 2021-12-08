@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.orbisgis.core,
  dependencies
 Bundle-ActivationPolicy: lazy
-Export-Package: org.orbisgis.demat
+Export-Package: org.orbisgis.demat,
+ org.orbisgis.demat.service.implementation
 Import-Package: com.google.common.util.concurrent;version="21.0.0",
  org.osgi.framework,
  org.osgi.service.component.annotations

@@ -3,4 +3,9 @@
 
 <plugin>
 
+<extension point="org.eclipse.ui.startup">
+   <startup class="org.orbisgis.demat.Activator"/>
+</extension>
+
+
 </plugin>

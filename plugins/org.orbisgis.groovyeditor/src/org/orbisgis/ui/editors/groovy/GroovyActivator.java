@@ -90,8 +90,9 @@ public class GroovyActivator extends AbstractUIPlugin implements BundleActivator
             case(ServiceEvent.REGISTERED):
                 System.out.println("Notification of service registered.");
                 serviceReference = serviceEvent.getServiceReference();
+                System.out.println("\n\n********\n serviceReference : " + serviceReference + "\n\n\n********");
                 GroovyGrab service = (GroovyGrab)(context.getService(serviceReference));
-                System.out.println("********\\n\\n\\n service.getResolverName() : " + service.getResolverName() + "\n\n\n********");
+                System.out.println("\n\n********\n service.getResolverName() : " + service.getResolverName() + "\n\n\n********");
                 break;
             case(ServiceEvent.UNREGISTERING):
                 System.out.println("Notification of service unregistered.");

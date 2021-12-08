@@ -4,6 +4,7 @@ import java.util.Hashtable;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.orbisgis.core.service.definition.GroovyGrab;
+import org.orbisgis.demat.service.implementation.GroovyGrabImpl;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -32,6 +33,7 @@ public class Activator extends AbstractUIPlugin implements BundleActivator{
 		
 	}
 
+	/*
 	public class GroovyGrabImpl implements GroovyGrab{
 		
 		String resolverName = "ossrh";
@@ -66,6 +68,7 @@ public class Activator extends AbstractUIPlugin implements BundleActivator{
 		}
 		
 	}
+	*/
 	
 	
 

@@ -21,4 +21,6 @@ Require-Bundle: org.eclipse.core.runtime,
  dependencies
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.orbisgis.ui.editors.groovy.GroovyActivator
-Import-Package: org.osgi.service.component.annotations,org.osgi.framework
+Import-Package: 
+ org.osgi.framework,
+ org.osgi.service.component.annotations
