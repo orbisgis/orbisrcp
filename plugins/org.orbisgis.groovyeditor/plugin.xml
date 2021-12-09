@@ -49,6 +49,11 @@
             description="Clear the script"
             id="org.orbisgis.ui.editors.groovy.clear"
             name="Clear script"> </command>
+      <command
+            categoryId="org.orbisgis.ui.editors.groovy"
+            description="Change the groovy interpreter: GroovyShell (default) or GroovyScriptEngine"
+            id="org.orbisgis.ui.editors.groovy.change.groovy.interpreter"
+            name="Change groovy interpreter"> </command>
 
    </extension>
 
@@ -56,6 +61,7 @@
       <image commandId="org.orbisgis.ui.editors.groovy.execute.script" icon="icons/execute.png"/>
       <image commandId="org.orbisgis.ui.editors.groovy.execute.selection" icon="icons/execute_selection.png"/>
       <image commandId="org.orbisgis.ui.editors.groovy.clear" icon="icons/erase.png"/>
+	  <image commandId="org.orbisgis.ui.editors.groovy.change.groovy.interpreter" icon="icons/groovy_script.png"/>
    </extension>
 
    <extension
@@ -79,6 +85,10 @@
       <handler
             class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
             commandId="org.orbisgis.ui.editors.groovy.clear">
+      </handler>
+      <handler
+            class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
+            commandId="org.orbisgis.ui.editors.groovy.change.groovy.interpreter">
       </handler>
    </extension>
 
@@ -113,6 +123,12 @@
             contextId="org.orbisgis.ui.editors.groovy"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+DEL">
+      </key>
+      <key
+            commandId="org.orbisgis.ui.editors.groovy.change.groovy.interpreter"
+            contextId="org.orbisgis.ui.editors.groovy"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="SHIFT+Enter">
       </key>
    </extension>
    <extension

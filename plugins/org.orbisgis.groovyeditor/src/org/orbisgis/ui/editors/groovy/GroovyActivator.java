@@ -48,28 +48,28 @@ public class GroovyActivator extends AbstractUIPlugin implements BundleActivator
             GroovyGrab groovyGrab = (GroovyGrab) groovyGrabTracker.getService();
             
             if (groovyGrab == null) {
-    			System.out.println("********"
-    					+ "\n\n"
+    			System.out.println("\n********"
+    					+ "\n"
     					+ "groovyGrab service unavailable on GroovyActivator start"
-    					+ "\n\n"
-    					+ "*****************");
+    					+ "\n"
+    					+ "*****************\n");
     		} else {
-    			System.out.println("********"
-    					+ "\n\n"
+    			System.out.println("\n********"
+    					+ "\n"
     					+ "groovyGrab.getResolverName() : " + groovyGrab.getResolverName()
-    					+"\n\n"
-    					+ "*******************");
+    					+"\n"
+    					+ "*******************\n");
     		}
         			
         } catch (InvalidSyntaxException ise) {
             ise.printStackTrace();
         }
-    	System.out.println("*******************************************"
-    			+ "\n\n\n"
+    	System.out.println("\n*******************************************"
+    			+ "\n"
     			+ "in start method in GroovyActivator class"
     			+ "*********************************************************"
-    			+ "\n\n\n"
-    			+ "****************************************************");
+    			+ "\n"
+    			+ "****************************************************\n");
         super.start(context);
         CoreActivator.getInstance().getCoreWorkspace().extend(new GroovyWorkspaceExtension());
         
@@ -90,9 +90,9 @@ public class GroovyActivator extends AbstractUIPlugin implements BundleActivator
             case(ServiceEvent.REGISTERED):
                 System.out.println("Notification of service registered.");
                 serviceReference = serviceEvent.getServiceReference();
-                System.out.println("\n\n********\n serviceReference : " + serviceReference + "\n\n\n********");
+                System.out.println("\n********\n serviceReference : " + serviceReference + "\n********\n");
                 GroovyGrab service = (GroovyGrab)(context.getService(serviceReference));
-                System.out.println("\n\n********\n service.getResolverName() : " + service.getResolverName() + "\n\n\n********");
+                System.out.println("\n********\n service.getResolverName() : " + service.getResolverName() + "\n********\n");
                 break;
             case(ServiceEvent.UNREGISTERING):
                 System.out.println("Notification of service unregistered.");

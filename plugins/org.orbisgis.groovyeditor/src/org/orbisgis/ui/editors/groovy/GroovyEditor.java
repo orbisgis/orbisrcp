@@ -18,6 +18,9 @@
  */
 package org.orbisgis.ui.editors.groovy;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.IDocument;
@@ -34,9 +37,6 @@ import org.orbisgis.core.ui.Toolbar;
 import org.orbisgis.core.ui.ToolbarButton;
 import org.orbisgis.ui.editors.groovy.syntax.GroovySourceViewerConfiguration;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveablePart2 {
 
     private static final Logger LOGGER = new Logger(GroovyEditor.class);
@@ -44,6 +44,8 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
     private static final int SIDE_TOOLBAR_MARGIN_TOP = 3;
     private static final int SIDE_TOOLBAR_MARGIN_BOTTOM = 10;
     private static final int SIDE_TOOLBAR_VERTICAL_SPACING = 3;
+    
+    private String groovyInterpreter = "GroovyShell";
 
     private GroovyJob job;
 
@@ -93,6 +95,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_EXECUTE_SELECTION);
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_EXECUTE_SCRIPT);
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_CLEAR);
+        ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_CHANGE_GROOVY_INTERPRETER);
 
         sideToolBar.setLayoutData(new GridData(GridData.FILL_VERTICAL | GridData.VERTICAL_ALIGN_BEGINNING));
     }
@@ -117,17 +120,8 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         this.doSave(new NullProgressMonitor());
         IDocument document = getDocument();
         if(document != null){
-       
-            job = new GroovyJob(getPartName(), document.get());
+            job = new GroovyJob(getPartName(), document.get(), groovyInterpreter);
             job.schedule();
-       
-        	/*
-        	ITextSelection selection = (ITextSelection) getSelectionProvider().getSelection();
-            if (!selection.getText().isEmpty()) {
-                job = new GroovyJob(getPartName(), selection.getText());
-                job.schedule();
-            }
-            */
         }
     }
 
@@ -138,7 +132,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         if(document != null){
             ITextSelection selection = (ITextSelection) getSelectionProvider().getSelection();
             if (!selection.getText().isEmpty()) {
-                job = new GroovyJob(getPartName(), selection.getText());
+                job = new GroovyJob(getPartName(), selection.getText(), groovyInterpreter);
                 job.schedule();
             }
         }
@@ -151,4 +145,18 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
     public GroovyJob getRunningJob() {
         return job;
     }
+
+	public void changeGroovyInterpreter() {
+		System.out.println("\n***\n in changeGroovyInterpreter method \n***\n");
+
+		if (groovyInterpreter == "GroovyShell") {
+			this.groovyInterpreter = "GroovyScriptEngine";
+			System.out.println("\n***\n groovyInterpreter in changeGroovyInterpreter method : " + groovyInterpreter + "\n***\n");
+			LOGGER.info("GroovyScriptEngine is now selected.");
+		} else {
+			this.groovyInterpreter = "GroovyShell";
+			System.out.println("\n***\n groovyInterpreter in changeGroovyInterpreter method : " + groovyInterpreter + "\n***\n");
+			LOGGER.info("GroovyShell is now selected.");
+		}
+	}
 }

@@ -18,6 +18,9 @@
  */
 package org.orbisgis.ui.editors.groovy.handlers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.swt.widgets.TreeItem;
@@ -32,9 +35,6 @@ import org.jkiss.dbeaver.utils.RuntimeUtils;
 import org.orbisgis.core.logger.Logger;
 import org.orbisgis.ui.editors.groovy.GroovyEditor;
 import org.orbisgis.ui.editors.groovy.GroovyEditorCommands;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GroovyEditorActionHandler extends AbstractHandler {
 
@@ -61,6 +61,9 @@ public class GroovyEditorActionHandler extends AbstractHandler {
                 break;
             case GroovyEditorCommands.CMD_EXECUTE_STOP:
                 editor.stop();
+                break;
+            case GroovyEditorCommands.CMD_CHANGE_GROOVY_INTERPRETER:
+                editor.changeGroovyInterpreter();
                 break;
             default:
                 LOGGER.error("Unsupported SQL editor command: " + actionId);

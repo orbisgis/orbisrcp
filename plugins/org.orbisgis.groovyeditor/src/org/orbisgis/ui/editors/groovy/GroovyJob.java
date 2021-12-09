@@ -18,17 +18,19 @@
  */
 package org.orbisgis.ui.editors.groovy;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.orbisgis.core.CoreActivator;
 import org.orbisgis.core.logger.Logger;
 import org.orbisgis.core.service.definition.GroovyGrab;
 import org.orbisgis.ui.editors.groovy.logger.GroovyLogger;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
@@ -50,34 +52,32 @@ public class GroovyJob extends Job {
     private String name;
     private Thread t;
 
-    public GroovyJob(String name, String script){
+    public GroovyJob(String name, String script, String groovyInterpreter){
+    	
         super(name);
         this.script = script;
         this.name = name;
-
+		System.out.println("\n***\n in GroovyJob constructor \n***\n");
         binding = new Binding();
         binding.setProperty("logger", new GroovyLogger(GroovyShell.class));
 
         CompilerConfiguration configuratorConfig = new CompilerConfiguration();
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
-       /*
-        try {
-            String root = CoreActivator.getInstance().getCoreWorkspace().getFolder("Groovy").getLocation().toString() + File.separator;
-            System.out.println("root : " + root);
-            engine = new GroovyScriptEngine(root);
+        if (groovyInterpreter == "GroovyShell") {
+			System.out.println("\n***\n in if GI == GS in GroovyJob method : " + groovyInterpreter + "\n***\n");
+        	shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
+        } else {
+            try {
+            	System.out.println("\n***\n in else in GroovyJob method : " + groovyInterpreter + "\n***\n");
+            	String root = CoreActivator.getInstance().getCoreWorkspace().getFolder("Groovy").getLocation().toString() + File.separator;
+                System.out.println("root : " + root);
+				engine = new GroovyScriptEngine(root);
+			} catch (IOException e) {
+				LOGGER.warn("Unable to create the groovy engine, use GroovyShell instead.");
+				shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
+			}
             engine.setConfig(configuratorConfig);
-        } catch (IOException e) {
-            LOGGER.warn("Unable to create the groovy engine, use GroovyShell instead.");
-            shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
         }
-       */
-        
-        //String root = CoreActivator.getInstance().getCoreWorkspace().getFolder("Groovy").getLocation().toString() + File.separator + name;
-
-        shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
-        Bundle plugin = Platform.getBundle("org.orbisgis.demat");
-        System.out.println("plugin : " + plugin);
-        //shell.evaluate("groovy.grape.Grape.grab(group:'org.orbisgis',module:'demat', version:'0.0.7-SNAPSHOT')");
 
     }
 
@@ -140,28 +140,26 @@ public class GroovyJob extends Job {
                     result = engine.run(name, binding);
                 }
                 else {
-                	//Collection<?> references = this.context.getServiceReferences(this.getClass(), null);
                 	BundleContext ctx = FrameworkUtil.getBundle(getClass()).getBundleContext();
                 	ServiceReference<?>[] refs = ctx.getServiceReferences(GroovyGrab.class.getName(), null);                 
-                	System.out.println("\n\n********\n references !!! : " + refs + "\n\n********");
+                	System.out.println("\n********\n references : " + refs + "\n********\n");
                 	GroovyGrab provider = null;
                 	for (ServiceReference ref : refs) {
             	        provider = (GroovyGrab) ctx.getService(ref);
-            	        System.out.println("\n\n********\n provider !!! : " + provider + "\n\n********");
             	        shell.evaluate("groovy.grape.Grape.addResolver(name:'" + provider.getResolverName() + "',root:'" + provider.getResolverRoot() + "')");
             	        shell.evaluate("groovy.grape.Grape.grab(group:'" + provider.getGrabGroup() + "',module:'" + provider.getGrabModule() + "', version:'" + provider.getGrabVersion() + "')");
                 	}
-                    System.out.println("\n\n********\n provider.getResolverName() in groovyJob !!! : " + provider.getResolverName() + "\n\n\n********");
+                    System.out.println("\n********\n provider.getResolverName() in groovyJob : " + provider.getResolverName() + "\n********\n");
                     
                     for(String s : script.split("\n")) {
                     	/*
-                    	System.out.println("string before if : " + s);
-                    	if(s.contains("@Grab") && !s.contains("//") && !s.contains("/*")) {
-                    		String[] parts = s.split("'");
+                    	if(s.contains("println ") && !s.contains("//") && !s.contains("/*")) {
+                    		String[] parts = s.split(" ");
                     		s = "groovy.grape.Grape.grab(group:'" + parts[1] + "',module:'" + parts[3] + "', version:'" + parts[5] + "')" ;
                     		System.out.println("string AFTER Grab Change : " + s);
-                    	}
-                    	*/
+                    		LOGGER.info((String) shell.evaluate(s));
+                    	} 
+                    	*/           
                     	shell.evaluate(s);
                     }
                 }
