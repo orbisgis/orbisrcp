@@ -63,8 +63,7 @@ public class GroovyJob extends Job {
 
         CompilerConfiguration configuratorConfig = new CompilerConfiguration();
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
-        if (groovyInterpreter == "GroovyShell") {
-			System.out.println("\n***\n in if GI == GS in GroovyJob method : " + groovyInterpreter + "\n***\n");
+        if (groovyInterpreter == "GroovyShell") {		
         	shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
         } else {
             try {
@@ -72,6 +71,8 @@ public class GroovyJob extends Job {
             	String root = CoreActivator.getInstance().getCoreWorkspace().getFolder("Groovy").getLocation().toString() + File.separator;
                 System.out.println("root : " + root);
 				engine = new GroovyScriptEngine(root);
+                //MultiParentClassLoader multiParentLoader = new MultiParentClassLoader(project.getElementName(), new URL[0], new ClassLoader[] {projectLoader, parentLoader});
+				//engine = new GroovyScriptEngine​(root, ClassLoader parentClassLoader);
 			} catch (IOException e) {
 				LOGGER.warn("Unable to create the groovy engine, use GroovyShell instead.");
 				shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
@@ -142,15 +143,14 @@ public class GroovyJob extends Job {
                 else {
                 	BundleContext ctx = FrameworkUtil.getBundle(getClass()).getBundleContext();
                 	ServiceReference<?>[] refs = ctx.getServiceReferences(GroovyGrab.class.getName(), null);                 
-                	System.out.println("\n********\n references : " + refs + "\n********\n");
                 	GroovyGrab provider = null;
                 	for (ServiceReference ref : refs) {
-            	        provider = (GroovyGrab) ctx.getService(ref);
+            	        provider = (GroovyGrab) ctx.getService(ref); 
+            	       
             	        shell.evaluate("groovy.grape.Grape.addResolver(name:'" + provider.getResolverName() + "',root:'" + provider.getResolverRoot() + "')");
             	        shell.evaluate("groovy.grape.Grape.grab(group:'" + provider.getGrabGroup() + "',module:'" + provider.getGrabModule() + "', version:'" + provider.getGrabVersion() + "')");
-                	}
-                    System.out.println("\n********\n provider.getResolverName() in groovyJob : " + provider.getResolverName() + "\n********\n");
-                    
+            	        //shell.evaluate("Grape.grab(groupId:'org.orbisgis.rcp', artifactId:'org.orbisgis.demat', version:'1.0.0-SNAPSHOT', classLoader:" + this.getClass().getClassLoader() + ")");
+                	}                    
                     for(String s : script.split("\n")) {
                     	/*
                     	if(s.contains("println ") && !s.contains("//") && !s.contains("/*")) {
@@ -160,7 +160,9 @@ public class GroovyJob extends Job {
                     		LOGGER.info((String) shell.evaluate(s));
                     	} 
                     	*/           
-                    	shell.evaluate(s);
+                    	Object output = shell.evaluate(s);
+                    	GroovyConsoleView gcv = new GroovyConsoleView();
+                    	gcv.writeIntoConsole(output);
                     }
                 }
                 status = IStatus.OK;

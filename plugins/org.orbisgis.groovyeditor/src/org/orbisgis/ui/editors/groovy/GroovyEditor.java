@@ -71,10 +71,10 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         groovyEditor.setLayout(gl);
 
         createControlsBar(groovyEditor);
-
+        
         GroovyEditorControl editorControl = new GroovyEditorControl(groovyEditor, this);
         super.createPartControl(editorControl);
-        editorControl.setLayoutData(new GridData(GridData.FILL_BOTH));
+        editorControl.setLayoutData(new GridData(GridData.FILL_BOTH)); 
     }
 
     private void createControlsBar(Composite editorPanel) {
@@ -96,8 +96,9 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_EXECUTE_SCRIPT);
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_CLEAR);
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_CHANGE_GROOVY_INTERPRETER);
-
+        
         sideToolBar.setLayoutData(new GridData(GridData.FILL_VERTICAL | GridData.VERTICAL_ALIGN_BEGINNING));
+        System.out.println("\n***\n sideToolBar in createControlsBar method : " + sideToolBar + "\n***\n");
     }
 
     private IDocument getDocument(){

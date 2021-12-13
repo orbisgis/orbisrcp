@@ -21,3 +21,6 @@ Require-Bundle: org.eclipse.core.runtime,
  dependencies
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.orbisgis.ui.editors.groovy.GroovyActivator
+Import-Package: org.jkiss.dbeaver.core,
+ org.jkiss.dbeaver.ext.sample.database,
+ org.jkiss.dbeaver.registry.driver

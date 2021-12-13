@@ -61,7 +61,7 @@
       <image commandId="org.orbisgis.ui.editors.groovy.execute.script" icon="icons/execute.png"/>
       <image commandId="org.orbisgis.ui.editors.groovy.execute.selection" icon="icons/execute_selection.png"/>
       <image commandId="org.orbisgis.ui.editors.groovy.clear" icon="icons/erase.png"/>
-	  <image commandId="org.orbisgis.ui.editors.groovy.change.groovy.interpreter" icon="icons/groovy_script.png"/>
+	  <image commandId="org.orbisgis.ui.editors.groovy.change.groovy.interpreter" icon="icons/GS.png"/>
    </extension>
 
    <extension
@@ -91,6 +91,16 @@
             commandId="org.orbisgis.ui.editors.groovy.change.groovy.interpreter">
       </handler>
    </extension>
+
+    <extension point="org.eclipse.ui.views">
+        <view
+                id="org.orbisgis.ui.editors.groovy.GroovyConsoleView"
+                class="org.orbisgis.ui.editors.groovy.GroovyConsoleView"
+                allowMultiple="true"
+                restorable="false"
+                name="Groovy Output">
+        </view>
+    </extension>
 
    <extension
          point="org.eclipse.ui.editors">
