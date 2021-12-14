@@ -33,6 +33,7 @@ import org.jkiss.dbeaver.model.navigator.DBNDataSource;
 import org.jkiss.dbeaver.ui.navigator.database.DatabaseNavigatorView;
 import org.jkiss.dbeaver.utils.RuntimeUtils;
 import org.orbisgis.core.logger.Logger;
+import org.orbisgis.ui.editors.groovy.GroovyConsoleView.GroovyConsoleContent;
 import org.orbisgis.ui.editors.groovy.GroovyEditor;
 import org.orbisgis.ui.editors.groovy.GroovyEditorCommands;
 
@@ -64,6 +65,9 @@ public class GroovyEditorActionHandler extends AbstractHandler {
                 break;
             case GroovyEditorCommands.CMD_CHANGE_GROOVY_INTERPRETER:
                 editor.changeGroovyInterpreter();
+                break;
+            case GroovyEditorCommands.CMD_CHANGE_GROOVY_DELETE_OUTPUT:
+            	GroovyConsoleContent.writeIntoConsole("ERASE");
                 break;
             default:
                 LOGGER.error("Unsupported SQL editor command: " + actionId);

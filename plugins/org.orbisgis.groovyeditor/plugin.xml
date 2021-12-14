@@ -18,6 +18,11 @@
             </command>
          </menu>
       </menuContribution>
+        <menuContribution allPopups="false" locationURI="toolbar:org.jkiss.dbeaver.tasks">
+            <separator name="additions" visible="true"/>
+            <command commandId="org.eclipse.ui.edit.delete"/>
+            <separator name="additions" visible="true"/>
+        </menuContribution>
    </extension>
 
    <extension point="org.eclipse.ui.commands">
@@ -55,9 +60,9 @@
             id="org.orbisgis.ui.editors.groovy.change.groovy.interpreter"
             name="Change groovy interpreter"> </command>
      <command
-            categoryId="org.orbisgis.ui.editors.groovy"
+            categoryId="org.eclipse.ui.edit.delete"
             description="Delete all output groovy output (console)"
-            id="org.orbisgis.ui.editors.groovy.deleteOutput"
+            id="org.eclipse.ui.edit.delete"
             name="Delete output content"> </command>
 
    </extension>
@@ -67,7 +72,7 @@
       <image commandId="org.orbisgis.ui.editors.groovy.execute.selection" icon="icons/execute_selection.png"/>
       <image commandId="org.orbisgis.ui.editors.groovy.clear" icon="icons/erase.png"/>
 	  <image commandId="org.orbisgis.ui.editors.groovy.change.groovy.interpreter" icon="icons/GS.png"/>
-	  <image commandId="org.orbisgis.ui.editors.groovy.deleteOutput" icon="icons/erase.png"/>
+	  <image commandId="org.eclipse.ui.edit.delete" icon="icons/erase.png"/>
    </extension>
 
    <extension
@@ -95,6 +100,10 @@
       <handler
             class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
             commandId="org.orbisgis.ui.editors.groovy.change.groovy.interpreter">
+      </handler>
+      <handler
+            class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
+            commandId="org.eclipse.ui.edit.delete">
       </handler>
    </extension>
 
