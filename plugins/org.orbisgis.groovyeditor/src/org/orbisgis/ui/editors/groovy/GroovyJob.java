@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.orbisgis.core.CoreActivator;
 import org.orbisgis.core.logger.Logger;
 import org.orbisgis.core.service.definition.GroovyGrab;
+import org.orbisgis.ui.editors.groovy.GroovyConsoleView.GroovyConsoleContent;
 import org.orbisgis.ui.editors.groovy.logger.GroovyLogger;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
@@ -150,19 +151,21 @@ public class GroovyJob extends Job {
             	        shell.evaluate("groovy.grape.Grape.addResolver(name:'" + provider.getResolverName() + "',root:'" + provider.getResolverRoot() + "')");
             	        shell.evaluate("groovy.grape.Grape.grab(group:'" + provider.getGrabGroup() + "',module:'" + provider.getGrabModule() + "', version:'" + provider.getGrabVersion() + "')");
             	        //shell.evaluate("Grape.grab(groupId:'org.orbisgis.rcp', artifactId:'org.orbisgis.demat', version:'1.0.0-SNAPSHOT', classLoader:" + this.getClass().getClassLoader() + ")");
-                	}                    
+                	}                
+                	GroovyConsoleContent.writeIntoConsole("ERASE");
                     for(String s : script.split("\n")) {
                     	/*
                     	if(s.contains("println ") && !s.contains("//") && !s.contains("/*")) {
                     		String[] parts = s.split(" ");
                     		s = "groovy.grape.Grape.grab(group:'" + parts[1] + "',module:'" + parts[3] + "', version:'" + parts[5] + "')" ;
-                    		System.out.println("string AFTER Grab Change : " + s);
                     		LOGGER.info((String) shell.evaluate(s));
                     	} 
                     	*/           
-                    	Object output = shell.evaluate(s);
-                    	GroovyConsoleView gcv = new GroovyConsoleView();
-                    	gcv.writeIntoConsole(output);
+                    	shell.evaluate(s);
+                    	System.out.println("\n***\n s : " + s + "\n***\n");
+                    	if (s != null) {
+                    		GroovyConsoleContent.writeIntoConsole(s);
+                    	}
                     }
                 }
                 status = IStatus.OK;

@@ -54,6 +54,11 @@
             description="Change the groovy interpreter: GroovyShell (default) or GroovyScriptEngine"
             id="org.orbisgis.ui.editors.groovy.change.groovy.interpreter"
             name="Change groovy interpreter"> </command>
+     <command
+            categoryId="org.orbisgis.ui.editors.groovy"
+            description="Delete all output groovy output (console)"
+            id="org.orbisgis.ui.editors.groovy.deleteOutput"
+            name="Delete output content"> </command>
 
    </extension>
 
@@ -62,6 +67,7 @@
       <image commandId="org.orbisgis.ui.editors.groovy.execute.selection" icon="icons/execute_selection.png"/>
       <image commandId="org.orbisgis.ui.editors.groovy.clear" icon="icons/erase.png"/>
 	  <image commandId="org.orbisgis.ui.editors.groovy.change.groovy.interpreter" icon="icons/GS.png"/>
+	  <image commandId="org.orbisgis.ui.editors.groovy.deleteOutput" icon="icons/erase.png"/>
    </extension>
 
    <extension
@@ -97,7 +103,7 @@
                 id="org.orbisgis.ui.editors.groovy.GroovyConsoleView"
                 class="org.orbisgis.ui.editors.groovy.GroovyConsoleView"
                 allowMultiple="true"
-                restorable="false"
+                restorable="true"
                 name="Groovy Output">
         </view>
     </extension>
