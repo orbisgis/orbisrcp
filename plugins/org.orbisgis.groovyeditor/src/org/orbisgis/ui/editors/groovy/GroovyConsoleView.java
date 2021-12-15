@@ -1,5 +1,6 @@
 package org.orbisgis.ui.editors.groovy;
 
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -9,14 +10,19 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 import org.jkiss.dbeaver.model.runtime.DBRProcessController;
 import org.jkiss.dbeaver.model.runtime.DBRProcessDescriptor;
+import org.jkiss.dbeaver.ui.ActionUtils;
 import org.jkiss.dbeaver.ui.UIUtils;
-import org.orbisgis.core.ui.Toolbar;
 import org.orbisgis.core.ui.ToolbarButton;
 
 public class GroovyConsoleView extends ViewPart implements DBRProcessController
 {
 	static Composite group = null;
 	static ToolbarButton button = null;
+	
+	public static final String VIEW_ID = "org.jkiss.dbeaver.groovy.output.clear";
+    private static final String CLEAR_VIEW_MENU_ID = VIEW_ID + ".menu";
+    public static final String CLEAR_CMD_ID = "org.orbisgis.ui.editors.groovy.clearOutput";
+  
 
 	@Override
 	public DBRProcessDescriptor getProcessDescriptor() {
@@ -47,10 +53,12 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
 	}
 	
 	private void createDeleteOutputButton(Composite group) {
-		Toolbar sideToolBar = new Toolbar(group, SWT.RIGHT);
-		button = new ToolbarButton(sideToolBar, SWT.RIGHT | SWT.PUSH);
-    	button.setCommand(getSite(), GroovyEditorCommands.CMD_CHANGE_GROOVY_DELETE_OUTPUT);
-    	sideToolBar.setLayoutData(new GridData(GridData.FILL_VERTICAL | GridData.VERTICAL_ALIGN_BEGINNING));
+		final MenuManager menuMgr = new MenuManager();
+		menuMgr.setRemoveAllWhenShown(true);
+        menuMgr.addMenuListener(manager -> {
+            manager.add(ActionUtils.makeCommandContribution(getSite(), CLEAR_CMD_ID));
+        });
+        group.setMenu(menuMgr.createContextMenu(group));
 	}
 	
 	public static class GroovyConsoleContent{

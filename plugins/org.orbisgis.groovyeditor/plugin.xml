@@ -18,11 +18,11 @@
             </command>
          </menu>
       </menuContribution>
-        <menuContribution allPopups="false" locationURI="toolbar:org.jkiss.dbeaver.tasks">
-            <separator name="additions" visible="true"/>
-            <command commandId="org.eclipse.ui.edit.delete"/>
-            <separator name="additions" visible="true"/>
-        </menuContribution>
+	    <menuContribution allPopups="false" locationURI="toolbar:org.jkiss.dbeaver.groovy.output.clear">
+	        <separator name="additions" visible="true"/>
+	        <command commandId="org.orbisgis.ui.editors.groovy.clearOutput"/>
+	        <separator name="additions" visible="true"/>
+	    </menuContribution>
    </extension>
 
    <extension point="org.eclipse.ui.commands">
@@ -60,9 +60,9 @@
             id="org.orbisgis.ui.editors.groovy.change.groovy.interpreter"
             name="Change groovy interpreter"> </command>
      <command
-            categoryId="org.eclipse.ui.edit.delete"
+            categoryId="org.orbisgis.ui.editors.groovy"
             description="Delete all output groovy output (console)"
-            id="org.eclipse.ui.edit.delete"
+            id="org.orbisgis.ui.editors.groovy.clearOutput"
             name="Delete output content"> </command>
 
    </extension>
@@ -72,11 +72,10 @@
       <image commandId="org.orbisgis.ui.editors.groovy.execute.selection" icon="icons/execute_selection.png"/>
       <image commandId="org.orbisgis.ui.editors.groovy.clear" icon="icons/erase.png"/>
 	  <image commandId="org.orbisgis.ui.editors.groovy.change.groovy.interpreter" icon="icons/GS.png"/>
-	  <image commandId="org.eclipse.ui.edit.delete" icon="icons/erase.png"/>
+	  <image commandId="org.orbisgis.ui.editors.groovy.clearOutput" icon="icons/erase.png"/>
    </extension>
 
-   <extension
-         point="org.eclipse.ui.handlers">
+   <extension point="org.eclipse.ui.handlers">
       <handler
             class="org.orbisgis.ui.editors.groovy.handlers.OpenHandler"
             commandId="org.orbisgis.ui.editor.groovy.editor.open">
@@ -103,13 +102,13 @@
       </handler>
       <handler
             class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
-            commandId="org.eclipse.ui.edit.delete">
+            commandId="org.orbisgis.ui.editors.groovy.clearOutput">
       </handler>
    </extension>
 
     <extension point="org.eclipse.ui.views">
         <view
-                id="org.orbisgis.ui.editors.groovy.GroovyConsoleView"
+                id="org.jkiss.dbeaver.groovy.output.clear"
                 class="org.orbisgis.ui.editors.groovy.GroovyConsoleView"
                 allowMultiple="true"
                 restorable="true"

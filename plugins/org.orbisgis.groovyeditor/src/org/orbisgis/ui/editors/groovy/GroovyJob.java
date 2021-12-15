@@ -152,7 +152,6 @@ public class GroovyJob extends Job {
             	        shell.evaluate("groovy.grape.Grape.grab(group:'" + provider.getGrabGroup() + "',module:'" + provider.getGrabModule() + "', version:'" + provider.getGrabVersion() + "')");
             	        //shell.evaluate("Grape.grab(groupId:'org.orbisgis.rcp', artifactId:'org.orbisgis.demat', version:'1.0.0-SNAPSHOT', classLoader:" + this.getClass().getClassLoader() + ")");
                 	}                
-                	//GroovyConsoleContent.writeIntoConsole("ERASE");
                     for(String s : script.split("\n")) {
                     	/*
                     	if(s.contains("println ") && !s.contains("//") && !s.contains("/*")) {
