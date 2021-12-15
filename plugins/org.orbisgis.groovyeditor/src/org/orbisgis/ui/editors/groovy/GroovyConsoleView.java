@@ -2,11 +2,13 @@ package org.orbisgis.ui.editors.groovy;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.jkiss.dbeaver.model.runtime.DBRProcessController;
 import org.jkiss.dbeaver.model.runtime.DBRProcessDescriptor;
@@ -20,9 +22,7 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
 	static ToolbarButton button = null;
 	
 	public static final String VIEW_ID = "org.jkiss.dbeaver.groovy.output.clear";
-    private static final String CLEAR_VIEW_MENU_ID = VIEW_ID + ".menu";
     public static final String CLEAR_CMD_ID = "org.orbisgis.ui.editors.groovy.clearOutput";
-  
 
 	@Override
 	public DBRProcessDescriptor getProcessDescriptor() {
@@ -44,8 +44,6 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
 		createDeleteOutputButton(group);
 	}
 	
-	
-
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub
@@ -63,10 +61,15 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
 	
 	public static class GroovyConsoleContent{
 	
-		static Text text = null;
+		static StyledText text = null;
+		static Display display = null;
+		static StyleRange style1 = null;
+		static String message_END =  "\nGroovy script successfully executed.\n";
+		static String message_BAD_END =  "\nError while execution the Groovy script.\nMore information in the Error Log.\n";
 
 		public static void initialize(Composite group) {
-	    	text = new Text(group, SWT.HORIZONTAL | SWT.READ_ONLY | SWT.V_SCROLL);
+	    	text = new StyledText(group, SWT.HORIZONTAL | SWT.READ_ONLY | SWT.V_SCROLL);
+	    	display = PlatformUI.getWorkbench().getDisplay();
 	    	text.setLayoutData(new GridData());
 		}
 		
@@ -79,8 +82,22 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
 						text.setText("");
 					} 
 					else if (message.equals("END")) {
-						text.setText(text.getText() + "\n"
-				    			+ "Groovy script successfully executed.");
+						style1 = new StyleRange(text.getText().length(), message_END.length(), display.getSystemColor(SWT.COLOR_GREEN), null);
+						text.setText(text.getText() + message_END);
+						text.setStyleRange(style1);
+						for (int i = -1; (i = text.getText().indexOf("groovy>", i + 1)) != -1; i++) {
+						    StyleRange style1 = new StyleRange(i, 7, display.getSystemColor(SWT.COLOR_BLUE), null);
+						    text.setStyleRange(style1);
+						}
+					}
+					else if (message.equals("BAD_END")) {
+						style1 = new StyleRange(text.getText().length(), message_BAD_END.length(), display.getSystemColor(SWT.COLOR_RED), null);
+						text.setText(text.getText() + message_BAD_END);
+						text.setStyleRange(style1);
+						for (int i = -1; (i = text.getText().indexOf("groovy>", i + 1)) != -1; i++) {
+						    StyleRange style1 = new StyleRange(i, 7, display.getSystemColor(SWT.COLOR_BLUE), null);
+						    text.setStyleRange(style1);
+						}
 					}
 					else if (text.getText() == null || text.getText().trim().isEmpty()) {
 						text.setText("groovy> " + message);
@@ -88,9 +105,8 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
 					else if(message == null || message.trim().isEmpty()){
 					} 
 					else {
-			    	text.setText(text.getText() + "\n"
-			    			+ "groovy> " + message);
-				   	text.setLayoutData(new GridData());
+				    	text.setText(text.getText() + "\n"
+				    			+ "groovy> " + message);
 					}
 				}
 			});

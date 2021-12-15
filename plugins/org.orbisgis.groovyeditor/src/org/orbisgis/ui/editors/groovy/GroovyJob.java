@@ -170,10 +170,12 @@ public class GroovyJob extends Job {
                 }
                 status = IStatus.OK;
             } catch (MissingPropertyException e){
+            	GroovyConsoleContent.writeIntoConsole("BAD_END"); 
                 String property = e.getProperty();
                 LOGGER.error("Error while execution the Groovy script.", e);
                 status = IStatus.ERROR;
             } catch(Exception e){
+            	GroovyConsoleContent.writeIntoConsole("BAD_END"); 
                 LOGGER.error("Error while executing the groovy script.", e);
                 status = IStatus.ERROR;
             }
