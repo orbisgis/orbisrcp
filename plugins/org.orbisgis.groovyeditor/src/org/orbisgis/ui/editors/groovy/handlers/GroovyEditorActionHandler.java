@@ -54,7 +54,6 @@ public class GroovyEditorActionHandler extends AbstractHandler {
                 editor.clear();
                 break;
             case GroovyEditorCommands.CMD_EXECUTE_SCRIPT:
-            	LOGGER.info("In execute method in GroovyEditorActionHandler class");
                 editor.execute();
                 break;
             case GroovyEditorCommands.CMD_EXECUTE_SELECTION:

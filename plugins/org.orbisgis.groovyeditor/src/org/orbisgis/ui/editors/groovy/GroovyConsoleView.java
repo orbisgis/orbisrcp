@@ -65,12 +65,21 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
 		static Display display = null;
 		static StyleRange style1 = null;
 		static String message_END =  "\nGroovy script successfully executed.\n";
-		static String message_BAD_END =  "\nError while execution the Groovy script.\nMore information in the Error Log.\n";
+		static String message_BAD_END =  "\nError while execution the Groovy script.\n";
 
 		public static void initialize(Composite group) {
 	    	text = new StyledText(group, SWT.HORIZONTAL | SWT.READ_ONLY | SWT.V_SCROLL);
 	    	display = PlatformUI.getWorkbench().getDisplay();
 	    	text.setLayoutData(new GridData());
+		}
+		
+		public static void writeIntoConsole(String message, boolean resultOfExecution) {
+			Display.getDefault().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					text.setText(text.getText() + "\n\n" + message);
+				}
+			});
 		}
 		
 		public static void writeIntoConsole(String message) {

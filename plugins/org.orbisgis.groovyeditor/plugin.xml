@@ -59,6 +59,11 @@
             description="Change the groovy interpreter: GroovyShell (default) or GroovyScriptEngine"
             id="org.orbisgis.ui.editors.groovy.change.groovy.interpreter"
             name="Change groovy interpreter"> </command>
+      <command
+            categoryId="org.orbisgis.ui.editors.groovy"
+            description="Change the groovy interpreter: GroovyShell (default) or GroovyScriptEngine"
+            id="org.orbisgis.ui.editors.groovy.change.groovy.interpreter.cross"
+            name="Change groovy interpreter"> </command>
      <command
             categoryId="org.orbisgis.ui.editors.groovy"
             description="Delete all output groovy output (console)"
@@ -72,6 +77,7 @@
       <image commandId="org.orbisgis.ui.editors.groovy.execute.selection" icon="icons/execute_selection.png"/>
       <image commandId="org.orbisgis.ui.editors.groovy.clear" icon="icons/erase.png"/>
 	  <image commandId="org.orbisgis.ui.editors.groovy.change.groovy.interpreter" icon="icons/GS.png"/>
+	  <image commandId="org.orbisgis.ui.editors.groovy.change.groovy.interpreter.cross" icon="icons/GS_cross.png"/>
 	  <image commandId="org.orbisgis.ui.editors.groovy.clearOutput" icon="icons/erase.png"/>
    </extension>
 
@@ -164,12 +170,13 @@
       </context>
    </extension>
 
+
   <!-- Declare the application level service -->
-  <applicationService serviceInterface="mypackage.MyApplicationService"
-                      serviceImplementation="mypackage.MyApplicationServiceImpl" />
+  <!--<applicationService serviceInterface="mypackage.MyApplicationService"
+                      serviceImplementation="mypackage.MyApplicationServiceImpl" /> -->
 
   <!-- Declare the project level service -->
-  <projectService serviceInterface="mypackage.MyProjectService"
+ <!-- <projectService serviceInterface="mypackage.MyProjectService"
                   serviceImplementation="mypackage.MyProjectServiceImpl" />
-
+-->
 </plugin>

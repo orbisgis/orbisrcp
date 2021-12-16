@@ -20,6 +20,8 @@ package org.orbisgis.ui.editors.groovy;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
@@ -61,6 +63,7 @@ public class GroovyJob extends Job {
 		System.out.println("\n***\n in GroovyJob constructor \n***\n");
         binding = new Binding();
         binding.setProperty("logger", new GroovyLogger(GroovyShell.class));
+        binding.setProperty("out", new StringWriter());
 
         CompilerConfiguration configuratorConfig = new CompilerConfiguration();
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
@@ -70,11 +73,8 @@ public class GroovyJob extends Job {
             try {
             	System.out.println("\n***\n in else in GroovyJob method : " + groovyInterpreter + "\n***\n");
             	String root = CoreActivator.getInstance().getCoreWorkspace().getFolder("Groovy").getLocation().toString() + File.separator;
-                System.out.println("root : " + root);
 				engine = new GroovyScriptEngine(root);
-                //MultiParentClassLoader multiParentLoader = new MultiParentClassLoader(project.getElementName(), new URL[0], new ClassLoader[] {projectLoader, parentLoader});
-				//engine = new GroovyScriptEngine​(root, ClassLoader parentClassLoader);
-			} catch (IOException e) {
+				} catch (IOException e) {
 				LOGGER.warn("Unable to create the groovy engine, use GroovyShell instead.");
 				shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
 			}
@@ -103,7 +103,7 @@ public class GroovyJob extends Job {
             message = result.toString();
         }
         if(status == IStatus.OK) {
-            LOGGER.info(message);
+            //LOGGER.info(message);
         }
         return new Status(IStatus.OK, GroovyJob.class.getName(), message);
     }
@@ -125,7 +125,9 @@ public class GroovyJob extends Job {
         private Binding binding;
         private String name;
         private int status;
-        private BundleContext context;
+        //private BundleContext context;
+        private StringWriter sw = new StringWriter();
+        private PrintWriter pw = new PrintWriter(sw);
 
         public GroovyRunnable(GroovyScriptEngine engine, GroovyShell shell, String name, String script, Binding binding){
             this.shell = shell;
@@ -157,7 +159,6 @@ public class GroovyJob extends Job {
                     	if(s.contains("println ") && !s.contains("//") && !s.contains("/*")) {
                     		String[] parts = s.split(" ");
                     		s = "groovy.grape.Grape.grab(group:'" + parts[1] + "',module:'" + parts[3] + "', version:'" + parts[5] + "')" ;
-                    		LOGGER.info((String) shell.evaluate(s));
                     	} 
                     	*/           
                     	shell.evaluate(s);
@@ -166,17 +167,25 @@ public class GroovyJob extends Job {
                     		GroovyConsoleContent.writeIntoConsole(s);
                     	}
                     }
-                    GroovyConsoleContent.writeIntoConsole("END");     
                 }
+                Object res3 = shell.getProperty("out");
+        		String propOut = res3.toString();
+        		GroovyConsoleContent.writeIntoConsole(propOut, true);
+                GroovyConsoleContent.writeIntoConsole("END"); 
                 status = IStatus.OK;
             } catch (MissingPropertyException e){
-            	GroovyConsoleContent.writeIntoConsole("BAD_END"); 
-                String property = e.getProperty();
-                LOGGER.error("Error while execution the Groovy script.", e);
+                e.printStackTrace(pw);
+                String sStackTrace = sw.toString();
+                GroovyConsoleContent.writeIntoConsole(sStackTrace);
+                GroovyConsoleContent.writeIntoConsole("BAD_END");   
+                //LOGGER.error("Error while execution the Groovy script.", e);
                 status = IStatus.ERROR;
             } catch(Exception e){
-            	GroovyConsoleContent.writeIntoConsole("BAD_END"); 
-                LOGGER.error("Error while executing the groovy script.", e);
+                e.printStackTrace(pw);
+                String sStackTrace = sw.toString();
+                GroovyConsoleContent.writeIntoConsole(sStackTrace);
+                GroovyConsoleContent.writeIntoConsole("BAD_END");   
+                //LOGGER.error("Error while executing the groovy script.", e);
                 status = IStatus.ERROR;
             }
         }
