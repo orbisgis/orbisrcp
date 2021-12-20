@@ -23,6 +23,6 @@ public interface GroovyEditorCommands {
     String CMD_EXECUTE_SELECTION = "org.orbisgis.ui.editors.groovy.execute.selection";
     String CMD_EXECUTE_STOP = "org.orbisgis.ui.editors.groovy.execute.stop";
     String CMD_CLEAR= "org.orbisgis.ui.editors.groovy.clear";
-    String CMD_CHANGE_GROOVY_INTERPRETER= "org.orbisgis.ui.editors.groovy.change.groovy.interpreter";
+    //String CMD_CHANGE_GROOVY_INTERPRETER= "org.orbisgis.ui.editors.groovy.change.groovy.interpreter";
     String CMD_CHANGE_GROOVY_DELETE_OUTPUT= "org.orbisgis.ui.editors.groovy.clearOutput";
 }

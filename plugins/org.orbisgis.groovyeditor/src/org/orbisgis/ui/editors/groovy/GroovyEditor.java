@@ -95,7 +95,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_EXECUTE_SELECTION);
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_EXECUTE_SCRIPT);
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_CLEAR);
-        ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_CHANGE_GROOVY_INTERPRETER);
+        //ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_CHANGE_GROOVY_INTERPRETER);
         
         sideToolBar.setLayoutData(new GridData(GridData.FILL_VERTICAL | GridData.VERTICAL_ALIGN_BEGINNING));
         System.out.println("\n***\n sideToolBar in createControlsBar method : " + sideToolBar + "\n***\n");

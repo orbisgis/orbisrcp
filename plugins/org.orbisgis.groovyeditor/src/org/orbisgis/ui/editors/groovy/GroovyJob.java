@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -54,6 +55,7 @@ public class GroovyJob extends Job {
     private Binding binding;
     private String name;
     private Thread t;
+    
 
     public GroovyJob(String name, String script, String groovyInterpreter){
     	
@@ -64,11 +66,69 @@ public class GroovyJob extends Job {
         binding = new Binding();
         binding.setProperty("logger", new GroovyLogger(GroovyShell.class));
         binding.setProperty("out", new StringWriter());
-
+        
         CompilerConfiguration configuratorConfig = new CompilerConfiguration();
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
-        if (groovyInterpreter == "GroovyShell") {		
+        if (groovyInterpreter == "GroovyShell") {	
+        	
+        	/***  Last code I add  
+        	// Specify the path you want to add
+        	URL url = null;
+			url = new URL("file:///home/adrien/eclipse-workspace/demat/");
+
+        	// Create a new class loader as a child of the default system class loader
+        	ClassLoader loader = new URLClassLoader(getClass().getClassLoader()); 
+
+        	// Get the AddURL method and call it
+        	Method method = null;
+			method = URLClassLoader.class.getDeclaredMethod("addURL",new Class[]{URL.class});
+        	method.setAccessible(true);
+			method.invoke(loader,new Object[]{ url });
+
+        	  Last code I add  
+        	shell = new GroovyShell(loader, binding, configuratorConfig);
+        	*/
+        	/*
+        	List<URL> urls = new ArrayList<URL>( 1 );
+        	File file = new File("/home/adrien/eclipse-workspace/demat");
+			urls.add( file.toURI().toURL() );
+        	URL[] result = urls.toArray( new URL[urls.size()] );
+        	URLClassLoader classLoader = new URLClassLoader( result, getClass().getClassLoader() );
+        	shell = new GroovyShell(classLoader, binding, configuratorConfig);
+        	*/
+        	
+        	/*
+        	try {
+        		
+        	URLClassLoader child = new URLClassLoader (new URL[] {new URL("file:///home/adrien/eclipse-workspace/demat/target/demat-0.0.7-SNAPSHOT.jar")}, Main.class.getClassLoader());
+        	Class classToLoad = Class.forName("com.MyClass", true, child);
+        	Method method = classToLoad.getDeclaredMethod("myMethod");
+        	Object instance = classToLoad.newInstance();
+        	Object result = method.invoke(instance);
+        	
+        	
+        	File file =new File("/home/adrien/eclipse-workspace/demat/src/main/java/org/orbisgis/demat/target/demat-0.0.7-SNAPSHOT.jar");
+			URL url = file.toURI().toURL();
+			
+			URLClassLoader classLoader = (URLClassLoader)ClassLoader.getSystemClassLoader();
+			Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+			method.setAccessible(true);
+			method.invoke(classLoader, url);
+			//shell = new GroovyShell(classLoader, binding, configuratorConfig);
+        	}catch(Exception e) {
+        		e.printStackTrace();
+        	}
+        	*/
+        	
         	shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
+        	System.out.println("\n***\n shell.getClassLoader() 1 : " + shell.getClassLoader() + "\n***\n");
+        	try {
+				shell.parse( new File( "/home/adrien/eclipse-workspace/orbisrcp/plugins/org.orbisgis.groovyeditor/src/org/orbisgis/ui/editors/groovy/GroovyClassPathLoader.groovy" ) ).invokeMethod( "getClassPath", shell ) ;
+			} catch (CompilationFailedException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        	System.out.println("\n***\n shell.getClassLoader() 2 : " + shell.getClassLoader() + "\n***\n");
         } else {
             try {
             	System.out.println("\n***\n in else in GroovyJob method : " + groovyInterpreter + "\n***\n");

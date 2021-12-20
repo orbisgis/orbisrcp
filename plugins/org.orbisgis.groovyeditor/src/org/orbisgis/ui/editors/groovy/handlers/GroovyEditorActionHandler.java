@@ -62,9 +62,10 @@ public class GroovyEditorActionHandler extends AbstractHandler {
             case GroovyEditorCommands.CMD_EXECUTE_STOP:
                 editor.stop();
                 break;
-            case GroovyEditorCommands.CMD_CHANGE_GROOVY_INTERPRETER:
+            /*case GroovyEditorCommands.CMD_CHANGE_GROOVY_INTERPRETER:
                 editor.changeGroovyInterpreter();
                 break;
+                */
             case GroovyEditorCommands.CMD_CHANGE_GROOVY_DELETE_OUTPUT:
             	GroovyConsoleContent.writeIntoConsole("ERASE");
                 break;

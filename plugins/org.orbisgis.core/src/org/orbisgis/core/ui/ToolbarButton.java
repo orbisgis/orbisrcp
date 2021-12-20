@@ -51,20 +51,11 @@ public class ToolbarButton extends Canvas {
 
     public static void create(Toolbar toolbar, IServiceLocator serviceLocator, String commandId) {
     	ToolbarButton button = new ToolbarButton(toolbar, STYLE);
-    	/*
-    	if (commandId == "org.orbisgis.ui.editors.groovy.change.groovy.interpreter") {
-    		button = new ToolbarButton(toolbar, SWT.LEFT | SWT.TOGGLE);
-    	} else {
-        button = new ToolbarButton(toolbar, STYLE);
-    	}
-    	*/
         button.setCommand(serviceLocator, commandId);
     }
 
     public ToolbarButton(Toolbar toolbar, int style) {
-        //super(toolbar, style);
         super(toolbar, style | SWT.NO_FOCUS);
-
         setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
         addListeners();
     }
@@ -114,9 +105,7 @@ public class ToolbarButton extends Canvas {
 
         this.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseDown(MouseEvent e) {
-            	System.out.println("DOWN");
-            	
+            public void mouseDown(MouseEvent e) {            	
                 isHover = true;
                 hit = true;
                 redraw();
