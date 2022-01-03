@@ -37,7 +37,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.orbisgis.core.CoreActivator;
 import org.orbisgis.core.logger.Logger;
-import org.orbisgis.core.service.definition.GroovyGrab;
 import org.orbisgis.ui.editors.groovy.GroovyConsoleView.GroovyConsoleContent;
 import org.orbisgis.ui.editors.groovy.logger.GroovyLogger;
 import org.osgi.framework.BundleContext;
