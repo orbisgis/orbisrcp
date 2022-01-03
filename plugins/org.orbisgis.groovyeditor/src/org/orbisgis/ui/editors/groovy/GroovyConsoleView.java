@@ -33,7 +33,6 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
 	@Override
 	public void terminateProcess() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -47,7 +46,6 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	private void createDeleteOutputButton(Composite group) {
@@ -120,7 +118,6 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
 				}
 			});
 		}
-		
 		
 	}
 

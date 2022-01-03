@@ -22,6 +22,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
@@ -71,13 +76,13 @@ public class GroovyJob extends Job {
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
         if (groovyInterpreter == "GroovyShell") {	
         	
-        	/***  Last code I add  
+        	/*  Last code I add
         	// Specify the path you want to add
         	URL url = null;
 			url = new URL("file:///home/adrien/eclipse-workspace/demat/");
 
         	// Create a new class loader as a child of the default system class loader
-        	ClassLoader loader = new URLClassLoader(getClass().getClassLoader()); 
+        	ClassLoader loader = new URLClassLoader(getClass().getClassLoader());
 
         	// Get the AddURL method and call it
         	Method method = null;
@@ -85,9 +90,9 @@ public class GroovyJob extends Job {
         	method.setAccessible(true);
 			method.invoke(loader,new Object[]{ url });
 
-        	  Last code I add  
         	shell = new GroovyShell(loader, binding, configuratorConfig);
         	*/
+
         	/*
         	List<URL> urls = new ArrayList<URL>( 1 );
         	File file = new File("/home/adrien/eclipse-workspace/demat");
@@ -99,14 +104,14 @@ public class GroovyJob extends Job {
         	
         	/*
         	try {
-        		
-        	URLClassLoader child = new URLClassLoader (new URL[] {new URL("file:///home/adrien/eclipse-workspace/demat/target/demat-0.0.7-SNAPSHOT.jar")}, Main.class.getClassLoader());
+        	File file =new File("/home/adrien/eclipse-workspace/demat/src/main/java/org/orbisgis/demat/target/demat-0.0.7-SNAPSHOT.jar");
+        	URLClassLoader child = new URLClassLoader (new URL[] {new URL("file:///home/adrien/eclipse-workspace/demat/target/demat-0.0.7-SNAPSHOT.jar")}, this.getClass().getClassLoader());
         	Class classToLoad = Class.forName("com.MyClass", true, child);
         	Method method = classToLoad.getDeclaredMethod("myMethod");
         	Object instance = classToLoad.newInstance();
         	Object result = method.invoke(instance);
         	
-        	
+        	try {
         	File file =new File("/home/adrien/eclipse-workspace/demat/src/main/java/org/orbisgis/demat/target/demat-0.0.7-SNAPSHOT.jar");
 			URL url = file.toURI().toURL();
 			
@@ -114,12 +119,58 @@ public class GroovyJob extends Job {
 			Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
 			method.setAccessible(true);
 			method.invoke(classLoader, url);
+			
 			//shell = new GroovyShell(classLoader, binding, configuratorConfig);
         	}catch(Exception e) {
         		e.printStackTrace();
-        	}
-        	*/
+        	}*/
         	
+        	//this.getClass().getResource("/home/adrien/eclipse-workspace/demat/src/main/java/org/orbisgis/demat/target/demat-0.0.7-SNAPSHOT.jar");
+        	
+        	//JarClassLoader jcl = new JarClassLoader();
+        	/*
+        	try {
+				ClasspathHacker.addFile("/home/adrien/eclipse-workspace/demat/src/main/java/org/orbisgis/demat/target/demat-0.0.7-SNAPSHOT.jar");
+		        try {
+					Constructor<?> cs = ClassLoader.getSystemClassLoader().loadClass("Plot").getConstructor(String.class);
+				} catch (NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			*/
+        	/*
+        	JarFile jarFile;
+			try {
+				jarFile = new JarFile("/home/adrien/eclipse-workspace/demat/src/main/java/org/orbisgis/demat/target/demat-0.0.7-SNAPSHOT.jar");
+				Enumeration<JarEntry> e = jarFile.entries();
+
+	        	URL[] urls = { new URL("jar:file:" + "/home/adrien/eclipse-workspace/demat/src/main/java/org/orbisgis/demat/target/demat-0.0.7-SNAPSHOT.jar"+"!/") };
+	        	URLClassLoader cl = URLClassLoader.newInstance(urls);
+
+	        	while (e.hasMoreElements()) {
+	        	    JarEntry je = e.nextElement();
+	        	    if(je.isDirectory() || !je.getName().endsWith(".class")){
+	        	        continue;
+	        	    }
+	        	    // -6 because of .class
+	        	    String className = je.getName().substring(0,je.getName().length()-6);
+	        	    className = className.replace('/', '.');
+	        	    Class c = cl.loadClass(className);
+
+	        	}
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        	*/
+        	System.out.println("\n***\n this.getClass().getClassLoader() : " + this.getClass().getClassLoader() + "\n***\n");
         	shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
         	System.out.println("\n***\n shell.getClassLoader() 1 : " + shell.getClassLoader() + "\n***\n");
         	try {
