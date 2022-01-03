@@ -105,7 +105,7 @@ public class ToolbarButton extends Canvas {
 
         this.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseDown(MouseEvent e) {            	
+            public void mouseDown(MouseEvent e) {
                 isHover = true;
                 hit = true;
                 redraw();

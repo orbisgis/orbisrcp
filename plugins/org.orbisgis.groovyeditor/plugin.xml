@@ -13,9 +13,6 @@
             <command
                   commandId="org.orbisgis.ui.editor.groovy.editor.open">
             </command>
-			<command
-                  commandId="org.orbisgis.ui.browser.open">
-            </command>
          </menu>
       </menuContribution>
 	    <menuContribution allPopups="false" locationURI="toolbar:org.jkiss.dbeaver.groovy.output.clear">
@@ -35,11 +32,6 @@
             id="org.orbisgis.ui.editor.groovy.editor.open"
             name="Open editor"> </command>
       <command
-            categoryId="org.eclipse.ui.category.edit"
-            description="Open a new browser"
-            id="org.orbisgis.ui.browser.open"
-            name="Open browser"> </command>
-      <command
             categoryId="org.orbisgis.ui.editors.groovy"
             description="Execute the script"
             id="org.orbisgis.ui.editors.groovy.execute.script"
@@ -54,13 +46,6 @@
             description="Clear the script"
             id="org.orbisgis.ui.editors.groovy.clear"
             name="Clear script"> </command>
-<!--
-      <command
-            categoryId="org.orbisgis.ui.editors.groovy"
-            description="Change the groovy interpreter: GroovyShell (default) or GroovyScriptEngine"
-            id="org.orbisgis.ui.editors.groovy.change.groovy.interpreter"
-            name="Change groovy interpreter"> </command>
--->
      <command
             categoryId="org.orbisgis.ui.editors.groovy"
             description="Delete all output groovy output (console)"
@@ -73,9 +58,6 @@
       <image commandId="org.orbisgis.ui.editors.groovy.execute.script" icon="icons/execute.png"/>
       <image commandId="org.orbisgis.ui.editors.groovy.execute.selection" icon="icons/execute_selection.png"/>
       <image commandId="org.orbisgis.ui.editors.groovy.clear" icon="icons/erase.png"/>
-<!--
-	  <image commandId="org.orbisgis.ui.editors.groovy.change.groovy.interpreter" icon="icons/GS.png"/>
--->
 	  <image commandId="org.orbisgis.ui.editors.groovy.clearOutput" icon="icons/erase.png"/>
    </extension>
 
@@ -83,10 +65,6 @@
       <handler
             class="org.orbisgis.ui.editors.groovy.handlers.OpenHandler"
             commandId="org.orbisgis.ui.editor.groovy.editor.open">
-      </handler>
-      <handler
-            class="org.orbisgis.ui.browser.OpenHandler"
-            commandId="org.orbisgis.ui.browser.open">
       </handler>
       <handler
             class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
@@ -100,12 +78,6 @@
             class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
             commandId="org.orbisgis.ui.editors.groovy.clear">
       </handler>
-<!--
-      <handler
-            class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
-            commandId="org.orbisgis.ui.editors.groovy.change.groovy.interpreter">
-      </handler>
--->
       <handler
             class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
             commandId="org.orbisgis.ui.editors.groovy.clearOutput">
@@ -154,14 +126,6 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+DEL">
       </key>
-<!--
-      <key
-            commandId="org.orbisgis.ui.editors.groovy.change.groovy.interpreter"
-            contextId="org.orbisgis.ui.editors.groovy"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="SHIFT+Enter">
-      </key>
--->
    </extension>
    <extension
          point="org.eclipse.ui.contexts">
