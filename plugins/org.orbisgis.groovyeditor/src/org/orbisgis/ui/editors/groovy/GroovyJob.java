@@ -65,7 +65,6 @@ public class GroovyJob extends Job {
         super(name);
         this.script = script;
         this.name = name;
-		System.out.println("\n***\n in GroovyJob constructor \n***\n");
         binding = new Binding();
         binding.setProperty("logger", new GroovyLogger(GroovyShell.class));
         binding.setProperty("out", new StringWriter());
@@ -149,7 +148,6 @@ public class GroovyJob extends Job {
                 else {
                     for(String s : script.split("\n")) {
                     	shell.evaluate(s);
-                    	System.out.println("\n***\n s : " + s + "\n***\n");
                     	if (s != null) {
                     		GroovyConsoleContent.writeIntoConsole(s);
                     	}

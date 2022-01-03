@@ -97,7 +97,6 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_CLEAR);
         
         sideToolBar.setLayoutData(new GridData(GridData.FILL_VERTICAL | GridData.VERTICAL_ALIGN_BEGINNING));
-        System.out.println("\n***\n sideToolBar in createControlsBar method : " + sideToolBar + "\n***\n");
     }
 
     private IDocument getDocument(){
@@ -116,7 +115,6 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
     }
 
     public void execute(){
-    	System.out.println("in execute");
         this.doSave(new NullProgressMonitor());
         IDocument document = getDocument();
         if(document != null){
@@ -126,7 +124,6 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
     }
 
     public void executeSelection(){
-    	System.out.println("in executeSelection method");
         this.doSave(new NullProgressMonitor());
         IDocument document = getDocument();
         if(document != null){
@@ -146,17 +143,4 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         return job;
     }
 
-	public void changeGroovyInterpreter() {
-		System.out.println("\n***\n in changeGroovyInterpreter method \n***\n");
-
-		if (groovyInterpreter == "GroovyShell") {
-			this.groovyInterpreter = "GroovyScriptEngine";
-			System.out.println("\n***\n groovyInterpreter in changeGroovyInterpreter method : " + groovyInterpreter + "\n***\n");
-			LOGGER.info("GroovyScriptEngine is now selected.");
-		} else {
-			this.groovyInterpreter = "GroovyShell";
-			System.out.println("\n***\n groovyInterpreter in changeGroovyInterpreter method : " + groovyInterpreter + "\n***\n");
-			LOGGER.info("GroovyShell is now selected.");
-		}
-	}
 }

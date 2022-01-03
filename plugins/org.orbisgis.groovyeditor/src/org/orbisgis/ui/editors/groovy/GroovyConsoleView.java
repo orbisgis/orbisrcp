@@ -81,7 +81,6 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
 		}
 		
 		public static void writeIntoConsole(String message) {
-			System.out.println("\n***\n in writeIntoConsole : " + message + "\n***\n");
 			Display.getDefault().syncExec(new Runnable() {
 				@Override
 				public void run() {

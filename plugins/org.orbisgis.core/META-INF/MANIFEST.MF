@@ -19,7 +19,6 @@ Bundle-Activator: org.orbisgis.core.CoreActivator
 Bundle-ActivationPolicy: lazy
 Export-Package: org.orbisgis.core,
  org.orbisgis.core.logger,
- org.orbisgis.core.service.definition,
  org.orbisgis.core.ui,
  org.orbisgis.core.utils,
  org.orbisgis.core.workspace
