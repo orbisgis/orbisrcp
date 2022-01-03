@@ -1,1 +1,0 @@
-Plugin to open your graphs in an internal web browser.

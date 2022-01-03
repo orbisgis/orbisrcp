@@ -63,7 +63,6 @@ public class GroovyJob extends Job {
     
 
     public GroovyJob(String name, String script, String groovyInterpreter){
-    	
         super(name);
         this.script = script;
         this.name = name;
@@ -74,115 +73,10 @@ public class GroovyJob extends Job {
         
         CompilerConfiguration configuratorConfig = new CompilerConfiguration();
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
-        if (groovyInterpreter == "GroovyShell") {	
-        	
-        	/*  Last code I add
-        	// Specify the path you want to add
-        	URL url = null;
-			url = new URL("file:///home/adrien/eclipse-workspace/demat/");
-
-        	// Create a new class loader as a child of the default system class loader
-        	ClassLoader loader = new URLClassLoader(getClass().getClassLoader());
-
-        	// Get the AddURL method and call it
-        	Method method = null;
-			method = URLClassLoader.class.getDeclaredMethod("addURL",new Class[]{URL.class});
-        	method.setAccessible(true);
-			method.invoke(loader,new Object[]{ url });
-
-        	shell = new GroovyShell(loader, binding, configuratorConfig);
-        	*/
-
-        	/*
-        	List<URL> urls = new ArrayList<URL>( 1 );
-        	File file = new File("/home/adrien/eclipse-workspace/demat");
-			urls.add( file.toURI().toURL() );
-        	URL[] result = urls.toArray( new URL[urls.size()] );
-        	URLClassLoader classLoader = new URLClassLoader( result, getClass().getClassLoader() );
-        	shell = new GroovyShell(classLoader, binding, configuratorConfig);
-        	*/
-        	
-        	/*
-        	try {
-        	File file =new File("/home/adrien/eclipse-workspace/demat/src/main/java/org/orbisgis/demat/target/demat-0.0.7-SNAPSHOT.jar");
-        	URLClassLoader child = new URLClassLoader (new URL[] {new URL("file:///home/adrien/eclipse-workspace/demat/target/demat-0.0.7-SNAPSHOT.jar")}, this.getClass().getClassLoader());
-        	Class classToLoad = Class.forName("com.MyClass", true, child);
-        	Method method = classToLoad.getDeclaredMethod("myMethod");
-        	Object instance = classToLoad.newInstance();
-        	Object result = method.invoke(instance);
-        	
-        	try {
-        	File file =new File("/home/adrien/eclipse-workspace/demat/src/main/java/org/orbisgis/demat/target/demat-0.0.7-SNAPSHOT.jar");
-			URL url = file.toURI().toURL();
-			
-			URLClassLoader classLoader = (URLClassLoader)ClassLoader.getSystemClassLoader();
-			Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-			method.setAccessible(true);
-			method.invoke(classLoader, url);
-			
-			//shell = new GroovyShell(classLoader, binding, configuratorConfig);
-        	}catch(Exception e) {
-        		e.printStackTrace();
-        	}*/
-        	
-        	//this.getClass().getResource("/home/adrien/eclipse-workspace/demat/src/main/java/org/orbisgis/demat/target/demat-0.0.7-SNAPSHOT.jar");
-        	
-        	//JarClassLoader jcl = new JarClassLoader();
-        	/*
-        	try {
-				ClasspathHacker.addFile("/home/adrien/eclipse-workspace/demat/src/main/java/org/orbisgis/demat/target/demat-0.0.7-SNAPSHOT.jar");
-		        try {
-					Constructor<?> cs = ClassLoader.getSystemClassLoader().loadClass("Plot").getConstructor(String.class);
-				} catch (NoSuchMethodException | SecurityException | ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			*/
-        	/*
-        	JarFile jarFile;
-			try {
-				jarFile = new JarFile("/home/adrien/eclipse-workspace/demat/src/main/java/org/orbisgis/demat/target/demat-0.0.7-SNAPSHOT.jar");
-				Enumeration<JarEntry> e = jarFile.entries();
-
-	        	URL[] urls = { new URL("jar:file:" + "/home/adrien/eclipse-workspace/demat/src/main/java/org/orbisgis/demat/target/demat-0.0.7-SNAPSHOT.jar"+"!/") };
-	        	URLClassLoader cl = URLClassLoader.newInstance(urls);
-
-	        	while (e.hasMoreElements()) {
-	        	    JarEntry je = e.nextElement();
-	        	    if(je.isDirectory() || !je.getName().endsWith(".class")){
-	        	        continue;
-	        	    }
-	        	    // -6 because of .class
-	        	    String className = je.getName().substring(0,je.getName().length()-6);
-	        	    className = className.replace('/', '.');
-	        	    Class c = cl.loadClass(className);
-
-	        	}
-			} catch (IOException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			} catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-        	*/
-        	System.out.println("\n***\n this.getClass().getClassLoader() : " + this.getClass().getClassLoader() + "\n***\n");
+        if (groovyInterpreter == "GroovyShell") {
         	shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
-        	System.out.println("\n***\n shell.getClassLoader() 1 : " + shell.getClassLoader() + "\n***\n");
-        	try {
-				shell.parse( new File( "/home/adrien/eclipse-workspace/orbisrcp/plugins/org.orbisgis.groovyeditor/src/org/orbisgis/ui/editors/groovy/GroovyClassPathLoader.groovy" ) ).invokeMethod( "getClassPath", shell ) ;
-			} catch (CompilationFailedException | IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-        	System.out.println("\n***\n shell.getClassLoader() 2 : " + shell.getClassLoader() + "\n***\n");
         } else {
             try {
-            	System.out.println("\n***\n in else in GroovyJob method : " + groovyInterpreter + "\n***\n");
             	String root = CoreActivator.getInstance().getCoreWorkspace().getFolder("Groovy").getLocation().toString() + File.separator;
 				engine = new GroovyScriptEngine(root);
 				} catch (IOException e) {
@@ -236,7 +130,6 @@ public class GroovyJob extends Job {
         private Binding binding;
         private String name;
         private int status;
-        //private BundleContext context;
         private StringWriter sw = new StringWriter();
         private PrintWriter pw = new PrintWriter(sw);
 
@@ -255,23 +148,7 @@ public class GroovyJob extends Job {
                     result = engine.run(name, binding);
                 }
                 else {
-                	BundleContext ctx = FrameworkUtil.getBundle(getClass()).getBundleContext();
-                	ServiceReference<?>[] refs = ctx.getServiceReferences(GroovyGrab.class.getName(), null);                 
-                	GroovyGrab provider = null;
-                	for (ServiceReference ref : refs) {
-            	        provider = (GroovyGrab) ctx.getService(ref); 
-            	       
-            	        shell.evaluate("groovy.grape.Grape.addResolver(name:'" + provider.getResolverName() + "',root:'" + provider.getResolverRoot() + "')");
-            	        shell.evaluate("groovy.grape.Grape.grab(group:'" + provider.getGrabGroup() + "',module:'" + provider.getGrabModule() + "', version:'" + provider.getGrabVersion() + "')");
-            	        //shell.evaluate("Grape.grab(groupId:'org.orbisgis.rcp', artifactId:'org.orbisgis.demat', version:'1.0.0-SNAPSHOT', classLoader:" + this.getClass().getClassLoader() + ")");
-                	}                
                     for(String s : script.split("\n")) {
-                    	/*
-                    	if(s.contains("println ") && !s.contains("//") && !s.contains("/*")) {
-                    		String[] parts = s.split(" ");
-                    		s = "groovy.grape.Grape.grab(group:'" + parts[1] + "',module:'" + parts[3] + "', version:'" + parts[5] + "')" ;
-                    	} 
-                    	*/           
                     	shell.evaluate(s);
                     	System.out.println("\n***\n s : " + s + "\n***\n");
                     	if (s != null) {
@@ -289,14 +166,12 @@ public class GroovyJob extends Job {
                 String sStackTrace = sw.toString();
                 GroovyConsoleContent.writeIntoConsole(sStackTrace);
                 GroovyConsoleContent.writeIntoConsole("BAD_END");   
-                //LOGGER.error("Error while execution the Groovy script.", e);
                 status = IStatus.ERROR;
             } catch(Exception e){
                 e.printStackTrace(pw);
                 String sStackTrace = sw.toString();
                 GroovyConsoleContent.writeIntoConsole(sStackTrace);
                 GroovyConsoleContent.writeIntoConsole("BAD_END");   
-                //LOGGER.error("Error while executing the groovy script.", e);
                 status = IStatus.ERROR;
             }
         }
