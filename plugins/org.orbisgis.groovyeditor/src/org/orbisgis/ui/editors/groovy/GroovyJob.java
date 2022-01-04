@@ -153,9 +153,8 @@ public class GroovyJob extends Job {
                     	}
                     }
                 }
-                Object res3 = shell.getProperty("out");
-        		String propOut = res3.toString();
-        		GroovyConsoleContent.writeIntoConsole(propOut, true);
+                String outputStream = shell.getProperty("out").toString();
+        		GroovyConsoleContent.writeIntoConsole(outputStream, true);
                 GroovyConsoleContent.writeIntoConsole("END"); 
                 status = IStatus.OK;
             } catch (MissingPropertyException e){
