@@ -61,7 +61,7 @@ public class GroovyJob extends Job {
     private Thread t;
     
 
-    public GroovyJob(String name, String script, String groovyInterpreter){
+    public GroovyJob(String name, String script){
         super(name);
         this.script = script;
         this.name = name;
@@ -71,17 +71,13 @@ public class GroovyJob extends Job {
         
         CompilerConfiguration configuratorConfig = new CompilerConfiguration();
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
-        if (groovyInterpreter == "GroovyShell") {
-        	shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
-        } else {
-            try {
-            	String root = CoreActivator.getInstance().getCoreWorkspace().getFolder("Groovy").getLocation().toString() + File.separator;
-				engine = new GroovyScriptEngine(root);
-				} catch (IOException e) {
-				LOGGER.warn("Unable to create the groovy engine, use GroovyShell instead.");
-				shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
-			}
+        try {
+            String root = CoreActivator.getInstance().getCoreWorkspace().getFolder("Groovy").getLocation().toString() + File.separator;
+            engine = new GroovyScriptEngine(root);
             engine.setConfig(configuratorConfig);
+        }  catch (IOException e) {
+            LOGGER.warn("Unable to create the groovy engine, use GroovyShell instead.");
+            shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
         }
 
     }
@@ -152,9 +148,9 @@ public class GroovyJob extends Job {
                     		GroovyConsoleContent.writeIntoConsole(s);
                     	}
                     }
+                    String outputStream = shell.getProperty("out").toString();
+                    GroovyConsoleContent.writeIntoConsole(outputStream, true);
                 }
-                String outputStream = shell.getProperty("out").toString();
-        		GroovyConsoleContent.writeIntoConsole(outputStream, true);
                 GroovyConsoleContent.writeIntoConsole("END"); 
                 status = IStatus.OK;
             } catch (MissingPropertyException e){

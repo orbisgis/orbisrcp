@@ -118,7 +118,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         this.doSave(new NullProgressMonitor());
         IDocument document = getDocument();
         if(document != null){
-            job = new GroovyJob(getPartName(), document.get(), groovyInterpreter);
+            job = new GroovyJob(getPartName(), document.get());
             job.schedule();
         }
     }
@@ -129,7 +129,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         if(document != null){
             ITextSelection selection = (ITextSelection) getSelectionProvider().getSelection();
             if (!selection.getText().isEmpty()) {
-                job = new GroovyJob(getPartName(), selection.getText(), groovyInterpreter);
+                job = new GroovyJob(getPartName(), selection.getText());
                 job.schedule();
             }
         }
