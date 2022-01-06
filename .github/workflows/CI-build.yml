@@ -36,9 +36,10 @@ jobs:
         with:
           args: unzip -qq ./p2/target/p2-1.0.0-SNAPSHOT.zip -d ./p2/target/p2-1.0.0-SNAPSHOT
         
-      - name: push p2 build to another branch
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./p2/target/p2-1.0.0-SNAPSHOT
-          publish_branch: p2-repository
+      - name: Push p2 build to another branch
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: p2-repository 
+          FOLDER: ./p2/target/p2-1.0.0-SNAPSHOT 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
