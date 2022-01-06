@@ -42,5 +42,5 @@ jobs:
 	  REPO: self
 	  BRANCH: p2-repository
 	  FOLDER: ./p2/target/p2-1.0.0-SNAPSHOT
-	  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+	  SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
         
