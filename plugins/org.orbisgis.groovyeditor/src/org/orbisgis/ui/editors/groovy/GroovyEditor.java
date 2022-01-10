@@ -18,6 +18,7 @@
  */
 package org.orbisgis.ui.editors.groovy;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -44,8 +45,6 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
     private static final int SIDE_TOOLBAR_MARGIN_TOP = 3;
     private static final int SIDE_TOOLBAR_MARGIN_BOTTOM = 10;
     private static final int SIDE_TOOLBAR_VERTICAL_SPACING = 3;
-    
-    private String groovyInterpreter = "GroovyShell";
 
     private GroovyJob job;
 
@@ -123,7 +122,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         }
     }
 
-    public void executeSelection(){
+    public void executeSelection() {
         this.doSave(new NullProgressMonitor());
         IDocument document = getDocument();
         if(document != null){

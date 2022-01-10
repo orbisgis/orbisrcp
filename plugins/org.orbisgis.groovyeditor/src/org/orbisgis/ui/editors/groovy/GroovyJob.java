@@ -18,10 +18,7 @@
  */
 package org.orbisgis.ui.editors.groovy;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
@@ -59,9 +56,9 @@ public class GroovyJob extends Job {
     private Binding binding;
     private String name;
     private Thread t;
-    
+    //PrintWriter outputPrintWriter = null
 
-    public GroovyJob(String name, String script){
+    public GroovyJob(String name, String script) {
         super(name);
         this.script = script;
         this.name = name;
@@ -69,18 +66,24 @@ public class GroovyJob extends Job {
         binding.setProperty("logger", new GroovyLogger(GroovyShell.class));
         binding.setProperty("out", new StringWriter());
         
-        CompilerConfiguration configuratorConfig = new CompilerConfiguration();
+        CompilerConfiguration configuratorConfig = new CompilerConfiguration(System.getProperties());
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
         try {
-            String root = CoreActivator.getInstance().getCoreWorkspace().getFolder("Groovy").getLocation().toString() + File.separator;
-            engine = new GroovyScriptEngine(root);
-            engine.setConfig(configuratorConfig);
-        }  catch (IOException e) {
+            shell = new GroovyShell(Thread.currentThread().getContextClassLoader(), binding, configuratorConfig);
+        }  catch (Exception e) {
             LOGGER.warn("Unable to create the groovy engine, use GroovyShell instead.");
-            shell = new GroovyShell(this.getClass().getClassLoader(), binding, configuratorConfig);
+            //String root = CoreActivator.getInstance().getCoreWorkspace().getFolder("Groovy").getLocation().toString() + File.separator;
+            //engine = new GroovyScriptEngine(root);
+            //engine.setConfig(configuratorConfig);
         }
-
     }
+/*
+    void createOutputPrintWriter(File outputFile) {
+        outputPrintWriter = new PrintWriter(new FileOutputStream(
+                outputFile,
+                true))
+    }
+ */
 
     @Override
     protected IStatus run(IProgressMonitor iProgressMonitor) {
@@ -142,8 +145,8 @@ public class GroovyJob extends Job {
                     result = engine.run(name, binding);
                 }
                 else {
+                    shell.run(script,name, new String[] {});
                     for(String s : script.split("\n")) {
-                    	shell.evaluate(s);
                     	if (s != null) {
                     		GroovyConsoleContent.writeIntoConsole(s);
                     	}
