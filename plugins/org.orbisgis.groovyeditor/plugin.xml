@@ -58,7 +58,7 @@
               categoryId="org.orbisgis.ui.editors.groovy"
               description="Stop the running process"
               id="org.orbisgis.ui.editors.groovy.stopProcess"
-              name="Delete output content"> </command>
+              name="Stop the running process"> </command>
 
    </extension>
 
@@ -138,6 +138,12 @@
             contextId="org.orbisgis.ui.editors.groovy"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+DEL">
+      </key>
+      <key
+              commandId="org.orbisgis.ui.editors.groovy.stopProcess"
+              contextId="org.orbisgis.ui.editors.groovy"
+              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+              sequence="CTRL+C">
       </key>
    </extension>
    <extension
