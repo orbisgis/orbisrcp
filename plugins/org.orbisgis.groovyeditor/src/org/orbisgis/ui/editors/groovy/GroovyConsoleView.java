@@ -70,12 +70,12 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
 	    	display = PlatformUI.getWorkbench().getDisplay();
 	    	text.setLayoutData(new GridData());
 		}
-		
+
 		public static void writeIntoConsole(String message, boolean resultOfExecution) {
 			Display.getDefault().syncExec(new Runnable() {
 				@Override
 				public void run() {
-					text.setText(text.getText() + "\n\n" + message);
+					text.setText(text.getText() + message);
 				}
 			});
 		}
@@ -105,11 +105,6 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
 						    text.setStyleRange(style1);
 						}
 					}
-					else if (text.getText() == null || text.getText().trim().isEmpty()) {
-						text.setText("groovy> " + message);
-					}
-					else if(message == null || message.trim().isEmpty()){
-					} 
 					else {
 				    	text.setText(text.getText() + "\n"
 				    			+ "groovy> " + message);

@@ -143,7 +143,7 @@
               commandId="org.orbisgis.ui.editors.groovy.stopProcess"
               contextId="org.orbisgis.ui.editors.groovy"
               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-              sequence="CTRL+C">
+              sequence="CTRL+W">
       </key>
    </extension>
    <extension

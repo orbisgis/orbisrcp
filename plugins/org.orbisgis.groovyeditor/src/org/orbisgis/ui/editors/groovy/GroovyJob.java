@@ -19,32 +19,23 @@
 package org.orbisgis.ui.editors.groovy;
 
 import java.io.*;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Enumeration;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.orbisgis.core.CoreActivator;
 import org.orbisgis.core.logger.Logger;
 import org.orbisgis.ui.editors.groovy.GroovyConsoleView.GroovyConsoleContent;
 import org.orbisgis.ui.editors.groovy.logger.GroovyLogger;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceReference;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.MissingPropertyException;
 import groovy.transform.ThreadInterrupt;
-import groovy.util.GroovyScriptEngine;
 
 public class GroovyJob extends Job {
 
@@ -52,11 +43,11 @@ public class GroovyJob extends Job {
 
     private String script;
     private GroovyShell shell = null;
-    private GroovyScriptEngine engine;
     private Binding binding;
     private String name;
     private Thread t;
-    //PrintWriter outputPrintWriter = null
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    PrintWriter outputPrintWriter = null;
 
     public GroovyJob(String name, String script) {
         super(name);
@@ -68,26 +59,42 @@ public class GroovyJob extends Job {
         
         CompilerConfiguration configuratorConfig = new CompilerConfiguration(System.getProperties());
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
+
+        File outputFile = new File(System.getProperty("java.io.tmpdir") + File.separator + name + "_output.txt");
+        closeOutputPrintWriter();
+        createOutputPrintWriter(outputFile);
+
         try {
             shell = new GroovyShell(Thread.currentThread().getContextClassLoader(), binding, configuratorConfig);
         }  catch (Exception e) {
-            LOGGER.warn("Unable to create the groovy engine, use GroovyShell instead.");
-            //String root = CoreActivator.getInstance().getCoreWorkspace().getFolder("Groovy").getLocation().toString() + File.separator;
-            //engine = new GroovyScriptEngine(root);
-            //engine.setConfig(configuratorConfig);
+            LOGGER.warn("Unable to create GroovyShell instead.");
         }
     }
-/*
+
+    /**
+     *
+     * @param outputFile
+     */
     void createOutputPrintWriter(File outputFile) {
-        outputPrintWriter = new PrintWriter(new FileOutputStream(
-                outputFile,
-                true))
+        try {
+            outputPrintWriter = new PrintWriter(new FileOutputStream(
+                    outputFile,
+                    true));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
- */
+
+    void closeOutputPrintWriter() {
+        if (outputPrintWriter != null) {
+            outputPrintWriter.close();
+            outputPrintWriter = null;
+        }
+    }
 
     @Override
     protected IStatus run(IProgressMonitor iProgressMonitor) {
-        GroovyRunnable run = new GroovyRunnable(engine, shell, name, script, binding);
+        GroovyRunnable run = new GroovyRunnable(shell, name, script, binding);
         t = new Thread(run);
         t.start();
         int status = IStatus.ERROR;
@@ -116,6 +123,7 @@ public class GroovyJob extends Job {
         if(t.isAlive()) {
             t.interrupt();
         }
+        closeOutputPrintWriter();
     }
 
     private class GroovyRunnable implements Runnable{
@@ -123,17 +131,15 @@ public class GroovyJob extends Job {
         private Object result = null;
         private GroovyShell shell;
         private String script;
-        private GroovyScriptEngine engine;
         private Binding binding;
         private String name;
         private int status;
         private StringWriter sw = new StringWriter();
         private PrintWriter pw = new PrintWriter(sw);
 
-        public GroovyRunnable(GroovyScriptEngine engine, GroovyShell shell, String name, String script, Binding binding){
+        public GroovyRunnable(GroovyShell shell, String name, String script, Binding binding){
             this.shell = shell;
             this.script = script;
-            this.engine = engine;
             this.binding = binding;
             this.name = name;
         }
@@ -141,33 +147,30 @@ public class GroovyJob extends Job {
         @Override
         public void run() {
             try {
-                if(engine != null){
-                    result = engine.run(name, binding);
-                }
-                else {
-                    shell.run(script,name, new String[] {});
-                    for(String s : script.split("\n")) {
-                    	if (s != null) {
-                    		GroovyConsoleContent.writeIntoConsole(s);
-                    	}
-                    }
-                    String outputStream = shell.getProperty("out").toString();
-                    GroovyConsoleContent.writeIntoConsole(outputStream, true);
-                }
-                GroovyConsoleContent.writeIntoConsole("END"); 
+                shell.run(script,name, new String[] {});
+                String outputStream = shell.getProperty("out").toString();
+                GroovyConsoleContent.writeIntoConsole(outputStream, true);
+                GroovyConsoleContent.writeIntoConsole("END");
                 status = IStatus.OK;
+                closeOutputPrintWriter();
             } catch (MissingPropertyException e){
                 e.printStackTrace(pw);
                 String sStackTrace = sw.toString();
                 GroovyConsoleContent.writeIntoConsole(sStackTrace);
+                LocalDateTime now = LocalDateTime.now();
+                outputPrintWriter.write("\n" + dtf.format(now) + "\n" + sStackTrace);
                 GroovyConsoleContent.writeIntoConsole("BAD_END");   
                 status = IStatus.ERROR;
+                closeOutputPrintWriter();
             } catch(Exception e){
                 e.printStackTrace(pw);
                 String sStackTrace = sw.toString();
                 GroovyConsoleContent.writeIntoConsole(sStackTrace);
+                LocalDateTime now = LocalDateTime.now();
+                outputPrintWriter.write("\n" + dtf.format(now) + "\n" + sStackTrace);
                 GroovyConsoleContent.writeIntoConsole("BAD_END");   
                 status = IStatus.ERROR;
+                closeOutputPrintWriter();
             }
         }
 
