@@ -59,11 +59,11 @@ public class GroovyEditorActionHandler extends AbstractHandler {
             case GroovyEditorCommands.CMD_EXECUTE_SELECTION:
                 editor.executeSelection();
                 break;
-            case GroovyEditorCommands.CMD_EXECUTE_STOP:
-                editor.stop();
-                break;
-            case GroovyEditorCommands.CMD_CHANGE_GROOVY_DELETE_OUTPUT:
+            case GroovyEditorCommands.CMD_GROOVY_DELETE_OUTPUT:
             	GroovyConsoleContent.writeIntoConsole("ERASE");
+                break;
+            case GroovyEditorCommands.CMD_STOP_PROCESS:
+                editor.stop();
                 break;
             default:
                 LOGGER.error("Unsupported SQL editor command: " + actionId);

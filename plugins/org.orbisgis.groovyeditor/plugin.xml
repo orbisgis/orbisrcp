@@ -19,6 +19,9 @@
 	        <separator name="additions" visible="true"/>
 	        <command commandId="org.orbisgis.ui.editors.groovy.clearOutput"/>
 	        <separator name="additions" visible="true"/>
+           <separator name="additions" visible="true"/>
+           <command commandId="org.orbisgis.ui.editors.groovy.stopProcess"/>
+           <separator name="additions" visible="true"/>
 	    </menuContribution>
    </extension>
 
@@ -51,6 +54,11 @@
             description="Delete all output groovy output (console)"
             id="org.orbisgis.ui.editors.groovy.clearOutput"
             name="Delete output content"> </command>
+      <command
+              categoryId="org.orbisgis.ui.editors.groovy"
+              description="Stop the running process"
+              id="org.orbisgis.ui.editors.groovy.stopProcess"
+              name="Delete output content"> </command>
 
    </extension>
 
@@ -59,6 +67,7 @@
       <image commandId="org.orbisgis.ui.editors.groovy.execute.selection" icon="icons/execute_selection.png"/>
       <image commandId="org.orbisgis.ui.editors.groovy.clear" icon="icons/erase.png"/>
 	  <image commandId="org.orbisgis.ui.editors.groovy.clearOutput" icon="icons/erase.png"/>
+      <image commandId="org.orbisgis.ui.editors.groovy.stopProcess" icon="icons/stop.png"/>
    </extension>
 
    <extension point="org.eclipse.ui.handlers">
@@ -81,6 +90,10 @@
       <handler
             class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
             commandId="org.orbisgis.ui.editors.groovy.clearOutput">
+      </handler>
+      <handler
+              class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
+              commandId="org.orbisgis.ui.editors.groovy.stopProcess">
       </handler>
    </extension>
 
