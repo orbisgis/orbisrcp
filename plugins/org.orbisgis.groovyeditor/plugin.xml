@@ -100,7 +100,7 @@
     <extension point="org.eclipse.ui.views">
         <view
                 id="org.jkiss.dbeaver.groovy.output.clear"
-                class="org.orbisgis.ui.editors.groovy.GroovyConsoleView"
+                class="org.orbisgis.ui.editors.groovy.GroovyOutputConsole"
                 allowMultiple="true"
                 restorable="true"
                 name="Groovy Output">

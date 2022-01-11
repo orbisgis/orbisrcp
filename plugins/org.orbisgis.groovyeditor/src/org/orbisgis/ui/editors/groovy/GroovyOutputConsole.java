@@ -16,7 +16,20 @@ import org.jkiss.dbeaver.ui.ActionUtils;
 import org.jkiss.dbeaver.ui.UIUtils;
 import org.orbisgis.core.ui.ToolbarButton;
 
-public class GroovyConsoleView extends ViewPart implements DBRProcessController
+/*
+ * This code is free software;
+ * you can redistribute it and/or modify it under the terms of the GNU
+ * Lesser General Public License as published by the Free Software Foundation;
+ * version 3.0 of the License.
+ *
+ * It is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details <http://www.gnu.org/licenses/>.
+ *
+ * @author Adrien Bessy, CNRS
+ */
+public class GroovyOutputConsole extends ViewPart implements DBRProcessController
 {
 	static Composite group = null;
 	static ToolbarButton button = null;
@@ -47,7 +60,12 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
 	public void setFocus() {
 		// TODO Auto-generated method stub
 	}
-	
+
+	/**
+	 * Create a button to delete the groovy output content.
+	 *
+	 * @param group A given composite
+	 */
 	private void createDeleteOutputButton(Composite group) {
 		final MenuManager menuMgr = new MenuManager();
 		menuMgr.setRemoveAllWhenShown(true);
@@ -56,7 +74,8 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
         });
         group.setMenu(menuMgr.createContextMenu(group));
 	}
-	
+
+
 	public static class GroovyConsoleContent{
 	
 		static StyledText text = null;
@@ -65,12 +84,23 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
 		static String message_END =  "\nGroovy script successfully executed.\n";
 		static String message_BAD_END =  "\nError while execution the Groovy script.\n";
 
+		/**
+		 * Initialize a composite.
+		 *
+		 * @param group A given composite
+		 */
 		public static void initialize(Composite group) {
 	    	text = new StyledText(group, SWT.HORIZONTAL | SWT.READ_ONLY | SWT.V_SCROLL);
 	    	display = PlatformUI.getWorkbench().getDisplay();
 	    	text.setLayoutData(new GridData());
 		}
 
+		/**
+		 * Write the standard output into the groovy output console.
+		 *
+		 * @param message the standard output
+		 * @param resultOfExecution true if this is the standard output
+		 */
 		public static void writeIntoConsole(String message, boolean resultOfExecution) {
 			Display.getDefault().syncExec(new Runnable() {
 				@Override
@@ -79,7 +109,12 @@ public class GroovyConsoleView extends ViewPart implements DBRProcessController
 				}
 			});
 		}
-		
+
+		/**
+		 * Write into the groovy output console.
+		 *
+		 * @param message the groovy output content
+		 */
 		public static void writeIntoConsole(String message) {
 			Display.getDefault().syncExec(new Runnable() {
 				@Override

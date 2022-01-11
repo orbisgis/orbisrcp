@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.orbisgis.core.logger.Logger;
-import org.orbisgis.ui.editors.groovy.GroovyConsoleView.GroovyConsoleContent;
+import org.orbisgis.ui.editors.groovy.GroovyOutputConsole.GroovyConsoleContent;
 import org.orbisgis.ui.editors.groovy.logger.GroovyLogger;
 
 import groovy.lang.Binding;
@@ -72,8 +72,9 @@ public class GroovyJob extends Job {
     }
 
     /**
+     * Create a PrintWriter for a given file.
      *
-     * @param outputFile
+     * @param outputFile The given file
      */
     void createOutputPrintWriter(File outputFile) {
         try {
@@ -85,6 +86,10 @@ public class GroovyJob extends Job {
         }
     }
 
+    /**
+     * Close a PrintWriter.
+     *
+     */
     void closeOutputPrintWriter() {
         if (outputPrintWriter != null) {
             outputPrintWriter.close();
@@ -110,9 +115,6 @@ public class GroovyJob extends Job {
         String message =  "Groovy script successfully executed.";
         if(result != null){
             message = result.toString();
-        }
-        if(status == IStatus.OK) {
-            //LOGGER.info(message);
         }
         return new Status(IStatus.OK, GroovyJob.class.getName(), message);
     }

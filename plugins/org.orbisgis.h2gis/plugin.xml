@@ -29,7 +29,6 @@
                     description="H2GIS Embedded"
                     categories="spatial,sql,embedded">
 
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2/2.1.209-SNAPSHOT/h2-2.1.209-20220104.144750-1.jar"/>
                     <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis/2.0.0-SNAPSHOT/h2gis-2.0.0-20220110.125034-16.jar"/>
                     <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-api/2.0.0-SNAPSHOT/h2gis-api-2.0.0-20220110.125034-16.jar"/>
                     <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-network/2.0.0-SNAPSHOT/h2gis-network-2.0.0-20220110.125034-16.jar"/>
@@ -46,6 +45,7 @@
                     <file type="jar" path="maven:/org.jgrapht:jgrapht-core:0.9.2"/>
                     <file type="jar" path="maven:/com.fasterxml.jackson.core:jackson-core:2.13.0"/>
                     <file type="jar" path="maven:/org.apache.commons:commons-compress:1.21"/>
+                    <file type="jar" path="maven:/com.h2database:h2:2.0.206"/>
 
                     <parameter name="query-get-active-db" value="SELECT SCHEMA()"/>
                     <parameter name="query-set-active-db" value="SET SCHEMA = ?"/>
@@ -66,7 +66,6 @@
                     description="H2GIS Embedded"
                     categories="spatial,sql,server">
 
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2/2.1.209-SNAPSHOT/h2-2.1.209-20220104.144750-1.jar"/>
                     <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis/2.0.0-SNAPSHOT/h2gis-2.0.0-20220110.125034-16.jar"/>
                     <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-api/2.0.0-SNAPSHOT/h2gis-api-2.0.0-20220110.125034-16.jar"/>
                     <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-network/2.0.0-SNAPSHOT/h2gis-network-2.0.0-20220110.125034-16.jar"/>
@@ -83,6 +82,7 @@
                     <file type="jar" path="maven:/org.jgrapht:jgrapht-core:0.9.2"/>
                     <file type="jar" path="maven:/com.fasterxml.jackson.core:jackson-core:2.13.0"/>
                     <file type="jar" path="maven:/org.apache.commons:commons-compress:1.21"/>
+                    <file type="jar" path="maven:/com.h2database:h2:2.0.206"/>
 
                     <parameter name="query-get-active-db" value="SELECT SCHEMA()"/>
                     <parameter name="query-set-active-db" value="SET SCHEMA = ?"/>

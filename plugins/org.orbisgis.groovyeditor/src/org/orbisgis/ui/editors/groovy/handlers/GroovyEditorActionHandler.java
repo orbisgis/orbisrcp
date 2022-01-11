@@ -33,7 +33,7 @@ import org.jkiss.dbeaver.model.navigator.DBNDataSource;
 import org.jkiss.dbeaver.ui.navigator.database.DatabaseNavigatorView;
 import org.jkiss.dbeaver.utils.RuntimeUtils;
 import org.orbisgis.core.logger.Logger;
-import org.orbisgis.ui.editors.groovy.GroovyConsoleView.GroovyConsoleContent;
+import org.orbisgis.ui.editors.groovy.GroovyOutputConsole.GroovyConsoleContent;
 import org.orbisgis.ui.editors.groovy.GroovyEditor;
 import org.orbisgis.ui.editors.groovy.GroovyEditorCommands;
 
