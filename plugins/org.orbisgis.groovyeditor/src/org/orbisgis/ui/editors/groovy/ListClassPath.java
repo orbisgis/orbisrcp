@@ -2,6 +2,7 @@ package org.orbisgis.ui.editors.groovy;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import java.io.File;
@@ -10,12 +11,17 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-public class ListClassPath extends Dialog {
+public class ListClassPath extends TitleAreaDialog {
     Shell shell = null;
 
     protected ListClassPath(Shell parentShell) {
         super(parentShell);
         this.shell = parentShell;
+    }
+
+    @Override
+    public Shell getShell() {
+        return shell;
     }
 
     public static void listClassPaths() {
@@ -48,6 +54,7 @@ public class ListClassPath extends Dialog {
         dialog.visible = true
  */
         // create a dialog with ok and cancel buttons and a question icon
-        MessageDialog.openConfirm(this.shell, "Confirm", "Please confirm");
+        //MessageDialog.openConfirm(getShell(), "Confirm", "Please confirm");
     }
+
 }
