@@ -18,6 +18,9 @@
  */
 package org.orbisgis.ui.editors.groovy.handlers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.swt.widgets.TreeItem;
@@ -30,11 +33,9 @@ import org.jkiss.dbeaver.model.navigator.DBNDataSource;
 import org.jkiss.dbeaver.ui.navigator.database.DatabaseNavigatorView;
 import org.jkiss.dbeaver.utils.RuntimeUtils;
 import org.orbisgis.core.logger.Logger;
+import org.orbisgis.ui.editors.groovy.GroovyOutputConsole.GroovyConsoleContent;
 import org.orbisgis.ui.editors.groovy.GroovyEditor;
 import org.orbisgis.ui.editors.groovy.GroovyEditorCommands;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GroovyEditorActionHandler extends AbstractHandler {
 
@@ -58,7 +59,10 @@ public class GroovyEditorActionHandler extends AbstractHandler {
             case GroovyEditorCommands.CMD_EXECUTE_SELECTION:
                 editor.executeSelection();
                 break;
-            case GroovyEditorCommands.CMD_EXECUTE_STOP:
+            case GroovyEditorCommands.CMD_GROOVY_DELETE_OUTPUT:
+            	GroovyConsoleContent.writeIntoConsole("ERASE");
+                break;
+            case GroovyEditorCommands.CMD_STOP_PROCESS:
                 editor.stop();
                 break;
             default:

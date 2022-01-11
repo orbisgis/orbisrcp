@@ -21,6 +21,7 @@ package org.orbisgis.ui.editors.groovy;
 public interface GroovyEditorCommands {
     String CMD_EXECUTE_SCRIPT = "org.orbisgis.ui.editors.groovy.execute.script";
     String CMD_EXECUTE_SELECTION = "org.orbisgis.ui.editors.groovy.execute.selection";
-    String CMD_EXECUTE_STOP = "org.orbisgis.ui.editors.groovy.execute.stop";
     String CMD_CLEAR= "org.orbisgis.ui.editors.groovy.clear";
+    String CMD_GROOVY_DELETE_OUTPUT= "org.orbisgis.ui.editors.groovy.clearOutput";
+    String CMD_STOP_PROCESS= "org.orbisgis.ui.editors.groovy.stopProcess";
 }

@@ -18,6 +18,9 @@
  */
 package org.orbisgis.ui.editors.groovy;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.IDocument;
@@ -33,9 +36,6 @@ import org.orbisgis.core.logger.Logger;
 import org.orbisgis.core.ui.Toolbar;
 import org.orbisgis.core.ui.ToolbarButton;
 import org.orbisgis.ui.editors.groovy.syntax.GroovySourceViewerConfiguration;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveablePart2 {
 
@@ -69,10 +69,10 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         groovyEditor.setLayout(gl);
 
         createControlsBar(groovyEditor);
-
+        
         GroovyEditorControl editorControl = new GroovyEditorControl(groovyEditor, this);
         super.createPartControl(editorControl);
-        editorControl.setLayoutData(new GridData(GridData.FILL_BOTH));
+        editorControl.setLayoutData(new GridData(GridData.FILL_BOTH)); 
     }
 
     private void createControlsBar(Composite editorPanel) {
@@ -93,7 +93,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_EXECUTE_SELECTION);
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_EXECUTE_SCRIPT);
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_CLEAR);
-
+        
         sideToolBar.setLayoutData(new GridData(GridData.FILL_VERTICAL | GridData.VERTICAL_ALIGN_BEGINNING));
     }
 
@@ -121,7 +121,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         }
     }
 
-    public void executeSelection(){
+    public void executeSelection() {
         this.doSave(new NullProgressMonitor());
         IDocument document = getDocument();
         if(document != null){
@@ -140,4 +140,5 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
     public GroovyJob getRunningJob() {
         return job;
     }
+
 }

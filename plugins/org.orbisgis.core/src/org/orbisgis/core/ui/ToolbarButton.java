@@ -19,8 +19,17 @@
 package org.orbisgis.core.ui;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseTrackAdapter;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
@@ -41,13 +50,12 @@ public class ToolbarButton extends Canvas {
     private String commandId;
 
     public static void create(Toolbar toolbar, IServiceLocator serviceLocator, String commandId) {
-        ToolbarButton button = new ToolbarButton(toolbar, STYLE);
+    	ToolbarButton button = new ToolbarButton(toolbar, STYLE);
         button.setCommand(serviceLocator, commandId);
     }
 
-    private ToolbarButton(Toolbar toolbar, int style) {
+    public ToolbarButton(Toolbar toolbar, int style) {
         super(toolbar, style | SWT.NO_FOCUS);
-
         setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
         addListeners();
     }
@@ -153,7 +161,7 @@ public class ToolbarButton extends Canvas {
         }
     }
 
-    private void setCommand(IServiceLocator serviceLocator, String commandId) {
+    public void setCommand(IServiceLocator serviceLocator, String commandId) {
         this.serviceLocator = serviceLocator;
         this.commandId = commandId;
         this.image = CommandUtils.getCommandImage(commandId);
