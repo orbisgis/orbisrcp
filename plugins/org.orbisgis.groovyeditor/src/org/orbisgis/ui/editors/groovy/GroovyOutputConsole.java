@@ -1,21 +1,3 @@
-package org.orbisgis.ui.editors.groovy;
-
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyleRange;
-import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.part.ViewPart;
-import org.jkiss.dbeaver.model.runtime.DBRProcessController;
-import org.jkiss.dbeaver.model.runtime.DBRProcessDescriptor;
-import org.jkiss.dbeaver.ui.ActionUtils;
-import org.jkiss.dbeaver.ui.UIUtils;
-import org.orbisgis.core.ui.ToolbarButton;
-
 /*
  * Groovy Editor (GE) is a library that brings a groovy console to the Eclipse RCP.
  * GE is developed by CNRS http://www.cnrs.fr/.
@@ -36,6 +18,24 @@ import org.orbisgis.core.ui.ToolbarButton;
  *
  * @author Adrien Bessy, CNRS
  */
+package org.orbisgis.ui.editors.groovy;
+
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.ViewPart;
+import org.jkiss.dbeaver.model.runtime.DBRProcessController;
+import org.jkiss.dbeaver.model.runtime.DBRProcessDescriptor;
+import org.jkiss.dbeaver.ui.ActionUtils;
+import org.jkiss.dbeaver.ui.UIUtils;
+import org.orbisgis.core.ui.ToolbarButton;
+
 public class GroovyOutputConsole extends ViewPart implements DBRProcessController
 {
 	static Composite group = null;
