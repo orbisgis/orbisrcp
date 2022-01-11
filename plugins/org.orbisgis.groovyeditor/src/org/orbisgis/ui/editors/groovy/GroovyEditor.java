@@ -18,8 +18,14 @@
  */
 package org.orbisgis.ui.editors.groovy;
 
+import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -93,6 +99,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_EXECUTE_SELECTION);
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_EXECUTE_SCRIPT);
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_CLEAR);
+        ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_LIST_CLASSPATHS);
         
         sideToolBar.setLayoutData(new GridData(GridData.FILL_VERTICAL | GridData.VERTICAL_ALIGN_BEGINNING));
     }
@@ -141,4 +148,27 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         return job;
     }
 
+    public void listClassPaths() {
+        System.out.println("Classloader : "
+                + Thread.currentThread().getContextClassLoader());
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        //System.out.println("((URLClassLoader) cl).getURLs() : " + ((URLClassLoader) cl).getURLs());
+        /*
+        URL[] urls = ((URLClassLoader) cl).getURLs();
+        for (URL url: urls) {
+            System.out.println(url.getFile());
+        }
+         */
+        String classpath = System.getProperty("java.class.path");
+        String[] entries = classpath.split(File.pathSeparator);
+        URL[] result = new URL[entries.length];
+        for(int i = 0; i < entries.length; i++) {
+            try {
+                result[i] = Paths.get(entries[i]).toAbsolutePath().toUri().toURL();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("urls : " + Arrays.toString(result));
+    }
 }

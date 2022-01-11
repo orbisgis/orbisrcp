@@ -55,10 +55,15 @@
             id="org.orbisgis.ui.editors.groovy.clearOutput"
             name="Delete output content"> </command>
       <command
+            categoryId="org.orbisgis.ui.editors.groovy"
+            description="Stop the running process"
+            id="org.orbisgis.ui.editors.groovy.stopProcess"
+            name="Stop the running process"> </command>
+      <command
               categoryId="org.orbisgis.ui.editors.groovy"
-              description="Stop the running process"
-              id="org.orbisgis.ui.editors.groovy.stopProcess"
-              name="Stop the running process"> </command>
+              description="List the current class paths"
+              id="org.orbisgis.ui.editors.groovy.listClasspaths"
+              name="List the current class paths"> </command>
 
    </extension>
 
@@ -68,6 +73,7 @@
       <image commandId="org.orbisgis.ui.editors.groovy.clear" icon="icons/erase.png"/>
 	  <image commandId="org.orbisgis.ui.editors.groovy.clearOutput" icon="icons/erase.png"/>
       <image commandId="org.orbisgis.ui.editors.groovy.stopProcess" icon="icons/stop.png"/>
+      <image commandId="org.orbisgis.ui.editors.groovy.listClasspaths" icon="icons/dbvis.png"/>
    </extension>
 
    <extension point="org.eclipse.ui.handlers">
@@ -94,6 +100,10 @@
       <handler
               class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
               commandId="org.orbisgis.ui.editors.groovy.stopProcess">
+      </handler>
+      <handler
+              class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
+              commandId="org.orbisgis.ui.editors.groovy.listClasspaths">
       </handler>
    </extension>
 
