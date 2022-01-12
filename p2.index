@@ -1,4 +1,4 @@
-#Wed Nov 24 13:45:07 UTC 2021
+#Tue Jan 11 17:16:20 CET 2022
+artifact.repository.factory.order=artifacts.xml.xz,artifacts.xml,\!
 version=1
 metadata.repository.factory.order=content.xml.xz,content.xml,\!
-artifact.repository.factory.order=artifacts.xml.xz,artifacts.xml,\!
