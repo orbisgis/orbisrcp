@@ -1,7 +1,7 @@
 package org.orbisgis.ui.editors.groovy;
 
 import org.eclipse.swt.widgets.MessageBox;
-
+import org.eclipse.swt.SWT;
 import java.awt.*;
 import java.io.File;
 import java.net.MalformedURLException;
