@@ -1,27 +1,26 @@
 package org.orbisgis.ui.editors.groovy;
 
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.MessageBox;
 
+import java.awt.*;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-public class ListClassPath extends TitleAreaDialog {
-    Shell shell = null;
+public class ListClassPath {
+    MessageBox dialog = null;
 
-    protected ListClassPath(Shell parentShell) {
-        super(parentShell);
-        this.shell = parentShell;
-    }
-
-    @Override
-    public Shell getShell() {
-        return shell;
+    /**
+     * Initialize a composite.
+     *
+     * @param group A given composite
+     */
+    public static void initialize(Composite group) {
+        dialog = new MessageBox(group, SWT.ICON_QUESTION | SWT.OK| SWT.CANCEL);
+        dialog.setText("My info");
+        dialog.setMessage("Do you really want to do this?");
     }
 
     public static void listClassPaths() {
@@ -46,6 +45,8 @@ public class ListClassPath extends TitleAreaDialog {
             }
         }
         System.out.println("urls : " + Arrays.toString(result));
+
+        returnCode = dialog.open();
 /*
         JOptionPane pane = swing.optionPane();
         JDialog dialog = pane.createDialog(frame, 'Classpath');
