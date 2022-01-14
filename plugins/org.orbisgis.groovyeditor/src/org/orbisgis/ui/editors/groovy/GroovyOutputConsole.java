@@ -36,6 +36,8 @@ import org.jkiss.dbeaver.ui.ActionUtils;
 import org.jkiss.dbeaver.ui.UIUtils;
 import org.orbisgis.core.ui.ToolbarButton;
 
+import java.awt.*;
+
 public class GroovyOutputConsole extends ViewPart implements DBRProcessController
 {
 	static Composite group = null;
