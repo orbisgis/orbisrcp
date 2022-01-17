@@ -1,6 +1,5 @@
-package org.orbisgis.ui.editors.groovy;
+package org.orbisgis.ui.editors.groovy.ui;
 
-import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -12,7 +11,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-class ScrollableDialog extends TitleAreaDialog {
+public class ScrollableDialog extends TitleAreaDialog {
     private String title;
     private String text;
     private String scrollableText;

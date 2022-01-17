@@ -18,14 +18,12 @@
  */
 package org.orbisgis.ui.editors.groovy;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Paths;
-import java.util.Arrays;
+
+import javax.swing.JFileChooser;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
@@ -98,6 +96,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_EXECUTE_SCRIPT);
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_CLEAR);
         ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_LIST_CLASSPATHS);
+        ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_ADD_DIR_TO_CLASSPATH);
         
         sideToolBar.setLayoutData(new GridData(GridData.FILL_VERTICAL | GridData.VERTICAL_ALIGN_BEGINNING));
     }
@@ -145,6 +144,5 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
     public GroovyJob getRunningJob() {
         return job;
     }
-
 
 }

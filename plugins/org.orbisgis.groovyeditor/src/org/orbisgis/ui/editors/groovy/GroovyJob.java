@@ -19,11 +19,8 @@
 package org.orbisgis.ui.editors.groovy;
 
 import java.io.*;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;

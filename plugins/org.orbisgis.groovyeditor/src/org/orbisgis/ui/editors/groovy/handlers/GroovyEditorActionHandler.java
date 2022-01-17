@@ -34,9 +34,9 @@ import org.jkiss.dbeaver.ui.navigator.database.DatabaseNavigatorView;
 import org.jkiss.dbeaver.utils.RuntimeUtils;
 import org.orbisgis.core.logger.Logger;
 import org.orbisgis.ui.editors.groovy.GroovyOutputConsole.GroovyConsoleContent;
+import org.orbisgis.ui.editors.groovy.ClassPathHandler;
 import org.orbisgis.ui.editors.groovy.GroovyEditor;
 import org.orbisgis.ui.editors.groovy.GroovyEditorCommands;
-import org.orbisgis.ui.editors.groovy.ListClassPath;
 
 public class GroovyEditorActionHandler extends AbstractHandler {
 
@@ -67,7 +67,10 @@ public class GroovyEditorActionHandler extends AbstractHandler {
                 editor.stop();
                 break;
             case GroovyEditorCommands.CMD_LIST_CLASSPATHS:
-                ListClassPath.listClassPaths();
+                ClassPathHandler.listClassPaths();
+                break;
+            case GroovyEditorCommands.CMD_ADD_DIR_TO_CLASSPATH:
+            	ClassPathHandler.addClasspathDir();
                 break;
             default:
                 LOGGER.error("Unsupported SQL editor command: " + actionId);
