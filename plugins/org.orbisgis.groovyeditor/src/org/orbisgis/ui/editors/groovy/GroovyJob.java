@@ -19,6 +19,7 @@
 package org.orbisgis.ui.editors.groovy;
 
 import java.io.*;
+import java.net.URLClassLoader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -42,7 +43,7 @@ public class GroovyJob extends Job {
     private static final Logger LOGGER = new Logger(GroovyJob.class);
 
     private String script;
-    private GroovyShell shell = null;
+    private static GroovyShell shell = null;
     private Binding binding;
     private String name;
     private Thread t;
@@ -65,10 +66,16 @@ public class GroovyJob extends Job {
         createOutputPrintWriter(outputFile);
 
         try {
-            shell = new GroovyShell(Thread.currentThread().getContextClassLoader(), binding, configuratorConfig);
+        	URLClassLoader classLoader = new URLClassLoader( ClassPathHandler.getExtraJarUrls(), Thread.currentThread().getContextClassLoader() );
+            //shell = new GroovyShell(Thread.currentThread().getContextClassLoader(), binding, configuratorConfig);
+        	shell = new GroovyShell(classLoader, binding, configuratorConfig);
         }  catch (Exception e) {
             LOGGER.warn("Unable to create GroovyShell instead.");
         }
+    }
+    
+    public static GroovyShell getShell() {
+    	return shell;
     }
 
     /**
