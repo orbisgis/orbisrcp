@@ -1,32 +1,23 @@
 package org.orbisgis.ui.editors.groovy;
 
-import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JFileChooser;
-import javax.swing.RootPaneContainer;
 
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.orbisgis.ui.editors.groovy.ui.ScrollableDialog;
 
-import groovy.lang.GroovyClassLoader;
-import groovy.lang.GroovyShell;
-
-
 public class ClassPathHandler{
 	
-	static URL file;
+	static URL url;
+	static List<URL> urls = new ArrayList<URL>();
 
 	public static void listClassPaths() {
+		/*
         String classpath = System.getProperty("java.class.path");
         String[] entries = classpath.split(File.pathSeparator);
         URL[] result = new URL[entries.length];
@@ -36,8 +27,8 @@ public class ClassPathHandler{
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
-        }        
-        
+        }   
+        */     
         //List<URL> urls = new ArrayList<>();
         //GroovyShell gs = GroovyJob.getShell();
         //GroovyClassLoader cl = gs.getClassLoader();
@@ -48,19 +39,16 @@ public class ClassPathHandler{
         	}
         }
         */
+        /*
         List<URL> urls = new ArrayList<URL>();
-        if (file != null) {
-	        try {
-				urls.add( file.toURI().toURL() );
-				System.out.println("urls : " + urls);
-			} catch (MalformedURLException | URISyntaxException e) {
-				e.printStackTrace();
-			}
+        if (url != null) {
+	        urls.add( url );
+			System.out.println("urls : " + urls);
 	    }
-
+	    */
+        String urlsToString = urls.toString().replace("[","").replace("]","").replace(", ", "\n").replace("file:", "");
         Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-        //ScrollableDialog dialog = new ScrollableDialog(shell, "List of class paths", "", Arrays.toString(result));
-        ScrollableDialog dialog = new ScrollableDialog(shell, "List of class paths", "", urls.toString());
+        ScrollableDialog dialog = new ScrollableDialog(shell, "List of class paths", "", urlsToString);
         dialog.open();
     }
 	
@@ -69,10 +57,11 @@ public class ClassPathHandler{
 		JFileChooser fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fc.setAcceptAllFileFilterUsed(true);
-		GroovyShell gs = GroovyJob.getShell();
 		if (fc.showDialog(null, "Add") == JFileChooser.APPROVE_OPTION) {
 			try {
-				file = fc.getSelectedFile().toURI().toURL();
+				//url = fc.getSelectedFile().toURI().toURL();
+				urls.add(fc.getSelectedFile().toURI().toURL());
+				System.out.println("urls in addClasspathDir : " + urls);
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			}
@@ -81,14 +70,8 @@ public class ClassPathHandler{
 	
 	static URL[] getExtraJarUrls() throws MalformedURLException{
 		URL[] result;
-		if (file != null) {
-	        List<URL> urls = new ArrayList<URL>();
-	        try {
-				urls.add( file.toURI().toURL() );
-				System.out.println("urls : " + urls);
-			} catch (MalformedURLException | URISyntaxException e) {
-				e.printStackTrace();
-			}
+		if (urls != null) {
+			System.out.println("urls : " + urls);
 	        result = urls.toArray( new URL[urls.size()] );
 	    }
 	    else{

@@ -43,7 +43,7 @@ public class GroovyJob extends Job {
     private static final Logger LOGGER = new Logger(GroovyJob.class);
 
     private String script;
-    private static GroovyShell shell = null;
+    private GroovyShell shell = null;
     private Binding binding;
     private String name;
     private Thread t;
@@ -72,10 +72,6 @@ public class GroovyJob extends Job {
         }  catch (Exception e) {
             LOGGER.warn("Unable to create GroovyShell instead.");
         }
-    }
-    
-    public static GroovyShell getShell() {
-    	return shell;
     }
 
     /**
