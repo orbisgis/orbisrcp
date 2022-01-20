@@ -1,3 +1,23 @@
+/*
+ * Groovy Editor (GE) is a library that brings a groovy console to the Eclipse RCP.
+ * GE is developed by CNRS http://www.cnrs.fr/.
+ *
+ * GE is part of the OrbisGIS project. GE is free software;
+ * you can redistribute it and/or modify it under the terms of the GNU Lesser
+ * General Public License as published by the Free Software Foundation;
+ * version 3.0 of the License.
+ *
+ * GE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details http://www.gnu.org/licenses.
+ *
+ *
+ *For more information, please consult: http://www.orbisgis.org
+ *or contact directly: info_at_orbisgis.org
+ *
+ * @author Adrien Bessy, CNRS
+ */
 package org.orbisgis.ui.editors.groovy.ui;
 
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -43,7 +63,6 @@ public class ScrollableDialog extends TitleAreaDialog {
     @Override
     public void create() {
         super.create();
-
         // This is not necessary; the dialog will become bigger as the text grows but at the same time,
         // the user will be able to see all (or at least more) of the error message at once
         //getShell ().setSize (300, 300);
@@ -56,7 +75,6 @@ public class ScrollableDialog extends TitleAreaDialog {
     protected void createButtonsForButtonBar(Composite parent) {
         Button okButton = createButton(parent, OK, "OK", true);
         okButton.addSelectionListener(new SelectionAdapter() {
-
             @Override
             public void widgetSelected(SelectionEvent e) {
                 close();

@@ -66,7 +66,7 @@ public class GroovyJob extends Job {
         createOutputPrintWriter(outputFile);
 
         try {
-        	URLClassLoader classLoader = new URLClassLoader( ClassPathHandler.getExtraJarUrls(), Thread.currentThread().getContextClassLoader() );
+        	URLClassLoader classLoader = new URLClassLoader( ClassPathHandler.getUrlsInArray(), Thread.currentThread().getContextClassLoader() );
             //shell = new GroovyShell(Thread.currentThread().getContextClassLoader(), binding, configuratorConfig);
         	shell = new GroovyShell(classLoader, binding, configuratorConfig);
         }  catch (Exception e) {

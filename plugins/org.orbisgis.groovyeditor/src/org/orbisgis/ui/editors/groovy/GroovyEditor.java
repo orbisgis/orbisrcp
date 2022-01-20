@@ -21,8 +21,6 @@ package org.orbisgis.ui.editors.groovy;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.swing.JFileChooser;
-
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.IDocument;
