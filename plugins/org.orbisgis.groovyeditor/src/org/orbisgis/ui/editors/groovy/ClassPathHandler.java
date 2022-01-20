@@ -16,7 +16,6 @@
  *For more information, please consult: http://www.orbisgis.org
  *or contact directly: info_at_orbisgis.org
  *
- * @author Adrien Bessy, CNRS
  */
 package org.orbisgis.ui.editors.groovy;
 
@@ -31,6 +30,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.orbisgis.ui.editors.groovy.ui.ScrollableDialog;
 
+/**
+ * Methods to handle the classPaths that are taken into account in the groovyShell runtime.
+ *
+ * @author Adrien Bessy, CNRS
+ */
 public class ClassPathHandler{
 	
 	static List<URL> urls = new ArrayList<URL>();

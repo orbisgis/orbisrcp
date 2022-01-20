@@ -16,7 +16,6 @@
  *For more information, please consult: http://www.orbisgis.org
  *or contact directly: info_at_orbisgis.org
  *
- * @author Adrien Bessy, CNRS
  */
 package org.orbisgis.ui.editors.groovy;
 
@@ -36,6 +35,11 @@ import org.jkiss.dbeaver.ui.ActionUtils;
 import org.jkiss.dbeaver.ui.UIUtils;
 import org.orbisgis.core.ui.ToolbarButton;
 
+/**
+ * Methods which are able to print the groovy standard output in a specific groovy console.
+ *
+ * @author Adrien Bessy, CNRS
+ */
 public class GroovyOutputConsole extends ViewPart implements DBRProcessController
 {
 	static Composite group = null;

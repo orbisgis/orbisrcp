@@ -16,7 +16,6 @@
  *For more information, please consult: http://www.orbisgis.org
  *or contact directly: info_at_orbisgis.org
  *
- * @author Adrien Bessy, CNRS
  */
 package org.orbisgis.ui.editors.groovy.ui;
 
@@ -31,6 +30,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+/**
+ * Methods to create and handle a scrollable dialog.
+ *
+ * @author Adrien Bessy, CNRS
+ */
 public class ScrollableDialog extends TitleAreaDialog {
     private String title;
     private String text;
