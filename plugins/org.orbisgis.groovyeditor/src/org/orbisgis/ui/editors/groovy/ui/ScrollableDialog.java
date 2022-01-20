@@ -28,7 +28,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 
 /**
  * Methods to create and handle a scrollable dialog.
@@ -57,10 +59,31 @@ public class ScrollableDialog extends TitleAreaDialog {
         gridData.grabExcessVerticalSpace = true; // Layout vertically, too! 
         gridData.verticalAlignment = GridData.FILL;
 
-        Text scrollable = new Text(composite, SWT.BORDER | SWT.V_SCROLL);
-        scrollable.setLayoutData(gridData);
-        scrollable.setText(scrollableText);
+        Table table = new Table(composite, SWT.BORDER | SWT.V_SCROLL);
+        table.setHeaderVisible(true);
+        String[] titles = { "Name", "Path" };
+        for (int loopIndex = 0; loopIndex < titles.length; loopIndex++) {
+            TableColumn column = new TableColumn(table, SWT.NULL);
+            column.setText(titles[loopIndex]);
+         }
+        
+        String[]lines = scrollableText.split(System.getProperty("line.separator"));
+        for(String path : lines){
+            TableItem item = new TableItem(table, SWT.NULL);
+            if (path != "") {
+                String[] parts = path.split("/");
+            	int length = parts.length;
+            	item.setText(0, parts[length-1]);
+            	item.setText(1, path);
+            }
+        }
 
+        for (int loopIndex = 0; loopIndex < titles.length; loopIndex++) {
+            table.getColumn(loopIndex).pack();
+          }
+        
+        table.setLayoutData(gridData);
+ 
         return composite;
     }
 

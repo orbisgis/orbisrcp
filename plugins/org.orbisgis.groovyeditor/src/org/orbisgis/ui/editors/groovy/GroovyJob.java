@@ -18,10 +18,16 @@
  */
 package org.orbisgis.ui.editors.groovy;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.URL;
 import java.net.URLClassLoader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
@@ -49,6 +55,8 @@ public class GroovyJob extends Job {
     private Thread t;
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     PrintWriter outputPrintWriter = null;
+    static URLClassLoader classLoader = null;
+    static URL[] urls=null;
 
     public GroovyJob(String name, String script) {
         super(name);
@@ -64,14 +72,20 @@ public class GroovyJob extends Job {
         File outputFile = new File(System.getProperty("java.io.tmpdir") + File.separator + name + "_output.txt");
         closeOutputPrintWriter();
         createOutputPrintWriter(outputFile);
-
+   
         try {
-        	URLClassLoader classLoader = new URLClassLoader( ClassPathHandler.getUrlsInArray(), Thread.currentThread().getContextClassLoader() );
-            //shell = new GroovyShell(Thread.currentThread().getContextClassLoader(), binding, configuratorConfig);
+        	if(urls==null) {
+            	urls =ClassPathHandler.getUrlsInArray();
+            }        	
+        	classLoader = new URLClassLoader( urls, Thread.currentThread().getContextClassLoader() );
         	shell = new GroovyShell(classLoader, binding, configuratorConfig);
         }  catch (Exception e) {
             LOGGER.warn("Unable to create GroovyShell instead.");
         }
+    }
+    
+    public static URLClassLoader getURLClassLoader() {
+		return classLoader;
     }
 
     /**
@@ -187,5 +201,18 @@ public class GroovyJob extends Job {
             return status;
         }
     }
+    
+    public void setShell(GroovyShell shell) {
+		this.shell = shell;
+	}
+
+	public void setURls(List<URL> urls2) {
+		this.urls=urls2.toArray( new URL[0] );
+		
+	}
+	
+	public static URL[] getUrls() {
+		return urls;
+	}
 
 }
