@@ -19,13 +19,14 @@
  */
 package org.orbisgis.ui.editors.groovy;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFileChooser;
-
+import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.orbisgis.ui.editors.groovy.ui.ScrollableDialog;
@@ -55,16 +56,21 @@ public class ClassPathHandler{
 	 *
 	 */
 	public static void addClasspathDir() {
-		JFileChooser fc = new JFileChooser();
-		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		fc.setAcceptAllFileFilterUsed(true);
-		if (fc.showDialog(null, "Add") == JFileChooser.APPROVE_OPTION) {
-			try {
-				urls.add(fc.getSelectedFile().toURI().toURL());
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
+		Display display = Display.getCurrent();
+	    Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+	    shell.open();
+	    DirectoryDialog dialog = new DirectoryDialog(shell);
+	    String result = dialog.open();
+		try {
+			urls.add(new File(result).toURI().toURL());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
 		}
+	    while (!shell.isDisposed()) {
+	        if (!display.readAndDispatch())
+	            display.sleep();
+	    }
+	    display.dispose();
 	}
 	
 	/**
