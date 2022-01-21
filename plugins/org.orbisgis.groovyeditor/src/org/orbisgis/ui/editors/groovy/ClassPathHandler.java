@@ -48,7 +48,7 @@ public class ClassPathHandler{
 	 *
 	 */
 	public static void showClassPaths() {
-        String urlsToString = urls.toString().replace("[","").replace("]","").replace(", ", "\n").replace("file:", "");
+        //String urlsToString = urls.toString().replace("[","").replace("]","").replace(", ", "\n").replace("file:", "");
 		URLClassLoader classLoader = GroovyJob.getURLClassLoader();
 		URL[] GroovyUrls = null;
 		if (classLoader == null) {
@@ -58,9 +58,8 @@ public class ClassPathHandler{
 			GroovyUrls = classLoader.getURLs();
 		}
 		System.out.println("GroovyUrls : " + GroovyUrls);
-
         Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-        ScrollableDialog dialog = new ScrollableDialog(shell, "List of class paths", "",urlsToString);
+        ScrollableDialog dialog = new ScrollableDialog(shell, "List of class paths", "",GroovyUrls);
         dialog.open();
     }
 	

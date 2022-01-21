@@ -19,6 +19,10 @@
  */
 package org.orbisgis.ui.editors.groovy.ui;
 
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -40,9 +44,9 @@ import org.eclipse.swt.widgets.TableItem;
 public class ScrollableDialog extends TitleAreaDialog {
     private String title;
     private String text;
-    private String scrollableText;
+    private URL[] scrollableText;
 
-    public ScrollableDialog(Shell parentShell, String title, String text, String scrollableText) {
+    public ScrollableDialog(Shell parentShell, String title, String text, URL[] scrollableText) {
         super(parentShell);
         this.title = title;
         this.text = text;
@@ -66,7 +70,7 @@ public class ScrollableDialog extends TitleAreaDialog {
             TableColumn column = new TableColumn(table, SWT.NULL);
             column.setText(titles[loopIndex]);
          }
-        
+        /*
         String[]lines = scrollableText.split(System.getProperty("line.separator"));
         for(String path : lines){
             TableItem item = new TableItem(table, SWT.NULL);
@@ -75,6 +79,23 @@ public class ScrollableDialog extends TitleAreaDialog {
             	int length = parts.length;
             	item.setText(0, parts[length-1]);
             	item.setText(1, path);
+            }
+        }
+        */
+
+        System.out.println("scrollableText : " + scrollableText);
+        List<URL> urlList = Arrays.asList(scrollableText);
+        for (URL url : urlList) {
+        	System.out.println("url : " + url);
+        	String path = url.getPath();
+        	System.out.println("path : " + path);
+            TableItem item = new TableItem(table, SWT.NULL);
+            if (path.toString() != "") {
+                String[] parts = path.toString().split("/");
+                System.out.println("parts : " + parts);
+            	int length = parts.length;
+            	item.setText(0, parts[length-1]);
+            	item.setText(1, path.toString());
             }
         }
 

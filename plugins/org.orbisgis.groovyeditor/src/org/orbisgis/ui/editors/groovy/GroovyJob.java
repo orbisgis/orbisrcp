@@ -56,7 +56,7 @@ public class GroovyJob extends Job {
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     PrintWriter outputPrintWriter = null;
     static URLClassLoader classLoader = null;
-    static URL[] urls=null;
+    static URL[] urls = new URL[0];
 
     public GroovyJob(String name, String script) {
         super(name);
@@ -207,8 +207,7 @@ public class GroovyJob extends Job {
 	}
 
 	public void setURls(List<URL> urls2) {
-		this.urls=urls2.toArray( new URL[0] );
-		
+		GroovyJob.urls = urls2.toArray( new URL[0] );
 	}
 	
 	public static URL[] getUrls() {
