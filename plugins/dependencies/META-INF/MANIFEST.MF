@@ -235,7 +235,7 @@ Export-Package:
  org.locationtech.jts.util
 Bundle-ClassPath: 
  libs/commons-1.2.0-SNAPSHOT.jar,
- libs/ivy-2.4.0.jar,
+ libs/ivy-2.5.0.jar,
  libs/jts-core-1.18.2.jar,
  libs/groovy-3.0.9.jar,
  libs/groovy-sql-3.0.9.jar,
