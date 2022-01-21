@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+	<component name="Encoding">
+		<file url="file://$PROJECT_DIR$/features/groovyeditor/src"
+			charset="UTF-8" />
+		<file
+			url="file://$PROJECT_DIR$/features/groovyeditor/src/main/resources"
+			charset="UTF-8" />
+		<file url="file://$PROJECT_DIR$/features/h2gis/src"
+			charset="UTF-8" />
+		<file
+			url="file://$PROJECT_DIR$/features/h2gis/src/main/resources"
+			charset="UTF-8" />
+		<file url="file://$PROJECT_DIR$/features/src" charset="UTF-8" />
+		<file url="file://$PROJECT_DIR$/features/src/main/resources"
+			charset="UTF-8" />
+		<file url="file://$PROJECT_DIR$/p2/src" charset="UTF-8" />
+		<file url="file://$PROJECT_DIR$/p2/src/main/resources"
+			charset="UTF-8" />
+		<file url="file://$PROJECT_DIR$/plugins/dependencies/src"
+			charset="UTF-8" />
+		<file
+			url="file://$PROJECT_DIR$/plugins/dependencies/src/main/resources"
+			charset="UTF-8" />
+		<file url="file://$PROJECT_DIR$/plugins/org.orbisgis.core/src"
+			charset="UTF-8" />
+		<file
+			url="file://$PROJECT_DIR$/plugins/org.orbisgis.core/src/main/resources"
+			charset="UTF-8" />
+		<file
+			url="file://$PROJECT_DIR$/plugins/org.orbisgis.groovyeditor/src"
+			charset="UTF-8" />
+		<file
+			url="file://$PROJECT_DIR$/plugins/org.orbisgis.groovyeditor/src/main/resources"
+			charset="UTF-8" />
+		<file url="file://$PROJECT_DIR$/plugins/org.orbisgis.h2gis/src"
+			charset="UTF-8" />
+		<file
+			url="file://$PROJECT_DIR$/plugins/org.orbisgis.h2gis/src/main/resources"
+			charset="UTF-8" />
+		<file url="file://$PROJECT_DIR$/plugins/src" charset="UTF-8" />
+		<file url="file://$PROJECT_DIR$/plugins/src/main/resources"
+			charset="UTF-8" />
+		<file url="file://$PROJECT_DIR$/src" charset="UTF-8" />
+		<file url="file://$PROJECT_DIR$/src/main/resources"
+			charset="UTF-8" />
+	</component>
+</project>
