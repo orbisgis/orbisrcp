@@ -70,7 +70,7 @@ public class GroovyEditorActionHandler extends AbstractHandler {
                 ClassPathHandler.showClassPaths();
                 break;
             case GroovyEditorCommands.CMD_ADD_DIR_TO_CLASSPATH:
-            	ClassPathHandler.addClasspathDir(editor);
+            	ClassPathHandler.addClasspathDir();
                 break;
             case GroovyEditorCommands.CMD_ADD_JAR_TO_CLASSPATH:
             	ClassPathHandler.addJarToClassPath();

@@ -20,7 +20,6 @@
 package org.orbisgis.ui.editors.groovy.ui;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -44,13 +43,13 @@ import org.eclipse.swt.widgets.TableItem;
 public class ScrollableDialog extends TitleAreaDialog {
     private String title;
     private String text;
-    private URL[] scrollableText;
+    private List<URL> urls;
 
-    public ScrollableDialog(Shell parentShell, String title, String text, URL[] scrollableText) {
+    public ScrollableDialog(Shell parentShell, String title, String text, List<URL> urls) {
         super(parentShell);
         this.title = title;
         this.text = text;
-        this.scrollableText = scrollableText;
+        this.urls = urls;
     }
 
     @Override
@@ -83,9 +82,11 @@ public class ScrollableDialog extends TitleAreaDialog {
         }
         */
 
-        System.out.println("scrollableText : " + scrollableText);
-        List<URL> urlList = Arrays.asList(scrollableText);
-        for (URL url : urlList) {
+        System.out.println("urls : " + urls);
+        //List<URL> urlList = Arrays.asList(scrollableText);
+        for (int i = 0; i < urls.size(); i++) {
+        	System.out.println("i : " + i);
+        	URL url = urls.get(i);
         	System.out.println("url : " + url);
         	String path = url.getPath();
         	System.out.println("path : " + path);

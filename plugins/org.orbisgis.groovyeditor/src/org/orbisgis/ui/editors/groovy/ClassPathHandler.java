@@ -22,7 +22,6 @@ package org.orbisgis.ui.editors.groovy;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,17 +48,9 @@ public class ClassPathHandler{
 	 */
 	public static void showClassPaths() {
         //String urlsToString = urls.toString().replace("[","").replace("]","").replace(", ", "\n").replace("file:", "");
-		URLClassLoader classLoader = GroovyJob.getURLClassLoader();
-		URL[] GroovyUrls = null;
-		if (classLoader == null) {
-			GroovyUrls = GroovyJob.getUrls();
-		}
-		else {
-			GroovyUrls = classLoader.getURLs();
-		}
-		System.out.println("GroovyUrls : " + GroovyUrls);
+		System.out.println("GroovyUrls.length : " + urls.size());
         Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-        ScrollableDialog dialog = new ScrollableDialog(shell, "List of class paths", "",GroovyUrls);
+        ScrollableDialog dialog = new ScrollableDialog(shell, "List of class paths", "",urls);
         dialog.open();
     }
 	
@@ -67,17 +58,13 @@ public class ClassPathHandler{
 	 * Add a classpath from a directory choosen by an user.
 	 *
 	 */
-	public static void addClasspathDir(GroovyEditor groovyEditor) {
+	public static void addClasspathDir() {
 		Display display = Display.getCurrent();
 	    Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 	    shell.open();
 	    DirectoryDialog dialog = new DirectoryDialog(shell);
 	    String result = dialog.open();
 		try {
-			GroovyJob job = groovyEditor.getRunningJob();
-			if(job!=null) {
-				job.setURls(urls);
-			}
 			urls.add(new File(result).toURI().toURL());
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
