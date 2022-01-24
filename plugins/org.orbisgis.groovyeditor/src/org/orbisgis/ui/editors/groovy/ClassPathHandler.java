@@ -77,7 +77,9 @@ public class ClassPathHandler{
 		dialog.setFilterExtensions(filterExt);
 	    String result = dialog.open();
 		try {
-			urls.add(new File(result + "!/").toURI().toURL());
+			if (result != null) {
+				urls.add(new File(result + "!/").toURI().toURL());
+			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
