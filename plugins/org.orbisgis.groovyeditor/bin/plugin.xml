@@ -64,6 +64,16 @@
               description="List the current class paths"
               id="org.orbisgis.ui.editors.groovy.listClasspaths"
               name="List the current class paths"> </command>
+      <command
+              categoryId="org.orbisgis.ui.editors.groovy"
+              description="Add directory to classPath"
+              id="org.orbisgis.ui.editors.groovy.addDirectoryToClasspaths"
+              name="Add directory to classPath"> </command>
+      <command
+              categoryId="org.orbisgis.ui.editors.groovy"
+              description="Add jar to classPath"
+              id="org.orbisgis.ui.editors.groovy.addJarToClasspath"
+              name="Add jar to classPath"> </command>
 
    </extension>
 
@@ -74,6 +84,8 @@
 	  <image commandId="org.orbisgis.ui.editors.groovy.clearOutput" icon="icons/erase.png"/>
       <image commandId="org.orbisgis.ui.editors.groovy.stopProcess" icon="icons/stop.png"/>
       <image commandId="org.orbisgis.ui.editors.groovy.listClasspaths" icon="icons/dbvis.png"/>
+      <image commandId="org.orbisgis.ui.editors.groovy.addDirectoryToClasspaths" icon="icons/project.png"/>
+<image commandId="org.orbisgis.ui.editors.groovy.addJarToClasspath" icon="icons/jar.png"/>
    </extension>
 
    <extension point="org.eclipse.ui.handlers">
@@ -104,6 +116,14 @@
       <handler
               class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
               commandId="org.orbisgis.ui.editors.groovy.listClasspaths">
+      </handler>
+      <handler
+              class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
+              commandId="org.orbisgis.ui.editors.groovy.addDirectoryToClasspaths">
+      </handler>
+      <handler
+              class="org.orbisgis.ui.editors.groovy.handlers.GroovyEditorActionHandler"
+              commandId="org.orbisgis.ui.editors.groovy.addJarToClasspath">
       </handler>
    </extension>
 

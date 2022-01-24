@@ -36,19 +36,17 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 /**
- * Methods to create and handle a scrollable dialog.
+ * Methods to create and handle a dialog showing a table of urls.
  *
  * @author Adrien Bessy, CNRS
  */
 public class ScrollableDialog extends TitleAreaDialog {
     private String title;
-    private String text;
     private List<URL> urls;
 
-    public ScrollableDialog(Shell parentShell, String title, String text, List<URL> urls) {
+    public ScrollableDialog(Shell parentShell, String title, List<URL> urls) {
         super(parentShell);
         this.title = title;
-        this.text = text;
         this.urls = urls;
     }
 
@@ -65,37 +63,20 @@ public class ScrollableDialog extends TitleAreaDialog {
         Table table = new Table(composite, SWT.BORDER | SWT.V_SCROLL);
         table.setHeaderVisible(true);
         String[] titles = { "Name", "Path" };
+        
         for (int loopIndex = 0; loopIndex < titles.length; loopIndex++) {
             TableColumn column = new TableColumn(table, SWT.NULL);
             column.setText(titles[loopIndex]);
          }
-        /*
-        String[]lines = scrollableText.split(System.getProperty("line.separator"));
-        for(String path : lines){
-            TableItem item = new TableItem(table, SWT.NULL);
-            if (path != "") {
-                String[] parts = path.split("/");
-            	int length = parts.length;
-            	item.setText(0, parts[length-1]);
-            	item.setText(1, path);
-            }
-        }
-        */
 
-        System.out.println("urls : " + urls);
-        //List<URL> urlList = Arrays.asList(scrollableText);
         for (int i = 0; i < urls.size(); i++) {
-        	System.out.println("i : " + i);
         	URL url = urls.get(i);
-        	System.out.println("url : " + url);
         	String path = url.getPath();
-        	System.out.println("path : " + path);
             TableItem item = new TableItem(table, SWT.NULL);
             if (path.toString() != "") {
                 String[] parts = path.toString().split("/");
-                System.out.println("parts : " + parts);
             	int length = parts.length;
-            	item.setText(0, parts[length-1]);
+            	item.setText(0, parts[length-1].replace("!", ""));
             	item.setText(1, path.toString());
             }
         }
@@ -116,8 +97,6 @@ public class ScrollableDialog extends TitleAreaDialog {
         // the user will be able to see all (or at least more) of the error message at once
         //getShell ().setSize (300, 300);
         setTitle(title);
-        setMessage(text);
-
     }
 
     @Override

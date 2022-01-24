@@ -27,14 +27,13 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.orbisgis.ui.editors.groovy.ui.ScrollableDialog;
 
 /**
- * Methods to handle the classPaths that are taken into account in the groovyShell runtime.
+ * Methods to handle the urls that are taken into account as classPaths in the groovyShell runtime.
  *
  * @author Adrien Bessy, CNRS
  */
@@ -43,25 +42,21 @@ public class ClassPathHandler{
 	static List<URL> urls = new ArrayList<URL>();
 
 	/**
-	 * List the classpaths that are used by the groovy shell.
+	 * Open a dialog showing the list of urls.
 	 *
 	 */
 	public static void showClassPaths() {
-        //String urlsToString = urls.toString().replace("[","").replace("]","").replace(", ", "\n").replace("file:", "");
-		System.out.println("GroovyUrls.length : " + urls.size());
         Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-        ScrollableDialog dialog = new ScrollableDialog(shell, "List of class paths", "",urls);
+        ScrollableDialog dialog = new ScrollableDialog(shell, "List of class paths",urls);
         dialog.open();
     }
 	
 	/**
-	 * Add a classpath from a directory choosen by an user.
+	 * Add a directory path, choosen by the user, to the list of urls.
 	 *
 	 */
-	public static void addClasspathDir() {
-		Display display = Display.getCurrent();
+	public static void addDirPathToPathList() {
 	    Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-	    shell.open();
 	    DirectoryDialog dialog = new DirectoryDialog(shell);
 	    String result = dialog.open();
 		try {
@@ -69,38 +64,33 @@ public class ClassPathHandler{
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-	    while (!shell.isDisposed()) {
-	        if (!display.readAndDispatch())
-	            display.sleep();
-	    }
-	    display.dispose();
 	}
 	
 	/**
-	 * Add a jar to classPath.
+	 * Add a jar path, choosen by the user, to the list of urls.
 	 *
 	 */
-	public static void addJarToClassPath() {
+	public static void addJarPathToPathList() {
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		FileDialog dialog = new FileDialog( shell, SWT.SINGLE );
 		String[] filterExt = { "*.jar" };
 		dialog.setFilterExtensions(filterExt);
 	    String result = dialog.open();
 		try {
-			urls.add(new File(result).toURI().toURL());
+			urls.add(new File(result + "!/").toURI().toURL());
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	/**
-	 * Get the list of classPath urls in URL[].
+	 * Transform the ArrayList of urls to URL[] and retrieve it.
 	 *
 	 */
 	static URL[] getUrlsInArray() throws MalformedURLException{
 		URL[] result;
 		if (urls != null) {
-	        result = urls.toArray( new URL[0] );
+	        result = urls.toArray( new URL[urls.size()] );
 	    }
 	    else{
 	        result = new URL[0];

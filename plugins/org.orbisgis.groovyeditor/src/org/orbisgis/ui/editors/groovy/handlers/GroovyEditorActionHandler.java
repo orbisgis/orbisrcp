@@ -70,10 +70,10 @@ public class GroovyEditorActionHandler extends AbstractHandler {
                 ClassPathHandler.showClassPaths();
                 break;
             case GroovyEditorCommands.CMD_ADD_DIR_TO_CLASSPATH:
-            	ClassPathHandler.addClasspathDir();
+            	ClassPathHandler.addDirPathToPathList();
                 break;
             case GroovyEditorCommands.CMD_ADD_JAR_TO_CLASSPATH:
-            	ClassPathHandler.addJarToClassPath();
+            	ClassPathHandler.addJarPathToPathList();
                 break;
             default:
                 LOGGER.error("Unsupported SQL editor command: " + actionId);
