@@ -92,7 +92,7 @@ public class ClassPathHandler{
 	static URL[] getUrlsInArray() throws MalformedURLException{
 		URL[] result;
 		if (urls != null) {
-	        result = urls.toArray( new URL[urls.size()] );
+	        result = urls.toArray( new URL[0] );
 	    }
 	    else{
 	        result = new URL[0];
