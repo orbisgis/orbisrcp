@@ -18,7 +18,12 @@
  */
 package org.orbisgis.ui.editors.groovy;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.URLClassLoader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -63,9 +68,10 @@ public class GroovyJob extends Job {
         File outputFile = new File(System.getProperty("java.io.tmpdir") + File.separator + name + "_output.txt");
         closeOutputPrintWriter();
         createOutputPrintWriter(outputFile);
-
+   
         try {
-            shell = new GroovyShell(Thread.currentThread().getContextClassLoader(), binding, configuratorConfig);
+        	URLClassLoader classLoader = new URLClassLoader( ClassPathHandler.getUrlsInArray(), Thread.currentThread().getContextClassLoader() );
+        	shell = new GroovyShell(classLoader, binding, configuratorConfig);
         }  catch (Exception e) {
             LOGGER.warn("Unable to create GroovyShell instead.");
         }
@@ -184,5 +190,9 @@ public class GroovyJob extends Job {
             return status;
         }
     }
+    
+    public void setShell(GroovyShell shell) {
+		this.shell = shell;
+	}
 
 }
