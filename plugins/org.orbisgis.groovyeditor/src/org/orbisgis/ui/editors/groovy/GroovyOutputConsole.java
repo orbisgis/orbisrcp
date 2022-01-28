@@ -105,6 +105,20 @@ public class GroovyOutputConsole extends ViewPart implements DBRProcessControlle
 	    	display = PlatformUI.getWorkbench().getDisplay();
 	    	text.setLayoutData(new GridData());
 		}
+		
+		/**
+		 * Write the file name into the groovy output console.
+		 *
+		 * @param fileName the file name
+		 */
+		public static void writeFileNameIntoConsole(String fileName) {
+			Display.getDefault().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					text.setText(fileName + "\n\n");
+				}
+			});
+		}
 
 		/**
 		 * Write the standard output into the groovy output console.
@@ -137,23 +151,14 @@ public class GroovyOutputConsole extends ViewPart implements DBRProcessControlle
 						style1 = new StyleRange(text.getText().length(), message_END.length(), display.getSystemColor(SWT.COLOR_GREEN), null);
 						text.setText(text.getText() + message_END);
 						text.setStyleRange(style1);
-						for (int i = -1; (i = text.getText().indexOf("groovy>", i + 1)) != -1; i++) {
-						    StyleRange style1 = new StyleRange(i, 7, display.getSystemColor(SWT.COLOR_BLUE), null);
-						    text.setStyleRange(style1);
-						}
 					}
 					else if (message.equals("BAD_END")) {
 						style1 = new StyleRange(text.getText().length(), message_BAD_END.length(), display.getSystemColor(SWT.COLOR_RED), null);
 						text.setText(text.getText() + message_BAD_END);
 						text.setStyleRange(style1);
-						for (int i = -1; (i = text.getText().indexOf("groovy>", i + 1)) != -1; i++) {
-						    StyleRange style1 = new StyleRange(i, 7, display.getSystemColor(SWT.COLOR_BLUE), null);
-						    text.setStyleRange(style1);
-						}
 					}
 					else {
-				    	text.setText(text.getText() + "\n"
-				    			+ "groovy> " + message);
+				    	text.setText(text.getText() + message);
 					}
 				}
 			});
