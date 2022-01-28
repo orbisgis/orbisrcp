@@ -187,5 +187,13 @@
             parentId="org.eclipse.ui.textEditorScope">
       </context>
    </extension>
-
+<!-- 
+	<extension
+	      point="org.eclipse.ui.genericeditor.contentAssistProcessors">
+	   <contentAssistProcessor
+	         class="org.orbisgis.ui.editors.groovy.utils.TodoPropertiesContentAssistProcessor"
+	         contentType="com.vogella.ide.contenttype.tasks">
+	   </contentAssistProcessor>
+	</extension>
+-->
 </plugin>
