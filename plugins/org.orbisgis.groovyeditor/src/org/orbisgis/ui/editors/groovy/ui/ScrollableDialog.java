@@ -19,6 +19,7 @@
  */
 package org.orbisgis.ui.editors.groovy.ui;
 
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 
@@ -35,6 +36,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
+import groovy.lang.GroovySystem;
+
 /**
  * Methods to create and handle a dialog showing a table of urls.
  *
@@ -42,7 +45,7 @@ import org.eclipse.swt.widgets.TableItem;
  */
 public class ScrollableDialog extends TitleAreaDialog {
     private String title;
-    private List<URL> urls;
+    private List<URL> urls; 
 
     public ScrollableDialog(Shell parentShell, String title, List<URL> urls) {
         super(parentShell);
@@ -62,7 +65,7 @@ public class ScrollableDialog extends TitleAreaDialog {
 
         Table table = new Table(composite, SWT.BORDER | SWT.V_SCROLL);
         table.setHeaderVisible(true);
-        String[] titles = { "Name", "Path" };
+        String[] titles = { "Name", "Path", "Class file number" };
         
         for (int loopIndex = 0; loopIndex < titles.length; loopIndex++) {
             TableColumn column = new TableColumn(table, SWT.NULL);
@@ -76,8 +79,13 @@ public class ScrollableDialog extends TitleAreaDialog {
             if (path.toString() != "") {
                 String[] parts = path.toString().split("/");
             	int length = parts.length;
+            	
+            	int fileNumber = countFile(path);
+            	System.out.println("fileNumber : " + fileNumber);
+                
             	item.setText(0, parts[length-1].replace("!", ""));
             	item.setText(1, path.toString());
+            	item.setText(2, "" + fileNumber);
             }
         }
 
@@ -89,6 +97,24 @@ public class ScrollableDialog extends TitleAreaDialog {
  
         return composite;
     }
+    
+    private int countFile(String dirPath) { 
+    	int countFile = 0;
+        File f = new File(dirPath); 
+        File[] files = f.listFiles(); 
+     
+        if (files != null) 
+        for (int i = 0; i < files.length; i++) { 
+        	File file = files[i]; 
+        	if(file.getName().endsWith(".class")){
+        		countFile++; 
+        	}
+            if (file.isDirectory()) {    
+            	countFile(file.getAbsolutePath());  
+            } 
+        } 
+        return countFile;
+    } 
 
     @Override
     public void create() {
@@ -97,6 +123,7 @@ public class ScrollableDialog extends TitleAreaDialog {
         // the user will be able to see all (or at least more) of the error message at once
         //getShell ().setSize (300, 300);
         setTitle(title);
+        setMessage("Groovy version : " + GroovySystem.getVersion());
     }
 
     @Override
