@@ -46,6 +46,7 @@ import groovy.lang.GroovySystem;
 public class ScrollableDialog extends TitleAreaDialog {
     private String title;
     private List<URL> urls; 
+    private int countFile = 0;
 
     public ScrollableDialog(Shell parentShell, String title, List<URL> urls) {
         super(parentShell);
@@ -86,6 +87,7 @@ public class ScrollableDialog extends TitleAreaDialog {
             	item.setText(0, parts[length-1].replace("!", ""));
             	item.setText(1, path.toString());
             	item.setText(2, "" + fileNumber);
+            	countFile = 0;
             }
         }
 
@@ -99,20 +101,22 @@ public class ScrollableDialog extends TitleAreaDialog {
     }
     
     private int countFile(String dirPath) { 
-    	int countFile = 0;
         File f = new File(dirPath); 
         File[] files = f.listFiles(); 
      
-        if (files != null) 
-        for (int i = 0; i < files.length; i++) { 
-        	File file = files[i]; 
-        	if(file.getName().endsWith(".class")){
-        		countFile++; 
-        	}
-            if (file.isDirectory()) {    
-            	countFile(file.getAbsolutePath());  
-            } 
-        } 
+        if (files != null) { 
+	        for (int i = 0; i < files.length; i++) { 
+	        	System.out.println("i : " + i);
+	        	File file = files[i]; 
+	        	if(file.getName().endsWith(".class")){
+	        		countFile++; 
+	        		System.out.println("countFile : " + countFile);
+	        	}
+	            if (file.isDirectory()) {    
+	            	countFile(file.getAbsolutePath());  
+	            } 
+	        } 
+        }
         return countFile;
     } 
 
