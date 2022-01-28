@@ -32,9 +32,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISaveablePart2;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
 import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.jkiss.dbeaver.ui.UIUtils;
+import org.jkiss.dbeaver.ui.controls.VerticalButton;
+import org.jkiss.dbeaver.ui.controls.VerticalFolder;
 import org.orbisgis.core.logger.Logger;
-import org.orbisgis.core.ui.Toolbar;
-import org.orbisgis.core.ui.ToolbarButton;
 import org.orbisgis.ui.editors.groovy.syntax.GroovySourceViewerConfiguration;
 
 public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveablePart2 {
@@ -83,20 +84,25 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
             LOGGER.warn("Unable to get Groovy script icon.", e);
         }
 
-        Toolbar sideToolBar = new Toolbar(editorPanel, SWT.LEFT);
+        VerticalFolder sideToolBar = new VerticalFolder(editorPanel, SWT.LEFT);
+        sideToolBar.setCheckCommandEnablement(true);
+        ((GridLayout)sideToolBar.getLayout()).marginTop = 3;
+        ((GridLayout)sideToolBar.getLayout()).marginBottom = 10;
+        ((GridLayout)sideToolBar.getLayout()).verticalSpacing = 3;
+        
+        VerticalButton.create(sideToolBar, SWT.LEFT | SWT.PUSH, getSite(), GroovyEditorCommands.CMD_EXECUTE_SELECTION, false);
+        VerticalButton.create(sideToolBar, SWT.LEFT | SWT.PUSH, getSite(), GroovyEditorCommands.CMD_EXECUTE_SCRIPT, false);
+        VerticalButton.create(sideToolBar, SWT.LEFT | SWT.PUSH, getSite(), GroovyEditorCommands.CMD_CLEAR, false);
+        UIUtils.createEmptyLabel(sideToolBar, 1, 1).setLayoutData(new GridData(GridData.FILL_VERTICAL));
+        VerticalButton.create(sideToolBar, SWT.LEFT | SWT.PUSH, getSite(), GroovyEditorCommands.CMD_LIST_CLASSPATHS, false);
+        VerticalButton.create(sideToolBar, SWT.LEFT | SWT.PUSH, getSite(), GroovyEditorCommands.CMD_ADD_DIR_TO_CLASSPATH, false);
+        VerticalButton.create(sideToolBar, SWT.LEFT | SWT.PUSH, getSite(), GroovyEditorCommands.CMD_ADD_JAR_TO_CLASSPATH, false);
 
         GridLayout layout = (GridLayout)sideToolBar.getLayout();
         layout.marginTop = SIDE_TOOLBAR_MARGIN_TOP;
         layout.marginBottom = SIDE_TOOLBAR_MARGIN_BOTTOM;
         layout.verticalSpacing = SIDE_TOOLBAR_VERTICAL_SPACING;
 
-        ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_EXECUTE_SELECTION);
-        ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_EXECUTE_SCRIPT);
-        ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_CLEAR);
-        ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_LIST_CLASSPATHS);
-        ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_ADD_DIR_TO_CLASSPATH);
-        ToolbarButton.create(sideToolBar, getSite(), GroovyEditorCommands.CMD_ADD_JAR_TO_CLASSPATH);
-        
         sideToolBar.setLayoutData(new GridData(GridData.FILL_VERTICAL | GridData.VERTICAL_ALIGN_BEGINNING));
     }
 
