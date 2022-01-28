@@ -34,3 +34,5 @@ plugins/dependencies/bin/
 plugins/org.orbisgis.core/bin/
 plugins/org.orbisgis.groovyeditor/bin/
 plugins/org.orbisgis.h2gis/bin/
+plugins/org.orbisgis.h2gis/bin/plugin.xml
+bin/
