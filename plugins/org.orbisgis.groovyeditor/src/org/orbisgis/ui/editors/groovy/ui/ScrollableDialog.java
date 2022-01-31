@@ -95,7 +95,7 @@ public class ScrollableDialog extends TitleAreaDialog {
                 
             	item.setText(0, parts[length-1].replace("!", ""));
             	item.setText(1, path.toString());
-            	item.setText(2, "" + fileNumber);
+            	item.setText(2, "" + fileNumber);	
             }
         }
 
