@@ -87,6 +87,9 @@ public class GroovyJob extends Job {
         if(result != null){
             message = result.toString();
         }
+        if(status == IStatus.OK) {
+            LOGGER.info(message);
+        }
         return new Status(IStatus.OK, GroovyJob.class.getName(), message);
     }
 
@@ -124,6 +127,7 @@ public class GroovyJob extends Job {
                 GroovyConsoleContent.writeFileNameIntoConsole(name);
                 GroovyConsoleContent.writeIntoConsole(outputStream, true);
                 GroovyConsoleContent.writeIntoConsole("END");
+                LOGGER.trace(outputStream);
                 status = IStatus.OK;
             } catch (Exception e){
                 e.printStackTrace(pw);
@@ -131,7 +135,6 @@ public class GroovyJob extends Job {
             	GroovyConsoleContent.writeFileNameIntoConsole(name);
                 GroovyConsoleContent.writeIntoConsole(sStackTrace);
                 GroovyConsoleContent.writeIntoConsole("BAD_END");
-                System.err.println("Error in the groovy file");
                 LOGGER.trace(sStackTrace);   
                 status = IStatus.ERROR;
             }
