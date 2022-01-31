@@ -102,5 +102,16 @@ public class ClassPathHandler{
 	    }
 	    return result;
 	}
+	
+	/**
+	 * Delete one URL in the urls list.
+	 * @param index the index of the urls list to remove
+	 *
+	 */
+	public static void deleteOneURL(int index) throws MalformedURLException{
+		if (index <= urls.size()) {
+	        urls.remove(index);
+	    }
+	}
 
 }

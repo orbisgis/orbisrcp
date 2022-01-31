@@ -21,24 +21,35 @@ package org.orbisgis.ui.editors.groovy.ui;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.orbisgis.ui.editors.groovy.ClassPathHandler;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 import groovy.lang.GroovySystem;
 
@@ -75,17 +86,17 @@ public class ScrollableDialog extends TitleAreaDialog {
 
         Table table = new Table(composite, SWT.BORDER | SWT.V_SCROLL);
         table.setHeaderVisible(true);
-        String[] titles = { "Name", "Path", "Class file number" };
+        String[] titles = { "Name", "Path", "Class file number", "" };
         
         for (int loopIndex = 0; loopIndex < titles.length; loopIndex++) {
-            TableColumn column = new TableColumn(table, SWT.NULL);
+            TableColumn column = new TableColumn(table, SWT.CENTER);
             column.setText(titles[loopIndex]);
          }
 
         for (int i = 0; i < urls.size(); i++) {
         	URL url = urls.get(i);
         	String path = url.getPath().toString().replace("/d:", "");
-            TableItem item = new TableItem(table, SWT.NULL);
+            TableItem item = new TableItem(table, SWT.CENTER);
             if (path != "") {
                 String[] parts = path.split("/");
             	int length = parts.length;
@@ -95,8 +106,26 @@ public class ScrollableDialog extends TitleAreaDialog {
                 
             	item.setText(0, parts[length-1].replace("!", ""));
             	item.setText(1, path);
-            	item.setText(2, "" + fileNumber);	
+            	item.setText(2, "" + fileNumber);
+            	
+                TableEditor editor = new TableEditor(table);
+                editor.horizontalAlignment = SWT.RIGHT;
+                editor.grabHorizontal = true;
+                Button deleteButton = new Button(table, SWT.PUSH );
+                deleteButton.setToolTipText("Remove this path");
+                Bundle bundle = FrameworkUtil.getBundle(getClass());
+                String pathImage = "/icons/stop.png";
+                URL imageUrl = FileLocator.find(bundle, new Path(pathImage), null);
+                ImageDescriptor imageDesc = ImageDescriptor.createFromURL(imageUrl);
+                Image image = imageDesc.createImage();
+                deleteButton.setImage(image);
+                deleteButton.pack();
+                editor.minimumWidth = deleteButton.getSize().x;
+                editor.horizontalAlignment = SWT.CENTER;
+                editor.setEditor(deleteButton, item, 3);
+                deleteButton.addListener(SWT.Selection, new SelectionListener(item, deleteButton, i));
             }
+           
         }
 
         for (int loopIndex = 0; loopIndex < titles.length; loopIndex++) {
@@ -106,6 +135,33 @@ public class ScrollableDialog extends TitleAreaDialog {
         table.setLayoutData(gridData);
  
         return composite;
+    }
+    
+    /**
+     * Method to remove the choosen path from the dialog and the corresponding choosen url from the static urls list in ClassPathHandler class.
+     *
+     * @author Adrien Bessy, CNRS
+     */
+    class SelectionListener implements Listener {
+        TableItem item;
+        Button deleteButton;
+        int index;
+
+        public SelectionListener(TableItem item, Button deleteButton, int index) {
+            this.item = item;
+            this.deleteButton = deleteButton;
+            this.index = index;
+        }
+
+        public void handleEvent(Event event) {
+            try {
+				ClassPathHandler.deleteOneURL(index);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+            this.deleteButton.dispose();
+            this.item.dispose();
+        }
     }
     
 	/**
