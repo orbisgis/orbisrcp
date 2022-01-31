@@ -18,13 +18,9 @@
  */
 package org.orbisgis.ui.editors.groovy;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URLClassLoader;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.codehaus.groovy.control.CompilerConfiguration;
@@ -39,7 +35,6 @@ import org.orbisgis.ui.editors.groovy.logger.GroovyLogger;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
-import groovy.lang.MissingPropertyException;
 import groovy.transform.ThreadInterrupt;
 
 public class GroovyJob extends Job {
@@ -64,42 +59,12 @@ public class GroovyJob extends Job {
         
         CompilerConfiguration configuratorConfig = new CompilerConfiguration(System.getProperties());
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
-
-        File outputFile = new File(System.getProperty("java.io.tmpdir") + File.separator + name + "_output.txt");
-        closeOutputPrintWriter();
-        createOutputPrintWriter(outputFile);
    
         try {
         	URLClassLoader classLoader = new URLClassLoader( ClassPathHandler.getUrlsInArray(), Thread.currentThread().getContextClassLoader() );
         	shell = new GroovyShell(classLoader, binding, configuratorConfig);
         }  catch (Exception e) {
             LOGGER.warn("Unable to create GroovyShell instead.");
-        }
-    }
-
-    /**
-     * Create a PrintWriter for a given file.
-     *
-     * @param outputFile The given file
-     */
-    void createOutputPrintWriter(File outputFile) {
-        try {
-            outputPrintWriter = new PrintWriter(new FileOutputStream(
-                    outputFile,
-                    true));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Close a PrintWriter.
-     *
-     */
-    void closeOutputPrintWriter() {
-        if (outputPrintWriter != null) {
-            outputPrintWriter.close();
-            outputPrintWriter = null;
         }
     }
 
@@ -122,6 +87,9 @@ public class GroovyJob extends Job {
         if(result != null){
             message = result.toString();
         }
+        if(status == IStatus.OK) {
+            LOGGER.info(message);
+        }
         return new Status(IStatus.OK, GroovyJob.class.getName(), message);
     }
 
@@ -131,7 +99,6 @@ public class GroovyJob extends Job {
         if(t.isAlive()) {
             t.interrupt();
         }
-        closeOutputPrintWriter();
     }
 
     private class GroovyRunnable implements Runnable{
@@ -157,28 +124,19 @@ public class GroovyJob extends Job {
             try {
                 shell.run(script,name, new String[] {});
                 String outputStream = shell.getProperty("out").toString();
+                GroovyConsoleContent.writeFileNameIntoConsole(name);
                 GroovyConsoleContent.writeIntoConsole(outputStream, true);
                 GroovyConsoleContent.writeIntoConsole("END");
+                LOGGER.trace(outputStream);
                 status = IStatus.OK;
-                closeOutputPrintWriter();
-            } catch (MissingPropertyException e){
+            } catch (Exception e){
                 e.printStackTrace(pw);
                 String sStackTrace = sw.toString();
+            	GroovyConsoleContent.writeFileNameIntoConsole(name);
                 GroovyConsoleContent.writeIntoConsole(sStackTrace);
-                LocalDateTime now = LocalDateTime.now();
-                outputPrintWriter.write("\n" + dtf.format(now) + "\n" + sStackTrace);
-                GroovyConsoleContent.writeIntoConsole("BAD_END");   
+                GroovyConsoleContent.writeIntoConsole("BAD_END");
+                LOGGER.trace(sStackTrace);   
                 status = IStatus.ERROR;
-                closeOutputPrintWriter();
-            } catch(Exception e){
-                e.printStackTrace(pw);
-                String sStackTrace = sw.toString();
-                GroovyConsoleContent.writeIntoConsole(sStackTrace);
-                LocalDateTime now = LocalDateTime.now();
-                outputPrintWriter.write("\n" + dtf.format(now) + "\n" + sStackTrace);
-                GroovyConsoleContent.writeIntoConsole("BAD_END");   
-                status = IStatus.ERROR;
-                closeOutputPrintWriter();
             }
         }
 
