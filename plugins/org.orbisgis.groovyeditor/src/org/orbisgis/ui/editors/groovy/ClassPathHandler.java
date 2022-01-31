@@ -87,6 +87,7 @@ public class ClassPathHandler{
 	
 	/**
 	 * Transform the ArrayList of urls to URL[] and retrieve it.
+	 * @return A list of URLs
 	 *
 	 */
 	static URL[] getUrlsInArray() throws MalformedURLException{

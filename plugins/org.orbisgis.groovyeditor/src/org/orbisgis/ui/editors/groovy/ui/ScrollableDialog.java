@@ -20,8 +20,12 @@
 package org.orbisgis.ui.editors.groovy.ui;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
@@ -54,6 +58,11 @@ public class ScrollableDialog extends TitleAreaDialog {
         this.urls = urls;
     }
 
+	/**
+	 * Create a dialog displaying the modules, its paths and the class number for each module loaded in groovyShell.
+	 *
+	 * @param parent the parent composite
+	 */
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite composite = (Composite) super.createDialogArea (parent); // Let the dialog create the parent composite
@@ -81,13 +90,12 @@ public class ScrollableDialog extends TitleAreaDialog {
                 String[] parts = path.toString().split("/");
             	int length = parts.length;
             	
-            	int fileNumber = countFile(path);
-            	System.out.println("fileNumber : " + fileNumber);
+            	int fileNumber = countClassFile(path);
+            	countFile = 0;
                 
             	item.setText(0, parts[length-1].replace("!", ""));
             	item.setText(1, path.toString());
             	item.setText(2, "" + fileNumber);
-            	countFile = 0;
             }
         }
 
@@ -100,23 +108,44 @@ public class ScrollableDialog extends TitleAreaDialog {
         return composite;
     }
     
-    private int countFile(String dirPath) { 
-        File f = new File(dirPath); 
-        File[] files = f.listFiles(); 
-     
-        if (files != null) { 
-	        for (int i = 0; i < files.length; i++) { 
-	        	System.out.println("i : " + i);
-	        	File file = files[i]; 
-	        	if(file.getName().endsWith(".class")){
-	        		countFile++; 
-	        		System.out.println("countFile : " + countFile);
-	        	}
-	            if (file.isDirectory()) {    
-	            	countFile(file.getAbsolutePath());  
-	            } 
-	        } 
-        }
+	/**
+	 * Count class files in jar or directory.
+	 *
+	 * @param path the path of a directory or a jar
+	 */
+    private int countClassFile(String path) { 
+    	if(path.endsWith("!")){
+    		String jarPath = path.replace("!", "");
+	    	try (JarFile jarFile = new JarFile(jarPath)){
+				final Enumeration<JarEntry> entries = jarFile.entries();
+				while (entries.hasMoreElements()) {
+		            final JarEntry entry = entries.nextElement();
+		            if (entry.getName().contains(".")) {
+		                if(entry.getName().endsWith(".class")){
+			        		countFile++; 
+			        	}
+		            }
+		        }
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
+    	else {
+	        File f = new File(path); 
+	        File[] files = f.listFiles(); 
+	     
+	        if (files != null) { 
+		        for (int i = 0; i < files.length; i++) { 
+		        	File file = files[i]; 
+		        	if(file.getName().endsWith(".class")){
+		        		countFile++; 
+		        	}
+		            if (file.isDirectory()) {    
+		            	countClassFile(file.getAbsolutePath());  
+		            } 
+		        } 
+	        }
+    	}
         return countFile;
     } 
 
