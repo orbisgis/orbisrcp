@@ -61,11 +61,8 @@ public class GroovyJob extends Job {
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
    
         try {
-        	System.out.println("ClassPathHandler.getUrlsInArray() : " + ClassPathHandler.getUrlsInArray());
         	URLClassLoader classLoader = new URLClassLoader( ClassPathHandler.getUrlsInArray(), Thread.currentThread().getContextClassLoader() );
-        	System.out.println("after URLClassLoader");
         	shell = new GroovyShell(classLoader, binding, configuratorConfig);
-        	System.out.println("after GroovyShell");
         }  catch (Exception e) {
             LOGGER.warn("Unable to create GroovyShell instead.");
         }
@@ -73,17 +70,13 @@ public class GroovyJob extends Job {
 
     @Override
     protected IStatus run(IProgressMonitor iProgressMonitor) {
-    	System.out.println("before GroovyRunnable");
         GroovyRunnable run = new GroovyRunnable(shell, name, script, binding);
-        System.out.println("after GroovyRunnable");
         t = new Thread(run);
         t.start();
-        System.out.println("after t.start();");
         int status = IStatus.ERROR;
         try {
             t.join();
             status = run.getStatus();
-            System.out.println("after run.getStatus();");
         } catch (InterruptedException e) {
             LOGGER.error("Unable to execute the Groovy script thread.", e);
         } catch (Exception e){

@@ -61,7 +61,8 @@ public class ClassPathHandler{
 	    DirectoryDialog dialog = new DirectoryDialog(shell);
 	    String result = dialog.open();
 		try {
-			urls.add(new File(result).toURI().toURL());
+			URL url = new File("///d:" + result).toURI().toURL();
+			urls.add(url);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}

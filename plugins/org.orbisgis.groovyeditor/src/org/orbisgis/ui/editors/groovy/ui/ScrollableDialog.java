@@ -84,17 +84,17 @@ public class ScrollableDialog extends TitleAreaDialog {
 
         for (int i = 0; i < urls.size(); i++) {
         	URL url = urls.get(i);
-        	String path = url.getPath();
+        	String path = url.getPath().toString().replace("/d:", "");
             TableItem item = new TableItem(table, SWT.NULL);
-            if (path.toString() != "") {
-                String[] parts = path.toString().split("/");
+            if (path != "") {
+                String[] parts = path.split("/");
             	int length = parts.length;
             	
             	int fileNumber = countClassFile(path);
             	countFile = 0;
                 
             	item.setText(0, parts[length-1].replace("!", ""));
-            	item.setText(1, path.toString());
+            	item.setText(1, path);
             	item.setText(2, "" + fileNumber);	
             }
         }
