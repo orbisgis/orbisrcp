@@ -30,11 +30,6 @@
 			<artifactId>org.orbisgis.core</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-		    <groupId>org.eclipse.lsp4j</groupId>
-		    <artifactId>org.eclipse.lsp4j</artifactId>
-		    <version>0.12.0</version>
-		</dependency>
 	</dependencies>
 
 </project>
