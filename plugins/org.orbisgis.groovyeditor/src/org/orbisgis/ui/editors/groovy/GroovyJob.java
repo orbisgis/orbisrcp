@@ -127,6 +127,7 @@ public class GroovyJob extends Job {
                 GroovyConsoleContent.writeFileNameIntoConsole(name);
                 GroovyConsoleContent.writeIntoConsole(outputStream, true);
                 GroovyConsoleContent.writeIntoConsole("END");
+                LOGGER.trace(outputStream);
                 status = IStatus.OK;
             } catch (Exception e){
                 e.printStackTrace(pw);
