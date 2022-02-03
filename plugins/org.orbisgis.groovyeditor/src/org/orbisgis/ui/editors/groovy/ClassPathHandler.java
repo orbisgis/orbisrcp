@@ -47,7 +47,6 @@ public class ClassPathHandler{
 	 */
 	public static void showClassPaths() {
         Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-        System.out.println("urls : " + urls);
         ScrollableDialog dialog = new ScrollableDialog(shell, "List of class paths", urls);
         dialog.open();
     }
