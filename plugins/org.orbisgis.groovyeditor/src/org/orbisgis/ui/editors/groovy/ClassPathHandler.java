@@ -47,7 +47,7 @@ public class ClassPathHandler{
 	 */
 	public static void showClassPaths() {
         Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-        ScrollableDialog dialog = new ScrollableDialog(shell, "List of class paths",urls);
+        ScrollableDialog dialog = new ScrollableDialog(shell, "List of class paths", urls);
         dialog.open();
     }
 	
@@ -60,7 +60,8 @@ public class ClassPathHandler{
 	    DirectoryDialog dialog = new DirectoryDialog(shell);
 	    String result = dialog.open();
 		try {
-			urls.add(new File(result).toURI().toURL());
+			URL url = new File("///d:" + result).toURI().toURL();
+			urls.add(url);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -87,6 +88,7 @@ public class ClassPathHandler{
 	
 	/**
 	 * Transform the ArrayList of urls to URL[] and retrieve it.
+	 * @return A list of URLs
 	 *
 	 */
 	static URL[] getUrlsInArray() throws MalformedURLException{
@@ -98,6 +100,17 @@ public class ClassPathHandler{
 	        result = new URL[0];
 	    }
 	    return result;
+	}
+	
+	/**
+	 * Delete one URL in the urls list.
+	 * @param index the index of the urls list to remove
+	 *
+	 */
+	public static void deleteOneURL(int index) throws MalformedURLException{
+		if (index <= urls.size()) {
+	        urls.remove(index);
+	    }
 	}
 
 }
