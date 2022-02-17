@@ -22,11 +22,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
+import org.eclipse.lsp4j.CompletionItem;
+import org.eclipse.lsp4j.CompletionList;
+import org.eclipse.lsp4j.Position;
+import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.TextDocumentItem;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -39,6 +46,9 @@ import org.jkiss.dbeaver.ui.controls.VerticalButton;
 import org.jkiss.dbeaver.ui.controls.VerticalFolder;
 import org.orbisgis.core.logger.Logger;
 import org.orbisgis.ui.editors.groovy.syntax.GroovySourceViewerConfiguration;
+
+import net.prominic.groovyls.GroovyServices;
+import net.prominic.groovyls.config.CompilationUnitFactory;
 
 public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveablePart2 {
 
@@ -82,8 +92,11 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         IDocument document = getDocument();
         System.out.println("\n document.get() : " + document.get());
         
-        Path workspaceRoot = Paths.get(System.getProperty("user.dir")).resolve(PATH_WORKSPACE);
-        Path srcRoot = workspaceRoot.resolve(PATH_SRC);
+        String LANGUAGE_GROOVY = "groovy";
+        Path workspaceRoot = Paths.get(System.getProperty("user.dir")).resolve("/home/adrien/.local/share/DBeaverData/workspace6/General/Groovy/");
+        Path srcRoot = workspaceRoot.resolve("/home/adrien/.local/share/DBeaverData/workspace6/General/Groovy/Script-5.groovy");
+        GroovyServices services = new GroovyServices(new CompilationUnitFactory());
+        services.setWorkspaceRoot(workspaceRoot);
         Path filePath = srcRoot.resolve("Completion.groovy");
 		String uri = filePath.toUri().toString();
         StringBuilder contents = new StringBuilder();
@@ -93,8 +106,24 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
 		contents.append("    localVar.\n");
 		contents.append("  }\n");
 		contents.append("}");
-		
-		
+		TextDocumentItem textDocumentItem = new TextDocumentItem(uri, LANGUAGE_GROOVY, 1, contents.toString());
+		System.out.println("\n textDocumentItem : " + textDocumentItem);
+		//services.didOpen(new DidOpenTextDocumentParams(textDocumentItem));
+		TextDocumentIdentifier textDocument = new TextDocumentIdentifier(uri);
+		System.out.println("\n textDocument : " + textDocument);
+
+		Position position = new Position(3, 13);
+		Either<List<CompletionItem>, CompletionList> result;
+		/*
+		try {
+			result = services.completion(new CompletionParams(textDocument, position)).get();
+			System.out.println("\n result : " + result);
+			System.out.println("\n result.isLeft() : " + result.isLeft());
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 */
     }
 
     private void createControlsBar(Composite editorPanel) {
