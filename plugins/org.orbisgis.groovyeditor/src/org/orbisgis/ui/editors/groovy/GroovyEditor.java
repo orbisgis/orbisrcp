@@ -20,6 +20,8 @@ package org.orbisgis.ui.editors.groovy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -52,6 +54,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         super();
         setKeyBindingScopes(new String[]{"org.orbisgis.ui.editors.groovy"});
         setSourceViewerConfiguration(new GroovySourceViewerConfiguration());
+        System.out.println("\n in GroovyEditor() \n");
     }
 
     @Override
@@ -74,6 +77,24 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         GroovyEditorControl editorControl = new GroovyEditorControl(groovyEditor, this);
         super.createPartControl(editorControl);
         editorControl.setLayoutData(new GridData(GridData.FILL_BOTH)); 
+        
+        System.out.println("\n in createPartControl(Composite parent)");
+        IDocument document = getDocument();
+        System.out.println("\n document.get() : " + document.get());
+        
+        Path workspaceRoot = Paths.get(System.getProperty("user.dir")).resolve(PATH_WORKSPACE);
+        Path srcRoot = workspaceRoot.resolve(PATH_SRC);
+        Path filePath = srcRoot.resolve("Completion.groovy");
+		String uri = filePath.toUri().toString();
+        StringBuilder contents = new StringBuilder();
+		contents.append("class Completion {\n");
+		contents.append("  public Completion() {\n");
+		contents.append("    String localVar\n");
+		contents.append("    localVar.\n");
+		contents.append("  }\n");
+		contents.append("}");
+		
+		
     }
 
     private void createControlsBar(Composite editorPanel) {
