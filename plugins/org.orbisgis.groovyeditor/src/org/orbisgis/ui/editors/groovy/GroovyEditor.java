@@ -20,9 +20,12 @@ package org.orbisgis.ui.editors.groovy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -30,10 +33,17 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.lsp4j.CompletionItem;
 import org.eclipse.lsp4j.CompletionList;
+import org.eclipse.lsp4j.CompletionParams;
+import org.eclipse.lsp4j.DidOpenTextDocumentParams;
+import org.eclipse.lsp4j.MessageActionItem;
+import org.eclipse.lsp4j.MessageParams;
 import org.eclipse.lsp4j.Position;
+import org.eclipse.lsp4j.PublishDiagnosticsParams;
+import org.eclipse.lsp4j.ShowMessageRequestParams;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.TextDocumentItem;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
+import org.eclipse.lsp4j.services.LanguageClient;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -93,12 +103,45 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         System.out.println("\n document.get() : " + document.get());
         
         String LANGUAGE_GROOVY = "groovy";
-        Path workspaceRoot = Paths.get(System.getProperty("user.dir")).resolve("/home/adrien/.local/share/DBeaverData/workspace6/General/Groovy/");
-        Path srcRoot = workspaceRoot.resolve("/home/adrien/.local/share/DBeaverData/workspace6/General/Groovy/Script-5.groovy");
+        //Path workspaceRoot = Paths.get(System.getProperty("user.home")).resolve(".local/share/DBeaverData/workspace6/General/Groovy/");
+        Path workspaceRoot = Paths.get(System.getProperty("user.dir")).resolve("./build/test_workspace/");
+        Path srcRoot = workspaceRoot.resolve("./src/main/groovy");
+    	if (!Files.exists(workspaceRoot)) {
+    		workspaceRoot.toFile().mkdirs();
+		}
         GroovyServices services = new GroovyServices(new CompilationUnitFactory());
         services.setWorkspaceRoot(workspaceRoot);
-        Path filePath = srcRoot.resolve("Completion.groovy");
+        services.connect(new LanguageClient() {
+
+			@Override
+			public void telemetryEvent(Object object) {
+
+			}
+
+			@Override
+			public CompletableFuture<MessageActionItem> showMessageRequest(ShowMessageRequestParams requestParams) {
+				return null;
+			}
+
+			@Override
+			public void showMessage(MessageParams messageParams) {
+
+			}
+
+			@Override
+			public void publishDiagnostics(PublishDiagnosticsParams diagnostics) {
+
+			}
+
+			@Override
+			public void logMessage(MessageParams message) {
+
+			}
+		});
+        Path filePath = workspaceRoot.resolve("Completion.groovy");
+        //Path filePath = workspaceRoot.resolve("Script-5.groovy");
 		String uri = filePath.toUri().toString();
+		System.out.println("\n uri : " + uri);
         StringBuilder contents = new StringBuilder();
 		contents.append("class Completion {\n");
 		contents.append("  public Completion() {\n");
@@ -106,14 +149,24 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
 		contents.append("    localVar.\n");
 		contents.append("  }\n");
 		contents.append("}");
-		TextDocumentItem textDocumentItem = new TextDocumentItem(uri, LANGUAGE_GROOVY, 1, contents.toString());
+		TextDocumentItem textDocumentItem = new TextDocumentItem(uri, LANGUAGE_GROOVY, 3, contents.toString());
 		System.out.println("\n textDocumentItem : " + textDocumentItem);
-		//services.didOpen(new DidOpenTextDocumentParams(textDocumentItem));
+		services.didOpen(new DidOpenTextDocumentParams(textDocumentItem));
 		TextDocumentIdentifier textDocument = new TextDocumentIdentifier(uri);
 		System.out.println("\n textDocument : " + textDocument);
 
 		Position position = new Position(3, 13);
-		Either<List<CompletionItem>, CompletionList> result;
+		try {
+			Either<List<CompletionItem>, CompletionList> result= services.completion(new CompletionParams(textDocument, position)).get();
+			System.out.println("\n result : " + result);
+			System.out.println("\n result.isLeft() : " + result.isLeft());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		/*
 		try {
 			result = services.completion(new CompletionParams(textDocument, position)).get();

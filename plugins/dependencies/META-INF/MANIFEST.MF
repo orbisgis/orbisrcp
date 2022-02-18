@@ -183,6 +183,7 @@ Export-Package:
  org.codehaus.groovy.vmplugin.v9,
  org.eclipse.lsp4j,
  org.eclipse.lsp4j.jsonrpc.messages,
+ org.eclipse.lsp4j.services,
  org.locationtech.jts,
  org.locationtech.jts.algorithm,
  org.locationtech.jts.algorithm.distance,
