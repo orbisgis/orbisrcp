@@ -10,6 +10,8 @@ import java.util.concurrent.ExecutionException;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
+import org.eclipse.jface.text.contentassist.CompletionProposal;
+import org.eclipse.jface.text.contentassist.ContextInformation;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
@@ -34,6 +36,7 @@ import net.prominic.groovyls.config.CompilationUnitFactory;
 public class GroovyCompletionProcessor implements IContentAssistProcessor {
 	
 	private List<String> elements;
+	private ICompletionProposal info;
 	
     /**
      * Constructeur. Initialise la liste des elements disponibles
@@ -140,19 +143,22 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 				System.out.println("\n column : " + column);
 				
 				Position position = new Position((int) line, column);
+				Either<List<CompletionItem>, CompletionList> result = null;
 				try {
-					Either<List<CompletionItem>, CompletionList> result= services.completion(new CompletionParams(textDocument, position)).get();
+					result = services.completion(new CompletionParams(textDocument, position)).get();
 					System.out.println("\n result : " + result);
 					System.out.println("\n result.isLeft() : " + result.isLeft());
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
+				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
 				}
+				List<CompletionItem> items = result.getLeft();
+				System.out.println("\n items : " + items);
 				
-				
+				ICompletionProposal[] proposals = null;
+				if (items.size() > 0) {
+				    proposals = buildProposals(items, currWord, offset - currWord.length());
+				}
+				return proposals;
 		    }catch (Exception e) {
 		    	return null;
 		    }
@@ -160,8 +166,32 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 		    // Pas de texte dans le document, donc pas de completion disponible ! 
 		    return null;
 		}
-		return null;
 	}
+	
+	 /**
+     * Construit la liste des elements d'autocompletion a partir des elements 
+     * disponibles.
+     * @param availableElements la liste des elements disponibles
+     * @param replacedWord le mot a remplacer dans l'editeur
+     * @param offset la position du curseur dans le document
+     * @return la liste des suggestions d'autocompletion
+     */
+    private ICompletionProposal[] buildProposals(List<CompletionItem> availableElements, String replacedWord, int offset) {
+		ICompletionProposal[] proposals = new ICompletionProposal[availableElements.size()];
+		int index = 0;
+		String stringBeforePoint = replacedWord.split("\\.")[0];
+		System.out.println("stringBeforePoint : " + stringBeforePoint);
+		// Create proposals from model elements.
+		for (CompletionItem proposal : availableElements) {
+		    IContextInformation contextInfo = new ContextInformation(null, stringBeforePoint + proposal.getLabel());
+		    proposals[index] = new CompletionProposal(replacedWord + proposal.getLabel(), offset,
+			    replacedWord.length(), replacedWord.length() + proposal.getLabel().length(), 
+			    null, proposal.getLabel(), 
+			    contextInfo, proposal.getDetail());
+		    index++;
+		}
+		return proposals;
+    }
 
 	@Override
 	public IContextInformation[] computeContextInformation(ITextViewer viewer, int offset) {
