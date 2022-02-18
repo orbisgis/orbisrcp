@@ -21,8 +21,16 @@ package org.orbisgis.ui.editors.groovy.syntax;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.text.DefaultInformationControl;
+import org.eclipse.jface.text.DefaultInformationControl.IInformationPresenter;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IInformationControl;
+import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.jface.text.TextPresentation;
+import org.eclipse.jface.text.contentassist.ContentAssistant;
+import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
@@ -35,16 +43,71 @@ import org.eclipse.jface.text.rules.NumberRule;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
+import org.eclipse.jface.text.source.ISharedTextColors;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
+import org.orbisgis.ui.editors.groovy.GroovyCompletionProcessor;
 
-public class GroovySourceViewerConfiguration extends SourceViewerConfiguration {
+public class GroovySourceViewerConfiguration extends TextSourceViewerConfiguration {
+	
     public ITokenScanner tokenScanner;
+	private IInformationPresenter presenter;
 
-    public GroovySourceViewerConfiguration(){
-        tokenScanner = createTokenScanner();
+    /**
+     * Constructeur.
+     * @param sharedColors
+     * @param preferenceStore
+     */
+    public GroovySourceViewerConfiguration(final ISharedTextColors sharedColors, IPreferenceStore preferenceStore) {
+    	super(preferenceStore);
+    	System.out.println("\n in GroovySourceViewerConfiguration constructor");
+	
+		presenter = new DefaultInformationControl.IInformationPresenter() {
+		    @Override
+		    public String updatePresentation(Display display, String hoverInfo,
+			    TextPresentation presentation, int maxWidth, int maxHeight) {
+			// Mise en gras du "titre" (reference et avionneur)
+			int firstColon = (hoverInfo.indexOf(':') != -1 ? hoverInfo.indexOf(':') : 0);
+			StyleRange title = new StyleRange(0, firstColon, null, null, SWT.BOLD |
+				SWT.ITALIC);
+			presentation.addStyleRange(title);
+			return hoverInfo;
+		    }
+		};
+		tokenScanner = createTokenScanner();
+    }
+    
+    @Override
+    public IContentAssistant getContentAssistant(final ISourceViewer sourceViewer) {
+		ContentAssistant assistant = new ContentAssistant();
+		assistant.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
+		GroovyCompletionProcessor processor = new GroovyCompletionProcessor();
+		assistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
+		assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
+		// Insere automatiquement la seule possibilite si elle est unique
+		assistant.enableAutoInsert(true);
+		// Autorise l'"autoactivation", i.e. le declenchement sur des caracteres particuliers
+		assistant.enableAutoActivation(true);
+		// Affiche la ligne de statut en bas de la popup de l'assistant
+		assistant.setStatusLineVisible(true);
+		assistant.setStatusMessage("Available planes to insert");
+		return assistant;
+    }
+
+
+    @Override
+    public IInformationControlCreator getInformationControlCreator(ISourceViewer sourceViewer) {
+		return new IInformationControlCreator() {
+		    @Override
+		    public IInformationControl createInformationControl(Shell parent) {
+			return new DefaultInformationControl(parent, presenter);
+		    }
+		};
     }
 
     @Override

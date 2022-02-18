@@ -73,7 +73,8 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
     public GroovyEditor(){
         super();
         setKeyBindingScopes(new String[]{"org.orbisgis.ui.editors.groovy"});
-        setSourceViewerConfiguration(new GroovySourceViewerConfiguration());
+        //setSourceViewerConfiguration(new GroovySourceViewerConfiguration());
+        this.setSourceViewerConfiguration(new GroovySourceViewerConfiguration(getSharedColors(), getPreferenceStore()));
         System.out.println("\n in GroovyEditor() \n");
     }
 
@@ -91,12 +92,22 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         gl.marginHeight = 0;
         gl.marginWidth = 0;
         groovyEditor.setLayout(gl);
-
+        
         createControlsBar(groovyEditor);
         
         GroovyEditorControl editorControl = new GroovyEditorControl(groovyEditor, this);
         super.createPartControl(editorControl);
         editorControl.setLayoutData(new GridData(GridData.FILL_BOTH)); 
+        
+        /*
+        ControlDecoration deco = new ControlDecoration(editorControl, SWT.TOP | SWT.LEFT);
+    	Image image = FieldDecorationRegistry.getDefault()
+    			.getFieldDecoration(FieldDecorationRegistry.DEC_INFORMATION)
+    			.getImage();
+		deco.setDescriptionText("Utilisez CTRL + ESPACE pour voir la liste des mots-cles.");
+		deco.setImage(image);
+		deco.setShowOnlyOnFocus(true);
+		*/
         
         System.out.println("\n in createPartControl(Composite parent)");
         IDocument document = getDocument();
