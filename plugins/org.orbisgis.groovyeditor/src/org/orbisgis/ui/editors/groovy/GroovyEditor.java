@@ -20,30 +20,11 @@ package org.orbisgis.ui.editors.groovy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
-import org.eclipse.lsp4j.CompletionItem;
-import org.eclipse.lsp4j.CompletionList;
-import org.eclipse.lsp4j.CompletionParams;
-import org.eclipse.lsp4j.DidOpenTextDocumentParams;
-import org.eclipse.lsp4j.MessageActionItem;
-import org.eclipse.lsp4j.MessageParams;
-import org.eclipse.lsp4j.Position;
-import org.eclipse.lsp4j.PublishDiagnosticsParams;
-import org.eclipse.lsp4j.ShowMessageRequestParams;
-import org.eclipse.lsp4j.TextDocumentIdentifier;
-import org.eclipse.lsp4j.TextDocumentItem;
-import org.eclipse.lsp4j.jsonrpc.messages.Either;
-import org.eclipse.lsp4j.services.LanguageClient;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -56,9 +37,6 @@ import org.jkiss.dbeaver.ui.controls.VerticalButton;
 import org.jkiss.dbeaver.ui.controls.VerticalFolder;
 import org.orbisgis.core.logger.Logger;
 import org.orbisgis.ui.editors.groovy.syntax.GroovySourceViewerConfiguration;
-
-import net.prominic.groovyls.GroovyServices;
-import net.prominic.groovyls.config.CompilationUnitFactory;
 
 public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveablePart2 {
 
@@ -113,6 +91,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         IDocument document = getDocument();
         System.out.println("\n document.get() : " + document.get());
         
+        /*
         String LANGUAGE_GROOVY = "groovy";
         //Path workspaceRoot = Paths.get(System.getProperty("user.home")).resolve(".local/share/DBeaverData/workspace6/General/Groovy/");
         Path workspaceRoot = Paths.get(System.getProperty("user.dir")).resolve("./build/test_workspace/");
@@ -178,6 +157,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 		/*
 		try {
 			result = services.completion(new CompletionParams(textDocument, position)).get();
