@@ -51,9 +51,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
     public GroovyEditor(){
         super();
         setKeyBindingScopes(new String[]{"org.orbisgis.ui.editors.groovy"});
-        //setSourceViewerConfiguration(new GroovySourceViewerConfiguration());
-        this.setSourceViewerConfiguration(new GroovySourceViewerConfiguration(getSharedColors(), getPreferenceStore()));
-        System.out.println("\n in GroovyEditor() \n");
+        setSourceViewerConfiguration(new GroovySourceViewerConfiguration());
     }
 
     @Override
@@ -75,99 +73,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         
         GroovyEditorControl editorControl = new GroovyEditorControl(groovyEditor, this);
         super.createPartControl(editorControl);
-        editorControl.setLayoutData(new GridData(GridData.FILL_BOTH)); 
-        
-        /*
-        ControlDecoration deco = new ControlDecoration(editorControl, SWT.TOP | SWT.LEFT);
-    	Image image = FieldDecorationRegistry.getDefault()
-    			.getFieldDecoration(FieldDecorationRegistry.DEC_INFORMATION)
-    			.getImage();
-		deco.setDescriptionText("Utilisez CTRL + ESPACE pour voir la liste des mots-cles.");
-		deco.setImage(image);
-		deco.setShowOnlyOnFocus(true);
-		*/
-        
-        System.out.println("\n in createPartControl(Composite parent)");
-        IDocument document = getDocument();
-        System.out.println("\n document.get() : " + document.get());
-        
-        /*
-        String LANGUAGE_GROOVY = "groovy";
-        //Path workspaceRoot = Paths.get(System.getProperty("user.home")).resolve(".local/share/DBeaverData/workspace6/General/Groovy/");
-        Path workspaceRoot = Paths.get(System.getProperty("user.dir")).resolve("./build/test_workspace/");
-        Path srcRoot = workspaceRoot.resolve("./src/main/groovy");
-    	if (!Files.exists(workspaceRoot)) {
-    		workspaceRoot.toFile().mkdirs();
-		}
-        GroovyServices services = new GroovyServices(new CompilationUnitFactory());
-        services.setWorkspaceRoot(workspaceRoot);
-        services.connect(new LanguageClient() {
-
-			@Override
-			public void telemetryEvent(Object object) {
-
-			}
-
-			@Override
-			public CompletableFuture<MessageActionItem> showMessageRequest(ShowMessageRequestParams requestParams) {
-				return null;
-			}
-
-			@Override
-			public void showMessage(MessageParams messageParams) {
-
-			}
-
-			@Override
-			public void publishDiagnostics(PublishDiagnosticsParams diagnostics) {
-
-			}
-
-			@Override
-			public void logMessage(MessageParams message) {
-
-			}
-		});
-        Path filePath = workspaceRoot.resolve("Completion.groovy");
-        //Path filePath = workspaceRoot.resolve("Script-5.groovy");
-		String uri = filePath.toUri().toString();
-		System.out.println("\n uri : " + uri);
-        StringBuilder contents = new StringBuilder();
-		contents.append("class Completion {\n");
-		contents.append("  public Completion() {\n");
-		contents.append("    String localVar\n");
-		contents.append("    localVar.\n");
-		contents.append("  }\n");
-		contents.append("}");
-		TextDocumentItem textDocumentItem = new TextDocumentItem(uri, LANGUAGE_GROOVY, 3, contents.toString());
-		System.out.println("\n textDocumentItem : " + textDocumentItem);
-		services.didOpen(new DidOpenTextDocumentParams(textDocumentItem));
-		TextDocumentIdentifier textDocument = new TextDocumentIdentifier(uri);
-		System.out.println("\n textDocument : " + textDocument);
-
-		Position position = new Position(3, 13);
-		try {
-			Either<List<CompletionItem>, CompletionList> result= services.completion(new CompletionParams(textDocument, position)).get();
-			System.out.println("\n result : " + result);
-			System.out.println("\n result.isLeft() : " + result.isLeft());
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
-		/*
-		try {
-			result = services.completion(new CompletionParams(textDocument, position)).get();
-			System.out.println("\n result : " + result);
-			System.out.println("\n result.isLeft() : " + result.isLeft());
-		} catch (InterruptedException | ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 */
+        editorControl.setLayoutData(new GridData(GridData.FILL_BOTH));         
     }
 
     private void createControlsBar(Composite editorPanel) {

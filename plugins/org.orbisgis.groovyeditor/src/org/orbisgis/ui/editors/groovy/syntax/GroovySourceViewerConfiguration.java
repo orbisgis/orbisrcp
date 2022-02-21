@@ -21,14 +21,10 @@ package org.orbisgis.ui.editors.groovy.syntax;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.DefaultInformationControl.IInformationPresenter;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.TextAttribute;
-import org.eclipse.jface.text.TextPresentation;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
@@ -43,13 +39,9 @@ import org.eclipse.jface.text.rules.NumberRule;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
-import org.eclipse.jface.text.source.ISharedTextColors;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 import org.orbisgis.ui.editors.groovy.GroovyCompletionProcessor;
 
@@ -57,31 +49,16 @@ public class GroovySourceViewerConfiguration extends TextSourceViewerConfigurati
 	
     public ITokenScanner tokenScanner;
 	private IInformationPresenter presenter;
-
-    /**
-     * Constructeur.
-     * @param sharedColors
-     * @param preferenceStore
-     */
-    public GroovySourceViewerConfiguration(final ISharedTextColors sharedColors, IPreferenceStore preferenceStore) {
-    	super(preferenceStore);
-    	System.out.println("\n in GroovySourceViewerConfiguration constructor");
-	
-		presenter = new DefaultInformationControl.IInformationPresenter() {
-		    @Override
-		    public String updatePresentation(Display display, String hoverInfo,
-			    TextPresentation presentation, int maxWidth, int maxHeight) {
-			// Mise en gras du "titre" (reference et avionneur)
-			int firstColon = (hoverInfo.indexOf(':') != -1 ? hoverInfo.indexOf(':') : 0);
-			StyleRange title = new StyleRange(0, firstColon, null, null, SWT.BOLD |
-				SWT.ITALIC);
-			presentation.addStyleRange(title);
-			return hoverInfo;
-		    }
-		};
+    
+    public GroovySourceViewerConfiguration() {
 		tokenScanner = createTokenScanner();
     }
     
+	/**
+    * Allows to activate autocompletion on the text in progress
+    * @param sourceViewer the editor view
+    * @return the completion assistant
+    */
     @Override
     public IContentAssistant getContentAssistant(final ISourceViewer sourceViewer) {
 		ContentAssistant assistant = new ContentAssistant();
@@ -89,25 +66,19 @@ public class GroovySourceViewerConfiguration extends TextSourceViewerConfigurati
 		GroovyCompletionProcessor processor = new GroovyCompletionProcessor();
 		assistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
 		assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
-		// Insere automatiquement la seule possibilite si elle est unique
+		// Insert automatically the only possibility if it is unique
 		assistant.enableAutoInsert(true);
-		// Autorise l'"autoactivation", i.e. le declenchement sur des caracteres particuliers
+		// Allows the "autoactivation", i.e. the trigger on particular characters
 		assistant.enableAutoActivation(true);
-		// Affiche la ligne de statut en bas de la popup de l'assistant
+		// Show the line of status at the bottom of the assistant popup
 		assistant.setStatusLineVisible(true);
-		assistant.setStatusMessage("Available planes to insert");
+		assistant.setStatusMessage("Available words to insert");
 		return assistant;
     }
 
-
     @Override
     public IInformationControlCreator getInformationControlCreator(ISourceViewer sourceViewer) {
-		return new IInformationControlCreator() {
-		    @Override
-		    public IInformationControl createInformationControl(Shell parent) {
-			return new DefaultInformationControl(parent, presenter);
-		    }
-		};
+    	return null;
     }
 
     @Override

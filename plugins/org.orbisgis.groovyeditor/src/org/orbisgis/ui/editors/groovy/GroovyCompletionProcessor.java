@@ -1,9 +1,26 @@
+/*
+ * Groovy Editor (GE) is a library that brings a groovy console to the Eclipse RCP. 
+ * GE is developed by CNRS http://www.cnrs.fr/.
+ *
+ * GE is part of the OrbisGIS project. GE is free software;
+ * you can redistribute it and/or modify it under the terms of the GNU Lesser 
+ * General Public License as published by the Free Software Foundation;
+ * version 3.0 of the License.
+ *
+ * GE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details http://www.gnu.org/licenses.
+ *
+ *
+ *For more information, please consult: http://www.orbisgis.org
+ *or contact directly: info_at_orbisgis.org
+ */
 package org.orbisgis.ui.editors.groovy;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -33,52 +50,40 @@ import org.eclipse.lsp4j.services.LanguageClient;
 import net.prominic.groovyls.GroovyServices;
 import net.prominic.groovyls.config.CompilationUnitFactory;
 
+/**
+ * Methods to create the list of the suggested autocompletion words.
+ *
+ * @author Adrien Bessy, CNRS
+ */
 public class GroovyCompletionProcessor implements IContentAssistProcessor {
-	
-	private List<String> elements;
-	private ICompletionProposal info;
-	
-    /**
-     * Constructeur. Initialise la liste des elements disponibles
-     */
-    public GroovyCompletionProcessor() {
-		elements = new ArrayList<String>();
-		elements.add("Airbus");
-		elements.add("Rafale");
-		elements.add("Falcon 7x");
-		elements.add("B777");
-		elements.add("A380");
-    }
 
+	/**
+	* Build the list of the completion proposals provided from the Groovy Langage Server project according to the word type.
+    * @param viewer the editor view
+    * @param offset the cursor position in the document
+    * @return the list of the completion proposals
+    */
 	@Override
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int offset) {
 		IDocument document = viewer.getDocument();
-		 System.out.println("\n offset : " + offset);
 		int currOffset = offset-1;
 		String currWord = "";
 		if (currOffset >= 0) {
 		    try {
 				char currChar;
 				/*
-				 * Retrouver le debut du mot sur lequel on a declenche la completion
-				 * On se deplace d'offset en offset jusqu'a rencontrer un caractere 
-				 * de type 'whitespace' (espace, ou retour a la ligne, ...).
-				 * Chaque caractere est ajoute au debut du mot en cours de lecture
+				 * Find the start position of the word where we trigger the completion.
+				 * We move from offset to offset until we meet a space or \n character.
+				 * Each character is added at the start of the current word.
 				 */
-				
 				while (currOffset >= 0 && !Character.isWhitespace(currChar = document.getChar(currOffset))) {
 				    currWord = currChar + currWord;
+				    System.out.println("currWord : " + currWord);
 				    currOffset--;
 				}
-				System.out.println("\n currWord : " + currWord);
-				
-				//IDocument document = getDocument();
-		        System.out.println("\n document.get() : " + document.get());
 				
 				String LANGUAGE_GROOVY = "groovy";
-		        //Path workspaceRoot = Paths.get(System.getProperty("user.home")).resolve(".local/share/DBeaverData/workspace6/General/Groovy/");
 		        Path workspaceRoot = Paths.get(System.getProperty("user.dir")).resolve("./build/test_workspace/");
-		        Path srcRoot = workspaceRoot.resolve("./src/main/groovy");
 		    	if (!Files.exists(workspaceRoot)) {
 		    		workspaceRoot.toFile().mkdirs();
 				}
@@ -111,80 +116,67 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 
 					}
 				});
+		        
 		        Path filePath = workspaceRoot.resolve("Completion.groovy");
-		        //Path filePath = workspaceRoot.resolve("Script-5.groovy");
 				String uri = filePath.toUri().toString();
-				System.out.println("\n uri : " + uri);
-		        StringBuilder contents = new StringBuilder();
-				contents.append("class Completion {\n");
-				contents.append("  public Completion() {\n");
-				contents.append("    String localVar\n");
-				contents.append("    localVar.\n");
-				contents.append("  }\n");
-				contents.append("}");
 				TextDocumentItem textDocumentItem = new TextDocumentItem(uri, LANGUAGE_GROOVY, 3, document.get());
-				System.out.println("\n textDocumentItem : " + textDocumentItem);
 				services.didOpen(new DidOpenTextDocumentParams(textDocumentItem));
 				TextDocumentIdentifier textDocument = new TextDocumentIdentifier(uri);
-				System.out.println("\n textDocument : " + textDocument);
 
 				String substring =  document.get().substring(0,offset);
 				long line = substring.chars().filter(ch -> ch == '\n').count();
-				System.out.println("\n line : " + line);
 				int column = 0;
+				
 				if (line == 0) {
 					column = offset;
-				}else {
+				} else {
 					String[] allLine = substring.split("\n");
 					int length = allLine.length;
 					String lastLine = allLine[length-1];
 					column = lastLine.length();
 				}
-				System.out.println("\n column : " + column);
 				
 				Position position = new Position((int) line, column);
 				Either<List<CompletionItem>, CompletionList> result = null;
+				
 				try {
 					result = services.completion(new CompletionParams(textDocument, position)).get();
-					System.out.println("\n result : " + result);
-					System.out.println("\n result.isLeft() : " + result.isLeft());
 				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
 				}
-				List<CompletionItem> items = result.getLeft();
-				System.out.println("\n items : " + items);
 				
+				List<CompletionItem> items = result.getLeft();				
 				ICompletionProposal[] proposals = null;
+				
 				if (items.size() > 0) {
 				    proposals = buildProposals(items, currWord, offset - currWord.length());
 				}
+				
 				return proposals;
-		    }catch (Exception e) {
+		    } catch (Exception e) {
 		    	return null;
 		    }
 		} else {
-		    // Pas de texte dans le document, donc pas de completion disponible ! 
+			// no text in the document, so no available completion!
 		    return null;
 		}
 	}
 	
 	 /**
-     * Construit la liste des elements d'autocompletion a partir des elements 
-     * disponibles.
-     * @param availableElements la liste des elements disponibles
-     * @param replacedWord le mot a remplacer dans l'editeur
-     * @param offset la position du curseur dans le document
-     * @return la liste des suggestions d'autocompletion
+	 * Build the list of autocompletion elements from available elements.
+     * @param availableElements the list of available elements
+     * @param replacedWord the word to replace in the editor
+     * @param offset the cursor position in the document
+     * @return the list of the suggested autocompletion words
      */
     private ICompletionProposal[] buildProposals(List<CompletionItem> availableElements, String replacedWord, int offset) {
 		ICompletionProposal[] proposals = new ICompletionProposal[availableElements.size()];
 		int index = 0;
-		String stringBeforePoint = replacedWord.split("\\.")[0];
-		System.out.println("stringBeforePoint : " + stringBeforePoint);
+		String stringBeforePoint = replacedWord.split("\\.")[0] + ".";
 		// Create proposals from model elements.
 		for (CompletionItem proposal : availableElements) {
 		    IContextInformation contextInfo = new ContextInformation(null, stringBeforePoint + proposal.getLabel());
-		    proposals[index] = new CompletionProposal(replacedWord + proposal.getLabel(), offset,
+		    proposals[index] = new CompletionProposal(stringBeforePoint + proposal.getLabel(), offset,
 			    replacedWord.length(), replacedWord.length() + proposal.getLabel().length(), 
 			    null, proposal.getLabel(), 
 			    contextInfo, proposal.getDetail());
@@ -201,7 +193,7 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 
 	@Override
 	public char[] getCompletionProposalAutoActivationCharacters() {
-		return new char[] {'A', 'B'};
+		return null;
 	}
 
 	@Override
