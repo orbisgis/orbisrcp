@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
@@ -46,6 +47,7 @@ import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.TextDocumentItem;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.services.LanguageClient;
+import org.orbisgis.core.logger.Logger;
 
 import net.prominic.groovyls.GroovyServices;
 import net.prominic.groovyls.config.CompilationUnitFactory;
@@ -56,6 +58,8 @@ import net.prominic.groovyls.config.CompilationUnitFactory;
  * @author Adrien Bessy, CNRS
  */
 public class GroovyCompletionProcessor implements IContentAssistProcessor {
+	
+	private static final Logger LOGGER = new Logger(GroovyCompletionProcessor.class);
 	
 	private static final String LANGUAGE_GROOVY = "groovy";
 
@@ -71,91 +75,91 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 		int currOffset = offset-1;
 		String currWord = "";
 		if (currOffset >= 0) {
-		    try {
-				char currChar;
-				/*
-				 * Find the start position of the word where we trigger the completion.
-				 * We move from offset to offset until we meet a space or \n character.
-				 * Each character is added at the start of the current word.
-				 */
+			char currChar;
+			/*
+			 * Find the start position of the word where we trigger the completion.
+			 * We move from offset to offset until we meet a space or \n character.
+			 * Each character is added at the start of the current word.
+			 */
+			try {
 				while (currOffset >= 0 && !Character.isWhitespace(currChar = document.getChar(currOffset))) {
 				    currWord = currChar + currWord;
 				    currOffset--;
 				}
-				Path workspaceRoot = Paths.get(System.getProperty("user.home")).resolve(".local/share/DBeaverData/");
-		        //Path workspaceRoot = Paths.get(System.getProperty("user.dir")).resolve("./build/test_workspace/");
-		    	if (!Files.exists(workspaceRoot)) {
-		    		workspaceRoot.toFile().mkdirs();
+			} catch (BadLocationException e1) {
+				LOGGER.error("Error on getting the access to a position in a document.", e1);
+			}
+			Path workspaceRoot = Paths.get(System.getProperty("user.home")).resolve(".local/share/DBeaverData/");
+	    	if (!Files.exists(workspaceRoot)) {
+	    		workspaceRoot.toFile().mkdirs();
+			}
+	        GroovyServices services = new GroovyServices(new CompilationUnitFactory());
+	        services.setWorkspaceRoot(workspaceRoot);
+	        services.connect(new LanguageClient() {
+
+				@Override
+				public void telemetryEvent(Object object) {
+
 				}
-		        GroovyServices services = new GroovyServices(new CompilationUnitFactory());
-		        services.setWorkspaceRoot(workspaceRoot);
-		        services.connect(new LanguageClient() {
 
-					@Override
-					public void telemetryEvent(Object object) {
-
-					}
-
-					@Override
-					public CompletableFuture<MessageActionItem> showMessageRequest(ShowMessageRequestParams requestParams) {
-						return null;
-					}
-
-					@Override
-					public void showMessage(MessageParams messageParams) {
-
-					}
-
-					@Override
-					public void publishDiagnostics(PublishDiagnosticsParams diagnostics) {
-
-					}
-
-					@Override
-					public void logMessage(MessageParams message) {
-
-					}
-				});
-		        
-		        Path filePath = workspaceRoot.resolve("Completion.groovy");
-				String uri = filePath.toUri().toString();
-				TextDocumentItem textDocumentItem = new TextDocumentItem(uri, LANGUAGE_GROOVY, 3, document.get());
-				services.didOpen(new DidOpenTextDocumentParams(textDocumentItem));
-				TextDocumentIdentifier textDocument = new TextDocumentIdentifier(uri);
-
-				String substring =  document.get().substring(0,offset);
-				long line = substring.chars().filter(ch -> ch == '\n').count();
-				int column = 0;
-				
-				if (line == 0) {
-					column = offset;
-				} else {
-					String[] allLine = substring.split("\n");
-					int length = allLine.length;
-					String lastLine = allLine[length-1];
-					column = lastLine.length();
+				@Override
+				public CompletableFuture<MessageActionItem> showMessageRequest(ShowMessageRequestParams requestParams) {
+					return null;
 				}
-				
-				Position position = new Position((int) line, column);
-				Either<List<CompletionItem>, CompletionList> result = null;
-				
-				try {
-					result = services.completion(new CompletionParams(textDocument, position)).get();
-				} catch (InterruptedException | ExecutionException e) {
-					e.printStackTrace();
+
+				@Override
+				public void showMessage(MessageParams messageParams) {
+
 				}
-				
-				List<CompletionItem> items = result.getLeft();				
-				ICompletionProposal[] proposals = null;
-				
-				if (items.size() > 0) {
-				    proposals = buildProposals(items, currWord, offset - currWord.length());
+
+				@Override
+				public void publishDiagnostics(PublishDiagnosticsParams diagnostics) {
+
 				}
-				
-				return proposals;
-		    } catch (Exception e) {
-		    	return null;
-		    }
+
+				@Override
+				public void logMessage(MessageParams message) {
+
+				}
+			});
+	        
+	        Path filePath = workspaceRoot.resolve("Completion.groovy");
+			String uri = filePath.toUri().toString();
+			TextDocumentItem textDocumentItem = new TextDocumentItem(uri, LANGUAGE_GROOVY, 3, document.get());
+			services.didOpen(new DidOpenTextDocumentParams(textDocumentItem));
+			TextDocumentIdentifier textDocument = new TextDocumentIdentifier(uri);
+
+			String substring =  document.get().substring(0,offset);
+			long line = substring.chars().filter(ch -> ch == '\n').count();
+			int column = 0;
+			
+			if (line == 0) {
+				column = offset;
+			} else {
+				String[] allLine = substring.split("\n");
+				int length = allLine.length;
+				String lastLine = allLine[length-1];
+				column = lastLine.length();
+			}
+			
+			Position position = new Position((int) line, column);
+			Either<List<CompletionItem>, CompletionList> result = null;
+			
+			try {
+				result = services.completion(new CompletionParams(textDocument, position)).get();
+			} catch (InterruptedException | ExecutionException e) {
+				LOGGER.error("Error on getting the completion service result.", e);
+			}
+			
+			List<CompletionItem> items = result.getLeft();				
+			ICompletionProposal[] proposals = null;
+			
+			if (items.size() > 0) {
+			    proposals = buildProposals(items, currWord, offset - currWord.length());
+			}
+			
+			return proposals;
+
 		} else {
 			// no text in the document, so no available completion!
 		    return null;
