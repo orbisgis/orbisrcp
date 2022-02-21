@@ -56,6 +56,8 @@ import net.prominic.groovyls.config.CompilationUnitFactory;
  * @author Adrien Bessy, CNRS
  */
 public class GroovyCompletionProcessor implements IContentAssistProcessor {
+	
+	private static final String LANGUAGE_GROOVY = "groovy";
 
 	/**
 	* Build the list of the completion proposals provided from the Groovy Langage Server project according to the word type.
@@ -78,12 +80,10 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 				 */
 				while (currOffset >= 0 && !Character.isWhitespace(currChar = document.getChar(currOffset))) {
 				    currWord = currChar + currWord;
-				    System.out.println("currWord : " + currWord);
 				    currOffset--;
 				}
-				
-				String LANGUAGE_GROOVY = "groovy";
-		        Path workspaceRoot = Paths.get(System.getProperty("user.dir")).resolve("./build/test_workspace/");
+				Path workspaceRoot = Paths.get(System.getProperty("user.home")).resolve(".local/share/DBeaverData/");
+		        //Path workspaceRoot = Paths.get(System.getProperty("user.dir")).resolve("./build/test_workspace/");
 		    	if (!Files.exists(workspaceRoot)) {
 		    		workspaceRoot.toFile().mkdirs();
 				}
@@ -172,7 +172,12 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
     private ICompletionProposal[] buildProposals(List<CompletionItem> availableElements, String replacedWord, int offset) {
 		ICompletionProposal[] proposals = new ICompletionProposal[availableElements.size()];
 		int index = 0;
-		String stringBeforePoint = replacedWord.split("\\.")[0] + ".";
+		String stringBeforePoint;
+		if (replacedWord.contains(".")) {
+			stringBeforePoint = replacedWord.split("\\.")[0] + ".";
+		} else {
+			stringBeforePoint = "";
+		}
 		// Create proposals from model elements.
 		for (CompletionItem proposal : availableElements) {
 		    IContextInformation contextInfo = new ContextInformation(null, stringBeforePoint + proposal.getLabel());
