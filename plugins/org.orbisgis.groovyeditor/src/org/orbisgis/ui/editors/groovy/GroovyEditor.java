@@ -120,6 +120,12 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
             document.set("");
         }
     }
+    
+    /*
+    public String getFileName() {
+    	return getPartName();
+    }
+    */
 
     public void execute(){
         this.doSave(new NullProgressMonitor());

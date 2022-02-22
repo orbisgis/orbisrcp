@@ -47,6 +47,8 @@ import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.TextDocumentItem;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.services.LanguageClient;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
 import org.orbisgis.core.logger.Logger;
 
 import net.prominic.groovyls.GroovyServices;
@@ -123,8 +125,11 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 				}
 			});
 	        
-	        Path filePath = workspaceRoot.resolve("Completion.groovy");
+			IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			String name = activePage.getActiveEditor().getEditorInput().getName();
+	        Path filePath = workspaceRoot.resolve(name);
 			String uri = filePath.toUri().toString();
+			
 			TextDocumentItem textDocumentItem = new TextDocumentItem(uri, LANGUAGE_GROOVY, 3, document.get());
 			services.didOpen(new DidOpenTextDocumentParams(textDocumentItem));
 			TextDocumentIdentifier textDocument = new TextDocumentIdentifier(uri);
