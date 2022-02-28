@@ -6,30 +6,38 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    
-      - name: Go to dbeaver project
-        uses: actions/checkout@v2
-        with:
-          repository: dbeaver/dbeaver
-          path: dbeaver        
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Build dbeaver with maven
-        working-directory: dbeaver/
-        run: mvn clean install
-        
-      - name: Go to orbisrcp project
-        uses: actions/checkout@v2
-    
+
       - name: Set up JDK 11
         uses: actions/setup-java@v1
         with:
           java-version: 11
           
-      - name: Build orbisrcp with Maven
+      - name: Checkout DBeaver
+        uses: actions/checkout@v2
+        with:
+          repository: dbeaver/dbeaver
+          path: dbeaver
+          
+      - name: Build DBeaver
+        working-directory: dbeaver/
         run: mvn clean install
+
+      - name: Checkout GroovyLanguageServer
+        uses: actions/checkout@v2
+        with:
+          repository: GroovyLanguageServer/groovy-language-server
+          path: groovy-language-server
+
+      - name: Build GroovyLanguageServer
+        run: ./gradlew build
+        
+      - name: Checkout OrbisRCP
+        uses: actions/checkout@v2
+      
+      - name: Build OrbisRCP
+        run: |
+          cp ../groovy-language-server/build/libs/groovy-language-server.jar
+          mvn clean install
           
       - name: Unzip p2-1.0.0-SNAPSHOT.zip
         uses: montudor/action-zip@v1
