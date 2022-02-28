@@ -34,17 +34,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
-import org.eclipse.lsp4j.CompletionItem;
-import org.eclipse.lsp4j.CompletionList;
-import org.eclipse.lsp4j.CompletionParams;
-import org.eclipse.lsp4j.DidOpenTextDocumentParams;
-import org.eclipse.lsp4j.MessageActionItem;
-import org.eclipse.lsp4j.MessageParams;
-import org.eclipse.lsp4j.Position;
-import org.eclipse.lsp4j.PublishDiagnosticsParams;
-import org.eclipse.lsp4j.ShowMessageRequestParams;
-import org.eclipse.lsp4j.TextDocumentIdentifier;
-import org.eclipse.lsp4j.TextDocumentItem;
+import org.eclipse.lsp4j.*;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.services.LanguageClient;
 import org.eclipse.ui.IWorkbenchPage;
@@ -85,19 +75,19 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 			 */
 			try {
 				while (currOffset >= 0 && !Character.isWhitespace(currChar = document.getChar(currOffset))) {
-				    currWord = currChar + currWord;
-				    currOffset--;
+					currWord = currChar + currWord;
+					currOffset--;
 				}
 			} catch (BadLocationException e1) {
 				LOGGER.error("Error on getting the access to a position in a document.", e1);
 			}
 			Path workspaceRoot = Paths.get(System.getProperty("user.home")).resolve(".local/share/DBeaverData/");
-	    	if (!Files.exists(workspaceRoot)) {
-	    		workspaceRoot.toFile().mkdirs();
+			if (!Files.exists(workspaceRoot)) {
+				workspaceRoot.toFile().mkdirs();
 			}
-	        GroovyServices services = new GroovyServices(new CompilationUnitFactory());
-	        services.setWorkspaceRoot(workspaceRoot);
-	        services.connect(new LanguageClient() {
+			GroovyServices services = new GroovyServices(new CompilationUnitFactory());
+			services.setWorkspaceRoot(workspaceRoot);
+			services.connect(new LanguageClient() {
 
 				@Override
 				public void telemetryEvent(Object object) {
@@ -124,45 +114,68 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 
 				}
 			});
-	        
+
 			IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 			String name = activePage.getActiveEditor().getEditorInput().getName();
-	        Path filePath = workspaceRoot.resolve(name);
+			Path filePath = workspaceRoot.resolve(name);
 			String uri = filePath.toUri().toString();
-			
+
 			TextDocumentItem textDocumentItem = new TextDocumentItem(uri, LANGUAGE_GROOVY, 3, document.get());
 			services.didOpen(new DidOpenTextDocumentParams(textDocumentItem));
 			TextDocumentIdentifier textDocument = new TextDocumentIdentifier(uri);
 
-			String substring =  document.get().substring(0,offset);
+			String substring = document.get().substring(0, offset);
 			long line = substring.chars().filter(ch -> ch == '\n').count();
-			int column = 0;
-			
+			int column;
+
 			if (line == 0) {
 				column = offset;
 			} else {
 				String[] allLine = substring.split("\n");
 				int length = allLine.length;
-				String lastLine = allLine[length-1];
+				String lastLine = allLine[length - 1];
 				column = lastLine.length();
 			}
-			
+
 			Position position = new Position((int) line, column);
 			Either<List<CompletionItem>, CompletionList> result = null;
-			
+			SignatureHelp signatureHelp = null;
 			try {
 				result = services.completion(new CompletionParams(textDocument, position)).get();
+				signatureHelp = services.signatureHelp(new SignatureHelpParams(textDocument, position)).get();
 			} catch (InterruptedException | ExecutionException e) {
 				LOGGER.error("Error on getting the completion service result.", e);
 			}
-			
-			List<CompletionItem> items = result.getLeft();				
-			ICompletionProposal[] proposals = null;
-			
-			if (items.size() > 0) {
-			    proposals = buildProposals(items, currWord, offset - currWord.length());
+			List<SignatureInformation> signatures = signatureHelp.getSignatures();
+
+			if (signatures != null) {
+				String parameters = "";
+				if (signatures.size() != 0) {
+					SignatureInformation signature = signatures.get(0);
+					if (signature.getParameters().size() != 0) {
+						List<ParameterInformation> params = signature.getParameters();
+
+						for (int i = 0; i < signature.getParameters().size(); i++) {
+							if (!parameters.equals("")) {
+								parameters = parameters + ", " + params.get(i).getLabel().get();
+							} else {
+								parameters = parameters + params.get(i).getLabel().get();
+							}
+						}
+					}
+				}
 			}
-			
+
+			List<CompletionItem> items = null;
+			if(result.getLeft() != null) {
+				items = result.getLeft();
+			}
+			ICompletionProposal[] proposals = null;
+
+			if (items.size() > 0) {
+				proposals = buildProposals(items, currWord, offset - currWord.length(), parameters);
+			}
+
 			return proposals;
 
 		} else {
@@ -178,23 +191,53 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
      * @param offset the cursor position in the document
      * @return the list of the suggested autocompletion words
      */
-    private ICompletionProposal[] buildProposals(List<CompletionItem> availableElements, String replacedWord, int offset) {
-		ICompletionProposal[] proposals = new ICompletionProposal[availableElements.size()];
+    private ICompletionProposal[] buildProposals(List<CompletionItem> availableElements, String replacedWord, int offset, String parameters) {
 		int index = 0;
-		String stringBeforePoint;
-		if (replacedWord.contains(".")) {
-			stringBeforePoint = replacedWord.split("\\.")[0] + ".";
-		} else {
-			stringBeforePoint = "";
+
+		ICompletionProposal[] proposals;
+
+		// TO COMPLETE METHOD PARAMETERS
+		if(!parameters.equals("") && replacedWord.contains("(")){ // if There is at least one parameter
+			proposals = new ICompletionProposal[1];
+			IContextInformation contextInfo = new ContextInformation(null, replacedWord );
+			proposals[index] = new CompletionProposal(replacedWord + parameters , offset,
+					replacedWord.length(), replacedWord.length() + 1,
+					null, parameters,
+					null, null);
 		}
-		// Create proposals from model elements.
-		for (CompletionItem proposal : availableElements) {
-		    IContextInformation contextInfo = new ContextInformation(null, stringBeforePoint + proposal.getLabel());
-		    proposals[index] = new CompletionProposal(stringBeforePoint + proposal.getLabel(), offset,
-			    replacedWord.length(), replacedWord.length() + proposal.getLabel().length(), 
-			    null, proposal.getLabel(), 
-			    contextInfo, proposal.getDetail());
-		    index++;
+		else if (parameters.equals("") && replacedWord.endsWith("(")){ // if There is no parameter
+			proposals = new ICompletionProposal[1];
+			IContextInformation contextInfo = new ContextInformation(null, replacedWord );
+			proposals[index] = new CompletionProposal(replacedWord , offset,
+					replacedWord.length(), replacedWord.length(),
+					null, "No parameter",
+					null, null);
+		}
+		else { // TO COMPLETE VARIABLES AND METHODS
+			String stringBeforePoint;
+			String replacementString;
+			int cursorPosition;
+			proposals = new ICompletionProposal[availableElements.size()];
+			// Create proposals from model elements.
+			for (CompletionItem proposal : availableElements) {
+				if(!replacedWord.contains(".")){ // if the word doesn't contain a dot (to complete variables)
+					stringBeforePoint = "";
+					replacementString = stringBeforePoint + proposal.getLabel();
+					cursorPosition = proposal.getLabel().length();
+				}
+				else{ // if the word contains a dot (to complete methods)
+					stringBeforePoint = replacedWord.split("\\.")[0] + "."; // not keep what is after a dot,
+					// for example for the completion of "elements.ad", we keep "element." to give "elements.add" and not "elements.adadd"
+					replacementString = stringBeforePoint + proposal.getLabel() + "()";
+					cursorPosition = stringBeforePoint.length() + proposal.getLabel().length() + 1;
+				}
+				IContextInformation contextInfo = new ContextInformation(null, stringBeforePoint + proposal.getLabel());
+				proposals[index] = new CompletionProposal(replacementString, offset,
+						replacedWord.length(), cursorPosition,
+						null, proposal.getLabel(),
+						contextInfo, proposal.getDetail());
+				index++;
+			}
 		}
 		return proposals;
     }
