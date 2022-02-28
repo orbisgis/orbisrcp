@@ -148,8 +148,8 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 			}
 			List<SignatureInformation> signatures = signatureHelp.getSignatures();
 
+			String parameters = "";
 			if (signatures != null) {
-				String parameters = "";
 				if (signatures.size() != 0) {
 					SignatureInformation signature = signatures.get(0);
 					if (signature.getParameters().size() != 0) {
