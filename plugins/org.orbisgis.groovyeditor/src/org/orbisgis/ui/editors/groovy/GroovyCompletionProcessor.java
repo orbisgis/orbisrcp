@@ -18,9 +18,9 @@
  */
 package org.orbisgis.ui.editors.groovy;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -82,9 +82,6 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 				LOGGER.error("Error on getting the access to a position in a document.", e1);
 			}
 			Path workspaceRoot = Paths.get(System.getProperty("user.home")).resolve(".local/share/DBeaverData/");
-			if (!Files.exists(workspaceRoot)) {
-				workspaceRoot.toFile().mkdirs();
-			}
 			GroovyServices services = new GroovyServices(new CompilationUnitFactory());
 			services.setWorkspaceRoot(workspaceRoot);
 			services.connect(new LanguageClient() {
@@ -146,8 +143,11 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 			} catch (InterruptedException | ExecutionException e) {
 				LOGGER.error("Error on getting the completion service result.", e);
 			}
-			List<SignatureInformation> signatures = signatureHelp.getSignatures();
 
+			List<SignatureInformation> signatures = null;
+			if (signatureHelp != null) {
+				signatures = signatureHelp.getSignatures();
+			}
 			String parameters = "";
 			if (signatures != null) {
 				if (signatures.size() != 0) {
@@ -167,13 +167,22 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 			}
 
 			List<CompletionItem> items = null;
-			if(result.getLeft() != null) {
+			if (result != null) {
 				items = result.getLeft();
 			}
-			ICompletionProposal[] proposals = null;
+			List<String> orderedLabelList = new ArrayList<>();
+			if (items != null) {
+				for (CompletionItem proposal : items) {
+					orderedLabelList.add(proposal.getLabel());
+				}
+				orderedLabelList.sort(String::compareToIgnoreCase);
+			}
 
-			if (items.size() > 0) {
-				proposals = buildProposals(items, currWord, offset - currWord.length(), parameters);
+			ICompletionProposal[] proposals = null;
+			if (items != null) {
+				if (items.size() > 0) {
+					proposals = buildProposals(orderedLabelList, currWord, offset - currWord.length(), parameters);
+				}
 			}
 
 			return proposals;
@@ -186,12 +195,12 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 	
 	 /**
 	 * Build the list of autocompletion elements from available elements.
-     * @param availableElements the list of available elements
+     * @param orderedLabelList the list of available labels
      * @param replacedWord the word to replace in the editor
      * @param offset the cursor position in the document
      * @return the list of the suggested autocompletion words
      */
-    private ICompletionProposal[] buildProposals(List<CompletionItem> availableElements, String replacedWord, int offset, String parameters) {
+    private ICompletionProposal[] buildProposals(List<String> orderedLabelList, String replacedWord, int offset, String parameters) {
 		int index = 0;
 
 		ICompletionProposal[] proposals;
@@ -199,7 +208,6 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 		// TO COMPLETE METHOD PARAMETERS
 		if(!parameters.equals("") && replacedWord.contains("(")){ // if There is at least one parameter
 			proposals = new ICompletionProposal[1];
-			IContextInformation contextInfo = new ContextInformation(null, replacedWord );
 			proposals[index] = new CompletionProposal(replacedWord + parameters , offset,
 					replacedWord.length(), replacedWord.length() + 1,
 					null, parameters,
@@ -207,7 +215,6 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 		}
 		else if (parameters.equals("") && replacedWord.endsWith("(")){ // if There is no parameter
 			proposals = new ICompletionProposal[1];
-			IContextInformation contextInfo = new ContextInformation(null, replacedWord );
 			proposals[index] = new CompletionProposal(replacedWord , offset,
 					replacedWord.length(), replacedWord.length(),
 					null, "No parameter",
@@ -217,25 +224,25 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 			String stringBeforePoint;
 			String replacementString;
 			int cursorPosition;
-			proposals = new ICompletionProposal[availableElements.size()];
+			proposals = new ICompletionProposal[orderedLabelList.size()];
 			// Create proposals from model elements.
-			for (CompletionItem proposal : availableElements) {
+			for (String label : orderedLabelList) {
 				if(!replacedWord.contains(".")){ // if the word doesn't contain a dot (to complete variables)
 					stringBeforePoint = "";
-					replacementString = stringBeforePoint + proposal.getLabel();
-					cursorPosition = proposal.getLabel().length();
+					replacementString = stringBeforePoint + label;
+					cursorPosition = label.length();
 				}
 				else{ // if the word contains a dot (to complete methods)
 					stringBeforePoint = replacedWord.split("\\.")[0] + "."; // not keep what is after a dot,
 					// for example for the completion of "elements.ad", we keep "element." to give "elements.add" and not "elements.adadd"
-					replacementString = stringBeforePoint + proposal.getLabel() + "()";
-					cursorPosition = stringBeforePoint.length() + proposal.getLabel().length() + 1;
+					replacementString = stringBeforePoint + label + "()";
+					cursorPosition = stringBeforePoint.length() + label.length() + 1;
 				}
-				IContextInformation contextInfo = new ContextInformation(null, stringBeforePoint + proposal.getLabel());
+				IContextInformation contextInfo = new ContextInformation(null, stringBeforePoint + label);
 				proposals[index] = new CompletionProposal(replacementString, offset,
 						replacedWord.length(), cursorPosition,
-						null, proposal.getLabel(),
-						contextInfo, proposal.getDetail());
+						null, label,
+						contextInfo, null);
 				index++;
 			}
 		}
