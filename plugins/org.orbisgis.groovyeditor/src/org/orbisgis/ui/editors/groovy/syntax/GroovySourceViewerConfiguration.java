@@ -39,9 +39,12 @@ import org.eclipse.jface.text.rules.NumberRule;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
+import org.eclipse.jface.text.source.ISharedTextColors;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 import org.orbisgis.ui.editors.groovy.GroovyCompletionProcessor;
 
@@ -73,6 +76,7 @@ public class GroovySourceViewerConfiguration extends TextSourceViewerConfigurati
 		// Show the line of status at the bottom of the assistant popup
 		assistant.setStatusLineVisible(true);
 		assistant.setStatusMessage("Available words to insert");
+
 		return assistant;
     }
 

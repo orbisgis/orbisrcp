@@ -25,6 +25,9 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
+import org.eclipse.jface.text.ITextViewerExtension;
+import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -120,12 +123,6 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
             document.set("");
         }
     }
-    
-    /*
-    public String getFileName() {
-    	return getPartName();
-    }
-    */
 
     public void execute(){
         this.doSave(new NullProgressMonitor());
