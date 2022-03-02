@@ -33,7 +33,7 @@ jobs:
           cd ..
           ls plugins/dependencies
           mkdir  plugins/dependencies/libs
-          cp groovy-language-server/build/libs/groovy-language-server.jar ./plugins/dependencies/libs
+          cp groovy-language-server/build/libs/groovy-language-server-all.jar ./plugins/dependencies/libs/groovy-language-server.jar
           mvn clean install
 
       - name: Unzip p2-1.0.0-SNAPSHOT.zip

@@ -46,6 +46,16 @@
 			<artifactId>org.eclipse.jface.text</artifactId>
 			<version>3.19.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.jface.text</artifactId>
+			<version>3.19.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.ui</artifactId>
+			<version>3.200.0</version>
+		</dependency>
 	</dependencies>
 
 </project>
