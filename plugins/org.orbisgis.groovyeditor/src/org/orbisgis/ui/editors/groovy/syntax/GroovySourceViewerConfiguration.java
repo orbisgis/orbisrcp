@@ -116,7 +116,7 @@ public class GroovySourceViewerConfiguration extends TextSourceViewerConfigurati
         IToken commentToken = new Token(new TextAttribute(gray));
 
         IRule commentLineRule = new SingleLineRule("//", "\n", commentToken);
-        IRule commentBlockRule = new MultiLineRule("/*", "*/", commentToken);
+        IRule commentBlockRule = new MultiLineRule("/*", "*/", commentToken, (char) 0, true);
         IRule groovyDocBlockRule = new MultiLineRule("/**", "*/", groovyDocToken);
         IRule keywordRule = new KeywordRule(list, keywordToken);
         IRule multiLineDoubleQuoteStringRule = new MultiLineRule("\"", "\"", stringToken, '\\');

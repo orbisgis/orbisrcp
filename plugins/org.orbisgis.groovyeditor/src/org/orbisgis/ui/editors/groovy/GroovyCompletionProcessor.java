@@ -18,6 +18,8 @@
  */
 package org.orbisgis.ui.editors.groovy;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -137,12 +139,27 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 			Position position = new Position((int) line, column);
 			Either<List<CompletionItem>, CompletionList> result = null;
 			SignatureHelp signatureHelp = null;
+			//List<? extends Location> locations = null;
+			//Hover hover = null;
 			try {
 				result = services.completion(new CompletionParams(textDocument, position)).get();
 				signatureHelp = services.signatureHelp(new SignatureHelpParams(textDocument, position)).get();
+				//locations = services.definition(new DefinitionParams(textDocument, position)).get().getLeft();
+				//hover = services.hover(new HoverParams(textDocument, position)).get();
 			} catch (InterruptedException | ExecutionException e) {
 				LOGGER.error("Error on getting the completion service result.", e);
 			}
+			/*
+			System.out.println("locations : " + locations);
+			Location location = locations.get(0);
+			System.out.println("location.getRange().getStart().getLine() : " + location.getRange().getStart().getLine());
+			System.out.println("location.getRange().getStart().getCharacter() : " + location.getRange().getStart().getCharacter());
+
+			System.out.println("hover : " + hover);
+			if(hover != null) {
+				System.out.println("hover.getContents : " + hover.getContents());
+			}
+			 */
 
 			List<SignatureInformation> signatures = null;
 			if (signatureHelp != null) {
@@ -170,9 +187,40 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 			if (result != null) {
 				items = result.getLeft();
 			}
+			//System.out.println("\n items : " + items);
 			List<String> orderedLabelList = new ArrayList<>();
+
 			if (items != null) {
 				for (CompletionItem proposal : items) {
+					/*
+					Method m = null;
+					try {
+						System.out.println("\nproposal.getLabel() : " + proposal.getLabel());
+						if(!proposal.getLabel().equals("value")) {
+							m = currWord.getClass().getMethod(proposal.getLabel(), new Class[]{});
+							System.out.println("\nm.getParameterTypes() : " + m.getParameterTypes());
+							if (m.getParameterTypes().length > 0) {
+								System.out.println("\nm.getParameterTypes()[0] : " + m.getParameterTypes()[0]);
+							}
+							/*
+							for (Class classobject : m.getParameterTypes()) {
+								System.out.println("\nclassobject.getName() : " + classobject.getName());
+							}
+
+							Class parameters2[] = m.getParameterTypes();
+							for (int i = 0; i < parameters2.length; i++) {
+								// Check contains parameter or not
+								System.out.println("\nparameters2[i] : " + parameters2[i]);
+							}
+							for(Class parameterType: m.getParameterTypes()){
+								System.out.println("\nparameterType.getName() : " + parameterType.getName());
+							}
+						}
+						System.out.println("\n");
+					} catch (NoSuchMethodException e) {
+						e.printStackTrace();
+					}
+					*/
 					orderedLabelList.add(proposal.getLabel());
 				}
 				orderedLabelList.sort(String::compareToIgnoreCase);
@@ -192,6 +240,22 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 		    return null;
 		}
 	}
+
+	public static List<String> getParameterNames(Method method) {
+		Parameter[] parameters = method.getParameters();
+		List<String> parameterNames = new ArrayList<>();
+
+		for (Parameter parameter : parameters) {
+			if(!parameter.isNamePresent()) {
+				throw new IllegalArgumentException("Parameter names are not present!");
+			}
+
+			String parameterName = parameter.getName();
+			parameterNames.add(parameterName);
+		}
+
+		return parameterNames;
+	}
 	
 	 /**
 	 * Build the list of autocompletion elements from available elements.
@@ -209,7 +273,7 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 		if(!parameters.equals("") && replacedWord.contains("(")){ // if There is at least one parameter
 			proposals = new ICompletionProposal[1];
 			proposals[index] = new CompletionProposal(replacedWord + parameters , offset,
-					replacedWord.length(), replacedWord.length() + 1,
+					replacedWord.length(), replacedWord.length() + parameters.length(),
 					null, parameters,
 					null, null);
 		}
