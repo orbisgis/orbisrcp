@@ -31,11 +31,10 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.orbisgis.core.logger.Logger;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -60,7 +59,7 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int offset) {
 		IDocument document = viewer.getDocument();
 		int currOffset = offset-1;
-		String currWord = "";
+		StringBuilder currWord = new StringBuilder();
 		if (currOffset >= 0) {
 			char currChar;
 			/*
@@ -70,7 +69,7 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 			 */
 			try {
 				while (currOffset >= 0 && !Character.isWhitespace(currChar = document.getChar(currOffset))) {
-					currWord = currChar + currWord;
+					currWord.insert(0, currChar);
 					currOffset--;
 				}
 			} catch (BadLocationException e1) {
@@ -143,7 +142,7 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 			if (signatureHelp != null) {
 				signatures = signatureHelp.getSignatures();
 			}
-			String parameters = "";
+			StringBuilder parameters = new StringBuilder();
 			if (signatures != null) {
 				if (signatures.size() != 0) {
 					SignatureInformation signature = signatures.get(0);
@@ -151,10 +150,10 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 						List<ParameterInformation> params = signature.getParameters();
 
 						for (int i = 0; i < signature.getParameters().size(); i++) {
-							if (!parameters.equals("")) {
-								parameters = parameters + ", " + params.get(i).getLabel().get();
+							if (!parameters.toString().equals("")) {
+								parameters.append(", ").append(params.get(i).getLabel().get());
 							} else {
-								parameters = parameters + params.get(i).getLabel().get();
+								parameters.append(params.get(i).getLabel().get());
 							}
 						}
 					}
@@ -176,7 +175,7 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 			ICompletionProposal[] proposals = null;
 			if (items != null) {
 				if (items.size() > 0) {
-					proposals = buildProposals(orderedLabelList, currWord, offset - currWord.length(), parameters);
+					proposals = buildProposals(orderedLabelList, currWord.toString(), offset - currWord.length(), parameters.toString());
 				}
 			}
 
