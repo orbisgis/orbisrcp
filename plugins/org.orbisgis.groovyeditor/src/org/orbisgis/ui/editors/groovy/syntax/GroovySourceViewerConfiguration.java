@@ -18,10 +18,6 @@
  */
 package org.orbisgis.ui.editors.groovy.syntax;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.eclipse.jface.text.DefaultInformationControl.IInformationPresenter;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.TextAttribute;
@@ -29,26 +25,19 @@ import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
-import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
-import org.eclipse.jface.text.rules.ICharacterScanner;
-import org.eclipse.jface.text.rules.IRule;
-import org.eclipse.jface.text.rules.IToken;
-import org.eclipse.jface.text.rules.ITokenScanner;
-import org.eclipse.jface.text.rules.MultiLineRule;
-import org.eclipse.jface.text.rules.NumberRule;
-import org.eclipse.jface.text.rules.RuleBasedScanner;
-import org.eclipse.jface.text.rules.SingleLineRule;
-import org.eclipse.jface.text.rules.Token;
+import org.eclipse.jface.text.rules.*;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 import org.orbisgis.ui.editors.groovy.GroovyCompletionProcessor;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class GroovySourceViewerConfiguration extends TextSourceViewerConfiguration {
 	
     public ITokenScanner tokenScanner;
-	private IInformationPresenter presenter;
     
     public GroovySourceViewerConfiguration() {
 		tokenScanner = createTokenScanner();
@@ -95,6 +84,7 @@ public class GroovySourceViewerConfiguration extends TextSourceViewerConfigurati
         scanner.setRules(createRules());
         return scanner;
     }
+
     private IRule[] createRules() {
         List<String> list = Arrays.asList(("abstract|as#assert#boolean#break#byte#case#catch#char#class#" +
                 "const#continue#def#default#do#double#else#enum#extends#false#final#finally#float#for#goto#if#" +
@@ -128,10 +118,10 @@ public class GroovySourceViewerConfiguration extends TextSourceViewerConfigurati
                 multiLineDoubleQuoteStringRule, multiLineSingleQuoteStringRule, annotationRule, numberRule};
     }
 
-    class KeywordRule implements IRule{
+    static class KeywordRule implements IRule{
 
-        private IToken token;
-        private List<String> keywords;
+        private final IToken token;
+        private final List<String> keywords;
 
         public KeywordRule(List<String> keywords, IToken token){
             this.keywords = keywords;
