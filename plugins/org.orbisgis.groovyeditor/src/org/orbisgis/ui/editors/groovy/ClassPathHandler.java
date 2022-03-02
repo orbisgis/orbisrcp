@@ -19,18 +19,19 @@
  */
 package org.orbisgis.ui.editors.groovy;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
+import org.orbisgis.core.logger.Logger;
 import org.orbisgis.ui.editors.groovy.ui.ScrollableDialog;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Methods to handle the urls that are taken into account as classPaths in the groovyShell runtime.
@@ -38,8 +39,9 @@ import org.orbisgis.ui.editors.groovy.ui.ScrollableDialog;
  * @author Adrien Bessy, CNRS
  */
 public class ClassPathHandler{
-	
-	static List<URL> urls = new ArrayList<URL>();
+
+	private static final Logger LOGGER = new Logger(ClassPathHandler.class);
+	private static List<URL> urls = new ArrayList<>();
 
 	/**
 	 * Open a dialog showing the list of urls.
@@ -59,12 +61,7 @@ public class ClassPathHandler{
 	    Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 	    DirectoryDialog dialog = new DirectoryDialog(shell);
 	    String result = dialog.open();
-		try {
-			URL url = new File("///d:" + result).toURI().toURL();
-			urls.add(url);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
+		addPathToUrlList(result, false);
 	}
 	
 	/**
@@ -77,13 +74,37 @@ public class ClassPathHandler{
 		String[] filterExt = { "*.jar" };
 		dialog.setFilterExtensions(filterExt);
 	    String result = dialog.open();
+		addPathToUrlList(result, true);
+	}
+
+	/**
+	 * Add a path to the list of urls.
+	 * @param result the file name of the file choosen by the user
+	 * @param jar true if it is a jar file
+	 */
+	public static void addPathToUrlList(String result, boolean jar) {
 		try {
 			if (result != null) {
-				urls.add(new File(result + "!/").toURI().toURL());
+				if(jar) {
+					result = result + "!/";
+				}
+				else{
+					result = "///d:" + result;
+				}
+				urls.add(new File(result).toURI().toURL());
 			}
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			LOGGER.error("MalformedURLException", e);
 		}
+	}
+
+	/**
+	 * Get Urls list.
+	 * @return A list of URLs
+	 *
+	 */
+	public static List<URL> getUrls(){
+		return urls;
 	}
 	
 	/**
@@ -91,7 +112,7 @@ public class ClassPathHandler{
 	 * @return A list of URLs
 	 *
 	 */
-	static URL[] getUrlsInArray() throws MalformedURLException{
+	public static URL[] getUrlsInArray() {
 		URL[] result;
 		if (urls != null) {
 	        result = urls.toArray( new URL[0] );

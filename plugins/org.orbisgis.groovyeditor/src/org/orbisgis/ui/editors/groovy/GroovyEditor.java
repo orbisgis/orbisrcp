@@ -18,16 +18,10 @@
  */
 package org.orbisgis.ui.editors.groovy;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
-import org.eclipse.jface.text.ITextViewerExtension;
-import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -40,6 +34,9 @@ import org.jkiss.dbeaver.ui.controls.VerticalButton;
 import org.jkiss.dbeaver.ui.controls.VerticalFolder;
 import org.orbisgis.core.logger.Logger;
 import org.orbisgis.ui.editors.groovy.syntax.GroovySourceViewerConfiguration;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveablePart2 {
 
@@ -71,12 +68,12 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         gl.marginHeight = 0;
         gl.marginWidth = 0;
         groovyEditor.setLayout(gl);
-        
+
         createControlsBar(groovyEditor);
-        
+
         GroovyEditorControl editorControl = new GroovyEditorControl(groovyEditor, this);
         super.createPartControl(editorControl);
-        editorControl.setLayoutData(new GridData(GridData.FILL_BOTH));         
+        editorControl.setLayoutData(new GridData(GridData.FILL_BOTH));
     }
 
     private void createControlsBar(Composite editorPanel) {
@@ -92,7 +89,7 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         ((GridLayout)sideToolBar.getLayout()).marginTop = 3;
         ((GridLayout)sideToolBar.getLayout()).marginBottom = 10;
         ((GridLayout)sideToolBar.getLayout()).verticalSpacing = 3;
-        
+
         VerticalButton.create(sideToolBar, SWT.LEFT | SWT.PUSH, getSite(), GroovyEditorCommands.CMD_EXECUTE_SELECTION, false);
         VerticalButton.create(sideToolBar, SWT.LEFT | SWT.PUSH, getSite(), GroovyEditorCommands.CMD_EXECUTE_SCRIPT, false);
         VerticalButton.create(sideToolBar, SWT.LEFT | SWT.PUSH, getSite(), GroovyEditorCommands.CMD_CLEAR, false);
