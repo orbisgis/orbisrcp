@@ -36,9 +36,9 @@ import org.jkiss.dbeaver.model.runtime.DBRProgressMonitor;
  * @author Erwan Bocher, CNRS
  * @author Serge Rider (serge@jkiss.org)
  */
-public class H2GIS200DataSourceProvider extends GenericDataSourceProvider {
+public class H2GISSnapshotDataSourceProvider extends GenericDataSourceProvider {
 
-    public H2GIS200DataSourceProvider() {
+    public H2GISSnapshotDataSourceProvider() {
     }
 
     @NotNull
