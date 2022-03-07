@@ -3,13 +3,13 @@
 
 <plugin>
 
-<extension point="org.jkiss.dbeaver.dataSourceProvider">
+    <extension point="org.jkiss.dbeaver.dataSourceProvider">
 
         <!-- H2GIS driver -->
         <datasource
-                class="org.orbisgis.h2gis.H2GIS200DataSourceProvider"
+                class="org.orbisgis.h2gis.H2GISSnapshotDataSourceProvider"
                 description="%datasource.h2gis.description"
-                id="h2gis_2.0.0"
+                id="h2gis_snapshot"
                 parent="generic"
                 label="H2GIS"
                 icon="icons/h2gis_icon.png"
@@ -17,35 +17,35 @@
             <drivers managable="true">
 
                 <driver
-                    id="h2gis_embedded_2_0_0"
-                    label="H2GIS Embedded 2.0.0"
-                    icon="icons/h2gis_icon.png"
-                    iconBig="icons/h2gis_icon_big.png"
-                    category="H2"
-                    class="org.h2.Driver"
-                    sampleURL="jdbc:h2:{file}"
-                    webURL="http://www.h2gis.org/"
-                    embedded="true"
-                    description="H2GIS Embedded"
-                    categories="spatial,sql,embedded">
+                        id="h2gis_embedded_snapshot"
+                        label="H2GIS Embedded Snapshot"
+                        icon="icons/h2gis_icon.png"
+                        iconBig="icons/h2gis_icon_big.png"
+                        category="H2"
+                        class="org.h2.Driver"
+                        sampleURL="jdbc:h2:{file}"
+                        webURL="http://www.h2gis.org/"
+                        embedded="true"
+                        description="H2GIS Embedded"
+                        categories="spatial,sql,embedded">
 
-                    <file type="jar" path="maven:/org.orbisgis:h2gis:2.0.0"/>	
-                    <file type="jar" path="maven:/org.orbisgis:h2gis-api:2.0.0"/>						
-                    <file type="jar" path="maven:/org.orbisgis:h2gis-network:2.0.0"/>
-                    <file type="jar" path="maven:/org.orbisgis:h2gis-osgi:2.0.0"/>
-                    <file type="jar" path="maven:/org.orbisgis:h2gis-utilities:2.0.0"/>
-                    <file type="jar" path="maven:/org.orbisgis:postgis-jts:2.0.0"/>
-                    <file type="jar" path="maven:/org.orbisgis:postgis-jts-osgi:2.0.0"/>
-                    <file type="jar" path="maven:/org.orbisgis:cts:1.6.0"/>
-                    <file type="jar" path="maven:/org.orbisgis:poly2tri:0.4.0"/>
-                    <file type="jar" path="maven:/org.orbisgis:java-network-analyzer:0.3.0"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis/2.1.0-SNAPSHOT/h2gis-2.1.0-20220225.101216-30.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-api/2.1.0-SNAPSHOT/h2gis-api-2.1.0-20220225.101216-30.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-network/2.1.0-SNAPSHOT/h2gis-network-2.1.0-20220225.101216-30.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-osgi/2.1.0-SNAPSHOT/h2gis-osgi-2.1.0-20220225.101216-30.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-test-utilities/2.1.0-SNAPSHOT/h2gis-test-utilities-2.1.0-20220225.101216-30.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-utilities/2.1.0-SNAPSHOT/h2gis-utilities-2.1.0-20220225.101216-30.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/postgis-jts/2.1.0-SNAPSHOT/postgis-jts-2.1.0-20220225.101216-30.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/postgis-jts-osgi/2.1.0-SNAPSHOT/postgis-jts-osgi-2.1.0-20220225.101216-30.jar"/>
                     <file type="jar" path="maven:/org.slf4j:slf4j-simple:1.7.32"/>
-                    <file type="jar" path="maven:/org.slf4j:slf4j-api:1.7.32"/>
-                    <file type="jar" path="maven:/org.locationtech.jts:jts-core:1.18.2"/>
-                    <file type="jar" path="maven:/org.jgrapht:jgrapht-core:1.0.1"/>
-                    <file type="jar" path="maven:/com.fasterxml.jackson.core:jackson-core:2.13.0"/>
-                    <file type="jar" path="maven:/org.apache.commons:commons-compress:1.21"/>
                     <file type="jar" path="maven:/com.h2database:h2:2.1.210"/>
+                    <file type="jar" path="maven:/org.slf4j:slf4j-api:1.7.32"/>
+                    <file type="jar" path="maven:/org.orbisgis:poly2tri:0.4.0"/>
+                    <file type="jar" path="maven:/org.locationtech.jts:jts-core:1.18.2"/>
+                    <file type="jar" path="maven:/org.orbisgis:java-network-analyzer:0.3.0"/>
+                    <file type="jar" path="maven:/com.fasterxml.jackson.core:jackson-core:2.13.0"/>
+                    <file type="jar" path="maven:/org.apache.commons:commons-compress:1.20"/>
+                    <file type="jar" path="maven:/org.orbisgis:cts:1.6.0"/>
 
                     <parameter name="query-get-active-db" value="SELECT SCHEMA()"/>
                     <parameter name="query-set-active-db" value="SET SCHEMA = ?"/>
@@ -53,36 +53,36 @@
                     <parameter name="omit-catalog" value="true"/>
                 </driver>
 
-		        <driver
-                    id="h2gis_server_2_0_0"
-                    label="H2GIS Server 2.0.0"
-                    icon="icons/h2gis_icon.png"
-                    iconBig="icons/h2gis_icon_big.png"
-                    category="H2"
-                    class="org.h2.Driver"
-                    sampleURL="jdbc:h2:tcp://{host}[:{port}]/{database}"
-                    defaultPort="9092"
-                    webURL="http://www.h2gis.org/"
-                    description="H2GIS Embedded"
-                    categories="spatial,sql,server">
+                <driver
+                        id="h2gis_server_snapshot"
+                        label="H2GIS Server Snapshot"
+                        icon="icons/h2gis_icon.png"
+                        iconBig="icons/h2gis_icon_big.png"
+                        category="H2"
+                        class="org.h2.Driver"
+                        sampleURL="jdbc:h2:tcp://{host}[:{port}]/{database}"
+                        defaultPort="9092"
+                        webURL="http://www.h2gis.org/"
+                        description="H2GIS Embedded"
+                        categories="spatial,sql,server">
 
-                    <file type="jar" path="maven:/org.orbisgis:h2gis:2.0.0"/>	
-                    <file type="jar" path="maven:/org.orbisgis:h2gis-api:2.0.0"/>						
-                    <file type="jar" path="maven:/org.orbisgis:h2gis-network:2.0.0"/>
-                    <file type="jar" path="maven:/org.orbisgis:h2gis-osgi:2.0.0"/>
-                    <file type="jar" path="maven:/org.orbisgis:h2gis-utilities:2.0.0"/>
-                    <file type="jar" path="maven:/org.orbisgis:postgis-jts:2.0.0"/>
-                    <file type="jar" path="maven:/org.orbisgis:postgis-jts-osgi:2.0.0"/>
-                    <file type="jar" path="maven:/org.orbisgis:cts:1.6.0"/>
-                    <file type="jar" path="maven:/org.orbisgis:poly2tri:0.4.0"/>
-                    <file type="jar" path="maven:/org.orbisgis:java-network-analyzer:0.3.0"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis/2.1.0-SNAPSHOT/h2gis-2.1.0-20220225.101216-30.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-api/2.1.0-SNAPSHOT/h2gis-api-2.1.0-20220225.101216-30.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-network/2.1.0-SNAPSHOT/h2gis-network-2.1.0-20220225.101216-30.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-osgi/2.1.0-SNAPSHOT/h2gis-osgi-2.1.0-20220225.101216-30.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-test-utilities/2.1.0-SNAPSHOT/h2gis-test-utilities-2.1.0-20220225.101216-30.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-utilities/2.1.0-SNAPSHOT/h2gis-utilities-2.1.0-20220225.101216-30.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/postgis-jts/2.1.0-SNAPSHOT/postgis-jts-2.1.0-20220225.101216-30.jar"/>
+                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/postgis-jts-osgi/2.1.0-SNAPSHOT/postgis-jts-osgi-2.1.0-20220225.101216-30.jar"/>
                     <file type="jar" path="maven:/org.slf4j:slf4j-simple:1.7.32"/>
-                    <file type="jar" path="maven:/org.slf4j:slf4j-api:1.7.32"/>
-                    <file type="jar" path="maven:/org.locationtech.jts:jts-core:1.18.2"/>
-                    <file type="jar" path="maven:/org.jgrapht:jgrapht-core:1.0.1"/>
-                    <file type="jar" path="maven:/com.fasterxml.jackson.core:jackson-core:2.13.0"/>
-                    <file type="jar" path="maven:/org.apache.commons:commons-compress:1.21"/>
                     <file type="jar" path="maven:/com.h2database:h2:2.1.210"/>
+                    <file type="jar" path="maven:/org.slf4j:slf4j-api:1.7.32"/>
+                    <file type="jar" path="maven:/org.orbisgis:poly2tri-core:0.3.0"/>
+                    <file type="jar" path="maven:/org.locationtech.jts:jts-core:1.18.2"/>
+                    <file type="jar" path="maven:/org.orbisgis:java-network-analyzer:0.3.0"/>
+                    <file type="jar" path="maven:/com.fasterxml.jackson.core:jackson-core:2.13.0"/>
+                    <file type="jar" path="maven:/org.apache.commons:commons-compress:1.20"/>
+                    <file type="jar" path="maven:/org.orbisgis:cts:1.6.0"/>
 
                     <parameter name="query-get-active-db" value="SELECT SCHEMA()"/>
                     <parameter name="query-set-active-db" value="SET SCHEMA = ?"/>
@@ -97,16 +97,20 @@
 
     <extension point="org.jkiss.dbeaver.dataTypeProvider">
         <provider
-                class="org.orbisgis.h2gis.data.H2GIS200ValueHandlerProvider"
-                description="H2GIS 2.0.0 data types provider"
-                id="org.orbisgis.h2gis.data.H2GIS200ValueHandlerProvider"
-                label="H2GIS 2.0.0 data types provider">
+                class="org.orbisgis.h2gis.data.H2GISSnapshotValueHandlerProvider"
+                description="H2GIS Snapshot data types provider"
+                id="org.orbisgis.h2gis.data.H2GISSnapshotValueHandlerProvider"
+                label="H2GIS Snapshot data types provider">
 
-            <datasource id="h2gis_2.0.0"/>
+            <datasource id="h2gis_snapshot"/>
 
-            <type name="GEOMETRY"/>
+            <type name="*"/>
 
         </provider>
+    </extension>
+
+    <extension point="org.jkiss.dbeaver.mavenRepository">
+        <repository id="ossrh-snapshot" name="OSSRH snapshot repository" url="https://oss.sonatype.org/content/repositories/snapshots/" order="100"/>
     </extension>
 
 </plugin>

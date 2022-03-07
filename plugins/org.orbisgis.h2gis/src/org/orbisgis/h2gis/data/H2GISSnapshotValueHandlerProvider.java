@@ -26,14 +26,14 @@ import org.jkiss.dbeaver.model.struct.DBSTypedObject;
 /**
  * H2GIS data types provider
  */
-public class H2GIS200ValueHandlerProvider implements DBDValueHandlerProvider {
+public class H2GISSnapshotValueHandlerProvider implements DBDValueHandlerProvider {
 
     @Nullable
     @Override
     public DBDValueHandler getValueHandler(DBPDataSource dataSource, DBDFormatSettings preferences, DBSTypedObject typedObject)
     {
-        if (typedObject.getTypeName().equalsIgnoreCase("GEOMETRY")) {
-            return H2GIS200GeometryValueHandler.INSTANCE;
+        if (typedObject.getTypeName().toUpperCase().startsWith("GEOMETRY")) {
+            return H2GISSnapshotGeometryValueHandler.INSTANCE;
         } else {
             return null;
         }

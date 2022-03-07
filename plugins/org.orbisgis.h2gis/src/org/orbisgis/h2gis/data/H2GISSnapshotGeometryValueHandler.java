@@ -27,15 +27,13 @@ import java.sql.SQLException;
 /**
  * H2GIS Server geometry handler
  */
-public class H2GIS200GeometryValueHandler extends GISGeometryValueHandler {
+public class H2GISSnapshotGeometryValueHandler extends GISGeometryValueHandler {
 
-    public static final H2GIS200GeometryValueHandler INSTANCE = new H2GIS200GeometryValueHandler();
+    public static final H2GISSnapshotGeometryValueHandler INSTANCE = new H2GISSnapshotGeometryValueHandler();
 
     @Override
     protected Object fetchColumnValue(DBCSession session, JDBCResultSet resultSet, DBSTypedObject type, int index) throws DBCException, SQLException {
-        return getValueFromObject(session, type,
-            resultSet.getObject(index),
-            false, false);
+        return getValueFromObject(session, type, resultSet.getObject(index), false, false);
     }
 
     /*
