@@ -25,54 +25,58 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class GroovyCompletionProcessorTest {
+public class GroovyCompletionProcessorTest {
 
     private GroovyCompletionProcessor groovyCompletionProcessor;
 
     @BeforeEach
-    void beforeEach(){
+    public void beforeEach(){
         groovyCompletionProcessor = new GroovyCompletionProcessor();
     }
 
     @Test
-    void getColumnTest() {
-        assertEquals(5,groovyCompletionProcessor.getColumn("abcd\nabcde",2,3));
-    }
-
-    @Test
-    void getColumnIfLineIsZeroTest() {
-        assertEquals(3,groovyCompletionProcessor.getColumn("abcd\nabcde",0,3));
-    }
-
-    @Test
-    void buildProposalsIfParametersTest() {
+    public void buildProposalsIfParametersTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         List<String> orderedLabelList = new ArrayList<>();
         ICompletionProposal[] proposals = new ICompletionProposal[1];
         proposals[0] = new CompletionProposal("variable.startsWith(String param0" , 3,
                 20, 21,
                 null, "String param0",
                 null, null);
-        assertEquals(proposals[0].getDisplayString(),groovyCompletionProcessor.buildProposals(orderedLabelList,"variable.startsWith(",10,"String param0")[0].getDisplayString());
+
+        Method method = groovyCompletionProcessor.getClass().getDeclaredMethod("buildProposals", List.class, String.class, int.class, String.class);
+        method.setAccessible(true);
+        ICompletionProposal[] r = (ICompletionProposal[]) method.invoke(groovyCompletionProcessor,orderedLabelList,"variable.startsWith(",10,"String param0");
+
+        assertEquals(proposals.length,r.length);
+        assertEquals(proposals[0].getDisplayString(),r[0].getDisplayString());
     }
 
     @Test
-    void buildProposalsIfNoParameterAndWithParenthesisTest() {
+    public void buildProposalsIfNoParameterAndWithParenthesisTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         List<String> orderedLabelList = new ArrayList<>();
         ICompletionProposal[] proposals = new ICompletionProposal[1];
         proposals[0] = new CompletionProposal("variable.startsWith(" , 3,
                 20, 20,
                 null, "No parameter",
                 null, null);
-        assertEquals(proposals[0].getDisplayString(),groovyCompletionProcessor.buildProposals(orderedLabelList,"variable.startsWith(",10,"")[0].getDisplayString());
+
+        Method method = groovyCompletionProcessor.getClass().getDeclaredMethod("buildProposals");
+        method.setAccessible(true);
+        ICompletionProposal[] r = (ICompletionProposal[]) method.invoke(groovyCompletionProcessor,orderedLabelList,"variable.startsWith(",10,"");
+
+        assertEquals(proposals.length,r.length);
+        assertEquals(proposals[0].getDisplayString(),r[0].getDisplayString());
     }
 
     @Test
-    void buildProposalsIfNoParameterAndNoParenthesisAndNoPointTest() {
+    public void buildProposalsIfNoParameterAndNoParenthesisAndNoPointTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         List<String> orderedLabelList = new ArrayList<>();
         orderedLabelList.add("variable");
         ICompletionProposal[] proposals = new ICompletionProposal[1];
@@ -81,11 +85,17 @@ class GroovyCompletionProcessorTest {
                 4, 20,
                 null, "variable",
                 contextInfo, null);
-        assertEquals(proposals[0].getDisplayString(),groovyCompletionProcessor.buildProposals(orderedLabelList,"vari",10,"")[0].getDisplayString());
+
+        Method method = groovyCompletionProcessor.getClass().getDeclaredMethod("buildProposals");
+        method.setAccessible(true);
+        ICompletionProposal[] r = (ICompletionProposal[]) method.invoke(groovyCompletionProcessor,orderedLabelList,"vari",10,"");
+
+        assertEquals(proposals.length,r.length);
+        assertEquals(proposals[0].getDisplayString(),r[0].getDisplayString());
     }
 
     @Test
-    void buildProposalsIfNoParameterAndNoParenthesisAndWithPointTest() {
+    public void buildProposalsIfNoParameterAndNoParenthesisAndWithPointTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         List<String> orderedLabelList = new ArrayList<>();
         orderedLabelList.add("toString");
         ICompletionProposal[] proposals = new ICompletionProposal[1];
@@ -94,7 +104,13 @@ class GroovyCompletionProcessorTest {
                 9, 20,
                 null, "toString",
                 contextInfo, null);
-        assertEquals(proposals[0].getDisplayString(),groovyCompletionProcessor.buildProposals(orderedLabelList,"variable.",10,"")[0].getDisplayString());
+
+        Method method = groovyCompletionProcessor.getClass().getDeclaredMethod("buildProposals");
+        method.setAccessible(true);
+        ICompletionProposal[] r = (ICompletionProposal[]) method.invoke(groovyCompletionProcessor,orderedLabelList,"variable.",10,"");
+
+        assertEquals(proposals.length,r.length);
+        assertEquals(proposals[0].getDisplayString(),r[0].getDisplayString());
     }
 
 }

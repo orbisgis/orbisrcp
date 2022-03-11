@@ -49,26 +49,6 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 	private static final String LANGUAGE_GROOVY = "groovy";
 
 	/**
-	 * Get the column number of the cursor in the text document.
-	 * @param text the text
-	 * @param line the line number of the cursor
-	 * @param offset the cursor position in the document
-	 * @return the column number of the cursor in the text document
-	 */
-	public int getColumn(String text, long line, int offset){
-		int column;
-		if (line == 0) {
-			column = offset;
-		} else {
-			String[] allLine = text.split("\n");
-			int length = allLine.length;
-			String lastLine = allLine[length - 1];
-			column = lastLine.length();
-		}
-		return column;
-	}
-
-	/**
 	* Build the list of the completion proposals provided from the Groovy Langage Server project according to the word type.
     * @param viewer the editor view
     * @param offset the cursor position in the document
@@ -134,11 +114,17 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 			services.didOpen(new DidOpenTextDocumentParams(textDocumentItem));
 			TextDocumentIdentifier textDocument = new TextDocumentIdentifier(uri);
 
-			String substring = document.get().substring(0, offset);
-			long line = substring.chars().filter(ch -> ch == '\n').count();
-			int column = getColumn(substring, line, offset);
-
-			Position position = new Position((int) line, column);
+			String textUntilCursor = document.get().substring(0, offset);
+			int line = 0;
+			int newLineIndex = 0;
+			for(int i=0; i<offset; i++){
+				if(textUntilCursor.charAt(i) == "\n".charAt(0)) {
+					line++;
+					newLineIndex = i + 1;
+				}
+			}
+			int column = textUntilCursor.substring(newLineIndex ,offset).length();
+			Position position = new Position(line, column);
 			Either<List<CompletionItem>, CompletionList> result = null;
 			SignatureHelp signatureHelp = null;
 			try {
@@ -204,7 +190,7 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
      * @param offset the cursor position in the document
      * @return the list of the suggested autocompletion words
      */
-	 public ICompletionProposal[] buildProposals(List<String> orderedLabelList, String replacedWord, int offset, String parameters) {
+	 private ICompletionProposal[] buildProposals(List<String> orderedLabelList, String replacedWord, int offset, String parameters) {
 
 		ICompletionProposal[] proposals;
 
