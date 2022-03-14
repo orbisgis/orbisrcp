@@ -1,6 +1,6 @@
-name: CI build
+name: CI deploy
 
-on: [ push, pull_request, workflow_dispatch ]
+on: [ push, workflow_dispatch ]
 
 jobs:
   build:
@@ -26,9 +26,19 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: orbisgis/orbisrcp
+          ref: p2-repository
 
-      - name: Build OrbisRCP
+      # Configure git user in order to sign release with OrbisGIS user.
+      - name: Configure Git User
         run: |
+          git config user.email "info@orbisgis.org"
+          git config user.name OrbisGIS
+
+      - name: Clone and build OrbisRCP repo
+        run: |
+          git clone https://github.com/orbisgis/orbisrcp
+          cd orbisrcp
+          
           git clone https://github.com/GroovyLanguageServer/groovy-language-server
           cd groovy-language-server
           ./gradlew build
@@ -36,4 +46,14 @@ jobs:
           ls plugins/dependencies
           mkdir  plugins/dependencies/libs
           cp groovy-language-server/build/libs/groovy-language-server-all.jar ./plugins/dependencies/libs/groovy-language-server.jar
-          mvn clean install
+
+          mvn clean install -Dmaven.test.skip=true
+          cd ..
+          unzip -o -qq orbisrcp/p2/target/p2-1.0.0-SNAPSHOT.zip -d ./
+          rm -r orbisrcp
+
+      - name: Push P2 branch
+        run: |
+          git add *
+          git commit -a -m "Update P2 repo."
+          git push origin p2-repository
