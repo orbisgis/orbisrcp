@@ -24,9 +24,23 @@ cd orbisrcp
 mvn clean install
 ```
 
-## Note
+## Plugins installation
 
-The repository to install the OrbisRCP plugins is  : https://raw.githubusercontent.com/orbisgis/orbisrcp/p2-repository/ 
-
+The repository to install the OrbisRCP plugins is  : https://orbisgis.github.io/orbisrcp/
 It contains  the current snaphot versions (deployed after each PR).
+
+In DBeaver :
+ - Go to menu `help/Install New Software...`.
+ - Add the repository by clicking on `Add...`
+   - Put the name you want (like `OrbisRCP`) 
+   - Put the location `https://orbisgis.github.io/orbisrcp/`
+   - Click on `Add`.
+  - Once back on the `Available Software` window, verify the newly add repository is selected in `Work with:`.
+    - Check then the box at the left of `OrbisGIS` software. 
+    - Click then on `Next`.
+  - On the next window click on `Finish`.
+  - A `Security Warning` will be show, click on `Install Anyway` 
+  - On the next popup, click on `Restart Now`
+
+  - TaDaa, you have the plusing and tools installed.
 
