@@ -8,21 +8,6 @@ Please look at the readme file available in the directory of the plugins you wan
 
 If you have any questions, comments or troubles with the plugins, feel free to push an issue. We will do our best to address them.
 
-## Developing
-
-In order to compile OrbisRCP, DBeaver should be build first.
-
-```bash
-export JAVA_HOME=/path/to/the/jdk/11
-git clone https://github.com/dbeaver/dbeaver
-cd dbeaver
-mvn clean install -Dmaven.test.skip=true
-#Wait
-cd ..
-git clone https://github.com/orbisgis/orbisrcp
-cd orbisrcp
-mvn clean install
-```
 
 ## Plugins installation
 
@@ -43,4 +28,42 @@ In DBeaver :
   - On the next popup, click on `Restart Now`
 
   - TaDaa, you have the plusing and tools installed.
+
+
+## Developing
+
+In order to compile OrbisRCP, [DBeaver](https://github.com/dbeaver/dbeaver) and [Groovy language server](https://github.com/GroovyLanguageServer/groovy-language-server) should be build first.
+
+```bash
+export JAVA_HOME=/path/to/the/jdk/11
+#DBeaver build
+git clone https://github.com/dbeaver/dbeaver
+cd dbeaver
+mvn clean install -Dmaven.test.skip=true
+#Wait
+cd ..
+
+#Groovy language server build
+git clone https://github.com/GroovyLanguageServer/groovy-language-server
+cd groovy-language-server
+./gradlew build
+cd ..
+
+git clone https://github.com/orbisgis/orbisrcp
+mkdir orbisrcp/plugins/dependencies/libs
+cp groovy-language-server/build/libs/groovy-language-server-all.jar orbisrcp/plugins/dependencies/libs/groovy-language-server.jar
+cd orbisrcp
+mvn clean install
+```
+
+## Debugging
+
+To do remote debugging, you have to launch DBeaver with the following command : 
+```bash
+dbeaver -vmargs "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+```
+and your debugger with VM args:
+```bash
+-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+```
 
