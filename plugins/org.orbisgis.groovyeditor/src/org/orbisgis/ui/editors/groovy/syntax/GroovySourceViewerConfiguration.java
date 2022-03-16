@@ -30,7 +30,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
-import org.orbisgis.ui.editors.groovy.GroovyCompletionProcessor;
+import org.orbisgis.ui.editors.groovy.completion.GroovyCompletionProcessor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -55,13 +55,12 @@ public class GroovySourceViewerConfiguration extends TextSourceViewerConfigurati
 		GroovyCompletionProcessor processor = new GroovyCompletionProcessor();
 		assistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
 		assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
-		// Insert automatically the only possibility if it is unique
 		assistant.enableAutoInsert(true);
-		// Allows the "autoactivation", i.e. the trigger on particular characters
 		assistant.enableAutoActivation(true);
-		// Show the line of status at the bottom of the assistant popup
+        assistant.enableColoredLabels(true);
 		assistant.setStatusLineVisible(true);
-		assistant.setStatusMessage("Available words to insert");
+		assistant.setStatusMessage("Press Enter to insert the selected option");
+        assistant.setSorter((prop0, prop1) -> prop0.getDisplayString().compareTo(prop1.getDisplayString()));
 		return assistant;
     }
 
