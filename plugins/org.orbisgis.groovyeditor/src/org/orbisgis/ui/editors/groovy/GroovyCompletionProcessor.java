@@ -46,7 +46,6 @@ import java.util.concurrent.ExecutionException;
 public class GroovyCompletionProcessor implements IContentAssistProcessor {
 	
 	private static final Logger LOGGER = new Logger(GroovyCompletionProcessor.class);
-	
 	private static final String LANGUAGE_GROOVY = "groovy";
 
 	/**
@@ -115,20 +114,17 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 			services.didOpen(new DidOpenTextDocumentParams(textDocumentItem));
 			TextDocumentIdentifier textDocument = new TextDocumentIdentifier(uri);
 
-			String substring = document.get().substring(0, offset);
-			long line = substring.chars().filter(ch -> ch == '\n').count();
-			int column;
-
-			if (line == 0) {
-				column = offset;
-			} else {
-				String[] allLine = substring.split("\n");
-				int length = allLine.length;
-				String lastLine = allLine[length - 1];
-				column = lastLine.length();
+			String textUntilCursor = document.get().substring(0, offset);
+			int line = 0;
+			int newLineIndex = 0;
+			for(int i=0; i<offset; i++){
+				if(textUntilCursor.charAt(i) == "\n".charAt(0)) {
+					line++;
+					newLineIndex = i + 1;
+				}
 			}
-
-			Position position = new Position((int) line, column);
+			int column = textUntilCursor.substring(newLineIndex ,offset).length();
+			Position position = new Position(line, column);
 			Either<List<CompletionItem>, CompletionList> result = null;
 			SignatureHelp signatureHelp = null;
 			try {
@@ -194,22 +190,21 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
      * @param offset the cursor position in the document
      * @return the list of the suggested autocompletion words
      */
-    private ICompletionProposal[] buildProposals(List<String> orderedLabelList, String replacedWord, int offset, String parameters) {
-		int index = 0;
+	 private ICompletionProposal[] buildProposals(List<String> orderedLabelList, String replacedWord, int offset, String parameters) {
 
 		ICompletionProposal[] proposals;
 
 		// TO COMPLETE METHOD PARAMETERS
 		if(!parameters.equals("") && replacedWord.contains("(")){ // if There is at least one parameter
 			proposals = new ICompletionProposal[1];
-			proposals[index] = new CompletionProposal(replacedWord + parameters , offset,
+			proposals[0] = new CompletionProposal(replacedWord + parameters , offset,
 					replacedWord.length(), replacedWord.length() + 1,
 					null, parameters,
 					null, null);
 		}
 		else if (parameters.equals("") && replacedWord.endsWith("(")){ // if There is no parameter
 			proposals = new ICompletionProposal[1];
-			proposals[index] = new CompletionProposal(replacedWord , offset,
+			proposals[0] = new CompletionProposal(replacedWord , offset,
 					replacedWord.length(), replacedWord.length(),
 					null, "No parameter",
 					null, null);
@@ -220,6 +215,7 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 			int cursorPosition;
 			proposals = new ICompletionProposal[orderedLabelList.size()];
 			// Create proposals from model elements.
+			int index = 0;
 			for (String label : orderedLabelList) {
 				if(!replacedWord.contains(".")){ // if the word doesn't contain a dot (to complete variables)
 					stringBeforePoint = "";
