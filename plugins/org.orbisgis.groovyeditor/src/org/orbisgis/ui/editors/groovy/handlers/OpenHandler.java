@@ -25,9 +25,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.part.FileEditorInput;
-import org.orbisgis.core.CoreActivator;
 import org.orbisgis.core.logger.Logger;
-import org.orbisgis.core.workspace.ICoreWorkspace;
 import org.orbisgis.ui.editors.groovy.GroovyEditor;
 import org.orbisgis.ui.editors.groovy.GroovyUtils;
 
@@ -35,22 +33,11 @@ public class OpenHandler extends AbstractHandler {
 
 	private static final Logger LOGGER = new Logger(OpenHandler.class);
 
-	private static ICoreWorkspace coreWorkspace;
-
-	static {
-		CoreActivator instance = CoreActivator.getInstance();
-		try {
-			coreWorkspace = instance == null ? null : instance.getCoreWorkspace();
-		} catch (Throwable e) {
-			coreWorkspace = null;
-		}
-	}
-
 	@Override
 	public Object execute(ExecutionEvent event) {
 		try {
 			IWorkbenchWindow workbenchWindow = HandlerUtil.getActiveWorkbenchWindow(event);
-			final IFile newScript = GroovyUtils.createNewScript(coreWorkspace);
+			final IFile newScript = GroovyUtils.createNewScript();
 			openResource(newScript, workbenchWindow);
 		} catch (Exception e) {
 			LOGGER.error("Unable to create a new groovy script.", e);

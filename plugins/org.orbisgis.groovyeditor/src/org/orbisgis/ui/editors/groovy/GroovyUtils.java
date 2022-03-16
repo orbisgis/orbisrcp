@@ -22,16 +22,21 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.orbisgis.core.workspace.ICoreWorkspace;
 
 import java.io.ByteArrayInputStream;
+
+import static org.orbisgis.core.utils.CoreWorkspaceUtils.getCoreWorkspace;
 
 public class GroovyUtils {
 
     public static final String SCRIPT_FILE_EXTENSION = "groovy";
 
-    public static IFile createNewScript(ICoreWorkspace workspace) throws CoreException {
-        final IFolder folder = workspace.getFolder(GroovyWorkspaceExtension.GROOVY_ROOT);
+    public static IFolder getGroovyFolder() {
+        return getCoreWorkspace().getFolder(GroovyWorkspaceExtension.GROOVY_ROOT);
+    }
+
+    public static IFile createNewScript() throws CoreException {
+        final IFolder folder = getGroovyFolder();
         // Make new script file
         IFile tempFile = getUniqueFile(folder, "Script", SCRIPT_FILE_EXTENSION);
         tempFile.create(new ByteArrayInputStream(new byte[]{}), true, new NullProgressMonitor());
