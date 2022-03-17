@@ -18,11 +18,9 @@
  */
 package org.orbisgis.ui.editors.groovy;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.URLClassLoader;
-import java.time.format.DateTimeFormatter;
-
+import groovy.lang.Binding;
+import groovy.lang.GroovyShell;
+import groovy.transform.ThreadInterrupt;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -33,9 +31,9 @@ import org.orbisgis.core.logger.Logger;
 import org.orbisgis.ui.editors.groovy.GroovyOutputConsole.GroovyConsoleContent;
 import org.orbisgis.ui.editors.groovy.logger.GroovyLogger;
 
-import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
-import groovy.transform.ThreadInterrupt;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.URLClassLoader;
 
 public class GroovyJob extends Job {
 
@@ -46,8 +44,6 @@ public class GroovyJob extends Job {
     private Binding binding;
     private String name;
     private Thread t;
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-    PrintWriter outputPrintWriter = null;
 
     public GroovyJob(String name, String script) {
         super(name);
@@ -56,7 +52,8 @@ public class GroovyJob extends Job {
         binding = new Binding();
         binding.setProperty("logger", new GroovyLogger(GroovyShell.class));
         binding.setProperty("out", new StringWriter());
-        
+        binding.setProperty("browser", GroovyOutputBrowser.browserHandler);
+
         CompilerConfiguration configuratorConfig = new CompilerConfiguration(System.getProperties());
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
    

@@ -74,7 +74,6 @@
               description="Add jar to classPath"
               id="org.orbisgis.ui.editors.groovy.addJarToClasspath"
               name="Add jar to classPath"> </command>
-
    </extension>
 
    <extension point="org.eclipse.ui.commandImages">
@@ -128,17 +127,29 @@
       </handler>
    </extension>
 
-    <extension point="org.eclipse.ui.views">
-        <view
-                id="org.jkiss.dbeaver.groovy.output"
-                class="org.orbisgis.ui.editors.groovy.GroovyOutputConsole"
-                allowMultiple="true"
-                restorable="true"
-                name="Groovy Output"
-				icon="icons/groovy_output.png"
-		>
-        </view>
-    </extension>
+   <extension point="org.eclipse.ui.views">
+      <view
+              id="org.jkiss.dbeaver.groovy.output"
+              class="org.orbisgis.ui.editors.groovy.GroovyOutputConsole"
+              allowMultiple="true"
+              restorable="true"
+              name="Groovy Output"
+              icon="icons/groovy_output.png"
+      >
+      </view>
+   </extension>
+
+   <extension point="org.eclipse.ui.views">
+      <view
+              id="org.jkiss.dbeaver.groovy.outputBrowser"
+              class="org.orbisgis.ui.editors.groovy.GroovyOutputBrowser"
+              allowMultiple="false"
+              restorable="true"
+              name="Groovy Output Browser"
+              icon="icons/groovy_output.png"
+      >
+      </view>
+   </extension>
 
    <extension
          point="org.eclipse.ui.editors">
