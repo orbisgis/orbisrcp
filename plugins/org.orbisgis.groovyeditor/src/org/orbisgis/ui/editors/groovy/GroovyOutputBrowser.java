@@ -28,9 +28,6 @@ import org.eclipse.ui.part.ViewPart;
 import org.jkiss.dbeaver.ui.UIUtils;
 
 /**
- * Methods which are able to print the groovy standard output in a specific groovy console.
- *
- * @author Adrien Bessy, CNRS
  */
 public class GroovyOutputBrowser extends ViewPart {
 	private static Browser browser = null;
