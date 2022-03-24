@@ -46,8 +46,6 @@ public class GroovyJob extends Job {
     private Binding binding;
     private String name;
     private Thread t;
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-    PrintWriter outputPrintWriter = null;
 
     public GroovyJob(String name, String script) {
         super(name);
