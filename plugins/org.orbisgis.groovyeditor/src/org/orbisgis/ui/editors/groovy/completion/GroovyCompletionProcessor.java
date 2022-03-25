@@ -18,6 +18,8 @@
  */
 package org.orbisgis.ui.editors.groovy.completion;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import net.prominic.groovyls.GroovyServices;
 import net.prominic.groovyls.config.CompilationUnitFactory;
 import org.eclipse.jface.text.BadLocationException;
@@ -36,11 +38,15 @@ import org.eclipse.ui.PlatformUI;
 import org.orbisgis.core.logger.Logger;
 import org.orbisgis.ui.editors.groovy.GroovyUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Stream;
 
 import static org.eclipse.lsp4j.CompletionItemKind.Method;
 import static org.eclipse.lsp4j.CompletionItemKind.Variable;
@@ -93,12 +99,56 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 
 						}
 					});
+
+					//Load the jars in ./groovy if exists
+					JsonObject settings	 = buildGroovySettings();
+					if(settings!=null) {
+						DidChangeConfigurationParams dcp = new DidChangeConfigurationParams();
+						dcp.setSettings(settings);
+						services.didChangeConfiguration(dcp);
+					}
 					IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 					String name = activePage.getActiveEditor().getEditorInput().getName();
 					Path filePath = workspaceRoot.resolve(name);
 					scriptUri = filePath.toUri().toString();
 				}
 		);
+	}
+
+	/**
+	 * Build a json array to set a list of jar available in "user.home"./groovy folder
+	 * Those jars are set to the completion manager
+	 * @return
+	 */
+	private JsonObject buildGroovySettings() {
+		File grabFolder = new File(System.getProperty("user.home") + File.separator + "/.groovy");
+
+		if(grabFolder.exists()&& grabFolder.isDirectory()){
+			// find files matched `png` file extension from folder C:\\test
+			try (Stream<Path> walk = Files.walk(grabFolder.toPath())) {
+				JsonArray jars = new JsonArray();
+				walk
+						.filter(p -> !Files.isDirectory(p))   // not a directory
+						.map(p -> p.toString().toLowerCase()) // convert path to string
+						.filter(f -> f.endsWith("jar"))       // check end with
+						.forEach(it -> jars.add(it));        // collect all matched to a List
+
+				JsonObject classpath = new JsonObject();
+				classpath.add("classpath", jars);
+
+				JsonObject groovy = new JsonObject();
+				groovy.add("groovy", classpath);
+
+				JsonObject settings = new JsonObject();
+				settings.add("settings", groovy);
+
+				return settings;
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 	private static Position getPosition(ITextViewer viewer, int offset){

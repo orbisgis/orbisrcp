@@ -5,51 +5,54 @@
       version="1.0.0.qualifier"
       provider-name="OrbisGIS">
 
-   <description url="http://orbisgis.org/">
-Groovy Editor (GE) is a UI console to run Groovy script in an RCP eclipse environement.
-GE is developped by the OrbisGIS team.
+   <description url="http://h2gis.org/">
+H2GIS is an extension to the H2 database to support spatial capabilities.
    </description>
 
    <copyright url="https://www.gnu.org/licenses/lgpl-3.0.html">
       Agree LGPL V3
 
-Groovy Editor (GE) is a library that brings a groovy console to the Eclipse RCP. GE is developed by CNRS &lt;http://www.cnrs.fr/&gt;.
+      H2GIS is a library that brings spatial support to the H2 Database Engine
+      &lt;http://www.h2database.com&gt;. H2GIS is developed by CNRS  &lt;http://www.cnrs.fr&gt;.
 
-GE is part of the OrbisGIS project. GE is free software; 
-you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation;
-version 3.0 of the License.
+      This code is part of the H2GIS project. H2GIS is free software;
+      you can redistribute it and/or modify it under the terms of the GNU
+      Lesser General Public License as published by the Free Software Foundation;
+      version 3.0 of the License.
 
-GE is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
-for more details &lt;http://www.gnu.org/licenses/&gt;.
+      H2GIS is distributed in the hope that it will be useful, but
+      WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+      FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+      for more details &lt;http://www.gnu.org/licenses/&gt;.
 
- 
-For more information, please consult: &lt;http://www.orbisgis.org/&gt; 
-or contact directly: info_at_orbisgis.org
+
+      For more information, please consult: &lt;http://www.h2gis.org/&gt;.
+      or contact directly: info_at_h2gis.org
    </copyright>
 
    <license url="https://www.gnu.org/licenses/lgpl-3.0.html">
       Agree LGPL V3
 
-Groovy Editor (GE) is a library that brings a groovy console to the Eclipse RCP. GE is developed by CNRS &lt;http://www.cnrs.fr/&gt;.
+      H2GIS is a library that brings spatial support to the H2 Database Engine
+      &lt;http://www.h2database.com&gt;. H2GIS is developed by CNRS  &lt;http://www.cnrs.fr&gt;.
 
-GE is part of the OrbisGIS project. GE is free software; 
-you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation;
-version 3.0 of the License.
+      This code is part of the H2GIS project. H2GIS is free software;
+      you can redistribute it and/or modify it under the terms of the GNU
+      Lesser General Public License as published by the Free Software Foundation;
+      version 3.0 of the License.
 
-GE is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
-for more details &lt;http://www.gnu.org/licenses/&gt;.
+      H2GIS is distributed in the hope that it will be useful, but
+      WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+      FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+      for more details &lt;http://www.gnu.org/licenses/&gt;.
 
- 
-For more information, please consult: &lt;http://www.orbisgis.org/&gt; 
-or contact directly: info_at_orbisgis.org
+
+      For more information, please consult: &lt;http://www.h2gis.org/&gt;.
+      or contact directly: info_at_h2gis.org
    </license>
 
    <url>
-      <update label="OrbisGIS" url="http://orbisgis.org/"/>
+      <update label="OrbisGIS" url="http://h2gis.org/"/>
    </url>
 
    <plugin
