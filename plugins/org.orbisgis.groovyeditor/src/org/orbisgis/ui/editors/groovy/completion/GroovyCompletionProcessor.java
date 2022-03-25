@@ -18,8 +18,6 @@
  */
 package org.orbisgis.ui.editors.groovy.completion;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.prominic.groovyls.GroovyServices;
@@ -102,12 +100,13 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 						}
 					});
 
-					//Load the ./groovy if exists
-					//DidChangeConfigurationParams dcp = new DidChangeConfigurationParams();
-
-					//dcp.setSettings(buildGroovySettings());
-					//services.didChangeConfiguration(dcp);
-
+					//Load the jars in ./groovy if exists
+					JsonObject settings	 = buildGroovySettings();
+					if(settings!=null) {
+						DidChangeConfigurationParams dcp = new DidChangeConfigurationParams();
+						dcp.setSettings(settings);
+						services.didChangeConfiguration(dcp);
+					}
 					IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 					String name = activePage.getActiveEditor().getEditorInput().getName();
 					Path filePath = workspaceRoot.resolve(name);
@@ -116,6 +115,11 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 		);
 	}
 
+	/**
+	 * Build a json array to set a list of jar available in "user.home"./groovy folder
+	 * Those jars are set to the completion manager
+	 * @return
+	 */
 	private JsonObject buildGroovySettings() {
 		File grabFolder = new File(System.getProperty("user.home") + File.separator + "/.groovy");
 

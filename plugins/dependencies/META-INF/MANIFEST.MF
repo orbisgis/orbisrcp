@@ -5,9 +5,10 @@ Bundle-SymbolicName: dependencies;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: OrbisGIS
 Automatic-Module-Name: dependencies
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: 
+ com.google.gson,
  groovy.beans,
  groovy.cli,
  groovy.grape,
