@@ -26,15 +26,13 @@ public class GroovyEditorControl extends Composite {
 
     private final GroovyEditor editor;
 
-    public GroovyEditorControl(Composite parent, GroovyEditor editor)
-    {
+    public GroovyEditorControl(Composite parent, GroovyEditor editor) {
         super(parent, SWT.NONE);
         this.editor = editor;
         setLayout(new FillLayout());
     }
 
-    public GroovyEditor getEditor()
-    {
+    public GroovyEditor getEditor() {
         return editor;
     }
 }
