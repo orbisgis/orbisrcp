@@ -42,7 +42,7 @@ public class GroovySourceViewerConfiguration extends TextSourceViewerConfigurati
     public GroovySourceViewerConfiguration() {
 		tokenScanner = createTokenScanner();
     }
-    
+
 	/**
     * Allows to activate autocompletion on the text in progress
     * @param sourceViewer the editor view

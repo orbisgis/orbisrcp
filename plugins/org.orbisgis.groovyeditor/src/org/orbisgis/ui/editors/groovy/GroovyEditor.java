@@ -22,7 +22,11 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
+import org.eclipse.jface.text.ITextViewerExtension;
+import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -52,6 +56,42 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
         super();
         setKeyBindingScopes(new String[]{"org.orbisgis.ui.editors.groovy"});
         setSourceViewerConfiguration(new GroovySourceViewerConfiguration());
+    }
+
+    /**
+     * Catch the last pressed key, if it is an opening symbol like ([{"', the corresponding closing symbol is written automatically after the cursor.
+     * @param parent the composite
+     * @param ruler the iVerticalRuler
+     * @param styles the styles
+     * @return the possibly edited view
+     */
+    @Override
+    public ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
+        ISourceViewer viewer = super.createSourceViewer(parent, ruler, styles);
+        if(viewer instanceof ITextViewerExtension) {
+            ((ITextViewerExtension) viewer).appendVerifyKeyListener(verifyEvent -> {
+                String lastCharacter = String.valueOf(verifyEvent.character);
+                StyledText styledText = (StyledText) verifyEvent.getSource();
+                switch (lastCharacter) {
+                    case "(":
+                        styledText.insert(")");
+                        break;
+                    case "[":
+                        styledText.insert("]");
+                        break;
+                    case "{":
+                        styledText.insert("}");
+                        break;
+                    case "\"":
+                        styledText.insert("\"");
+                        break;
+                    case "'":
+                        styledText.insert("'");
+                        break;
+                }
+            });
+        }
+        return viewer;
     }
 
     @Override
