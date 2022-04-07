@@ -28,10 +28,13 @@ import org.orbisgis.core.logger.Logger;
 import org.orbisgis.ui.editors.groovy.ui.ScrollableDialog;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.stream.Stream;
 
 /**
  * Methods to handle the urls that are taken into account as classPaths in the groovyShell runtime.
@@ -41,7 +44,7 @@ import java.util.List;
 public class ClassPathHandler{
 
 	private static final Logger LOGGER = new Logger(ClassPathHandler.class);
-	private static List<URL> urls = new ArrayList<>();
+	private static HashSet<URL> urls = new HashSet<>();
 
 	/**
 	 * Open a dialog showing the list of urls.
@@ -100,10 +103,10 @@ public class ClassPathHandler{
 
 	/**
 	 * Get Urls list.
-	 * @return A list of URLs
+	 * @return A Set of URLs
 	 *
 	 */
-	public static List<URL> getUrls(){
+	public static HashSet<URL> getUrls(){
 		return urls;
 	}
 	
@@ -132,6 +135,40 @@ public class ClassPathHandler{
 		if (index <= urls.size()) {
 	        urls.remove(index);
 	    }
+	}
+
+	/**
+	 * This method check the /.groovy folder to load all jars and expose them
+	 * to the groovy classloader
+	 */
+	public static void initGroovyGrabFolder(){
+		File grabFolder = new File(System.getProperty("user.home") + File.separator + "/.groovy");
+		if(grabFolder.exists()&& grabFolder.isDirectory()){
+			try (Stream<Path> walk = Files.walk(grabFolder.toPath())) {
+				HashSet<URL> groovyJars = new HashSet<>();
+					walk
+							.filter(p -> !Files.isDirectory(p))   // not a directory
+							.forEach(p -> {
+								String name = p.getFileName().toString();
+								if (name.endsWith("jar")) {
+									try {
+										groovyJars.add(p.toUri().toURL());
+									} catch (MalformedURLException e) {
+										//eat
+									}
+								}
+							});
+
+				if(urls!=null){
+					groovyJars.addAll(urls);
+					urls = groovyJars;
+				}
+
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
