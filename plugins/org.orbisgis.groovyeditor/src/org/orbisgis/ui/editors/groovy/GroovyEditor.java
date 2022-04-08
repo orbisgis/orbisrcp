@@ -41,6 +41,7 @@ import org.orbisgis.ui.editors.groovy.syntax.GroovySourceViewerConfiguration;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveablePart2 {
 
@@ -59,6 +60,67 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
     }
 
     /**
+     * Checks if the cursor is between simple quotation marks
+     * @param caretOffset the caret
+     * @param text the text
+     * @param keyCode the keyCode
+     * @return true if the caret is between simple quotation marks
+     */
+    public boolean cursorIsBetweenSimpleQuotationMarks(int caretOffset, String text, int keyCode){
+        boolean doubleMarksInSimpleMarks = false;
+        ArrayList<Integer> simpleQuotePositions = findPositions(text).get(0);
+        if(simpleQuotePositions.size() > 1) {
+            for (int i = 0; i < simpleQuotePositions.size();i = i + 2){
+                if(i+1 < simpleQuotePositions.size()) {
+                    // checks if the cursor is between simple quotation marks
+                    int a = simpleQuotePositions.get(i + 1);
+                    int b = a + 1;
+                    if (caretOffset > simpleQuotePositions.get(i) && caretOffset < b && keyCode != 8) {
+                        doubleMarksInSimpleMarks = true;
+                    }
+                }
+            }
+        }
+        return doubleMarksInSimpleMarks;
+    }
+
+    /**
+     * Find the positions of a character in a text and returns an ArrayList of these positions
+     * @param text the text
+     * @return an ArrayList containing the positions of the character in the text
+     */
+    public ArrayList<ArrayList<Integer>> findPositions(String text) {
+        ArrayList<ArrayList<Integer>> quotationMarksList = new ArrayList<>();
+        ArrayList<Integer> simpleQuotePositions = new ArrayList<>();
+        ArrayList<Integer> doubleQuotePositions = new ArrayList<>();
+        for (int i = 0; i < text.length(); i++){
+            if (text.charAt(i) == "'".charAt(0)) {
+                simpleQuotePositions.add(i);
+            }
+            if (text.charAt(i) == "\"".charAt(0)) {
+                doubleQuotePositions.add(i);
+            }
+        }
+        ArrayList<Integer> doubleQuotePositionsToDelete = new ArrayList<>();
+        if(simpleQuotePositions.size() > 1) {
+            for (int i = 0; i < simpleQuotePositions.size();i = i + 2){
+                for (Integer doubleQuotePosition : doubleQuotePositions) {
+                    // check if a double quotation marks is not between simple quotation marks
+                    if(i+1 < simpleQuotePositions.size()) {
+                        if (doubleQuotePosition > simpleQuotePositions.get(i) && doubleQuotePosition < simpleQuotePositions.get(i + 1)) {
+                            doubleQuotePositionsToDelete.add(doubleQuotePosition);
+                        }
+                    }
+                }
+            }
+        }
+        doubleQuotePositions.removeAll(doubleQuotePositionsToDelete);
+        quotationMarksList.add(simpleQuotePositions);
+        quotationMarksList.add(doubleQuotePositions);
+        return quotationMarksList;
+    }
+
+    /**
      * Catch the last pressed key, if it is an opening symbol like ([{"', the corresponding closing symbol is written
      * automatically after the cursor.
      * If the deleted key is pressed : if the deleted character is an opening symbol like ([{"' and if the following
@@ -72,42 +134,77 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
     public ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
         ISourceViewer viewer = super.createSourceViewer(parent, ruler, styles);
         if(viewer instanceof ITextViewerExtension) {
+
             ((ITextViewerExtension) viewer).appendVerifyKeyListener(verifyEvent -> {
                 String lastCharacter = String.valueOf(verifyEvent.character);
                 StyledText styledText = (StyledText) verifyEvent.getSource();
-                switch (lastCharacter) {
-                    case "(":
-                        styledText.insert(")");
-                        break;
-                    case "[":
-                        styledText.insert("]");
-                        break;
-                    case "{":
-                        styledText.insert("}");
-                        break;
-                    case "\"":
-                        styledText.insert("\"");
-                        break;
-                    case "'":
-                        styledText.insert("'");
-                        break;
-                }
+                String source = styledText.getText();
 
-                // if the delete key is pressed
-                if (verifyEvent.keyCode == 8) {
-                    int caretOffset = styledText.getCaretOffset();
-                    String source = ((StyledText) verifyEvent.getSource()).getText();
-                    // if there is a character after the cursor and if the delete key is not pressed at the first
-                    // possible position of the caret
-                    if(caretOffset < source.length() && caretOffset != 0) {
-                        String deletedCharacter = String.valueOf(source.charAt(caretOffset - 1));
+                ArrayList<Integer> doubleQuotationMarkPositions = findPositions(source).get(1);
+                int caretOffset = styledText.getCaretOffset();
+                boolean cursorInSimpleMarks = cursorIsBetweenSimpleQuotationMarks(caretOffset, source, verifyEvent.keyCode);
+
+                int nbQuotationMarkBeforeCaret = 0;
+                for (Integer quotationMarkPosition : doubleQuotationMarkPositions) {
+                    if (quotationMarkPosition < caretOffset) {
+                        nbQuotationMarkBeforeCaret++;
+                    } else {
+                        break;
+                    }
+                }
+                // if the quotation mark number before the caret is even
+                if((nbQuotationMarkBeforeCaret % 2) == 0 && !cursorInSimpleMarks) {
+                    switch (lastCharacter) {
+                        case "(":
+                            styledText.insert(")");
+                            break;
+                        case "[":
+                            styledText.insert("]");
+                            break;
+                        case "{":
+                            styledText.insert("}");
+                            break;
+                        case "\"":
+                            styledText.insert("\"");
+                            break;
+                        case "'":
+                            styledText.insert("'");
+                            break;
+                    }
+                    // if the delete key is pressed
+                    if (verifyEvent.keyCode == 8) {
+                        // if there is a character after the cursor and if the delete key is not pressed at the first
+                        // possible position of the caret
+                        if (caretOffset < source.length() && caretOffset != 0) {
+                            String deletedCharacter = String.valueOf(source.charAt(caretOffset - 1));
+                            String followingCharacter = String.valueOf(source.charAt(caretOffset));
+                            if (deletedCharacter.equals("(") && followingCharacter.equals(")")
+                                    || deletedCharacter.equals("[") && followingCharacter.equals("]")
+                                    || deletedCharacter.equals("{") && followingCharacter.equals("}")
+                                    || deletedCharacter.equals("'") && followingCharacter.equals("'")) {
+                                styledText.replaceTextRange(caretOffset, 1, "");
+                            }
+                        }
+                    }
+                }else {
+                    // if we type a double quotation mark and if the following character is also a double quotation mark,
+                    // the cursor will go to the next position without inserting anything more.
+                    if (caretOffset < source.length() && caretOffset != 0) {
                         String followingCharacter = String.valueOf(source.charAt(caretOffset));
-                        if (deletedCharacter.equals("(") && followingCharacter.equals(")")
-                                || deletedCharacter.equals("[") && followingCharacter.equals("]")
-                                || deletedCharacter.equals("{") && followingCharacter.equals("}")
-                                || deletedCharacter.equals("\"") && followingCharacter.equals("\"")
-                                || deletedCharacter.equals("'") && followingCharacter.equals("'")) {
-                            styledText.replaceTextRange(caretOffset,1,"");
+                        if(followingCharacter.equals(lastCharacter) && followingCharacter.equals("\"")){
+                            styledText.replaceTextRange(caretOffset, 1, "");
+                        }
+                    }
+                    // if the delete key is pressed
+                    if (verifyEvent.keyCode == 8) {
+                        // if there is a character after the cursor and if the delete key is not pressed at the first
+                        // possible position of the caret
+                        if (caretOffset < source.length() && caretOffset != 0) {
+                            String deletedCharacter = String.valueOf(source.charAt(caretOffset - 1));
+                            String followingCharacter = String.valueOf(source.charAt(caretOffset));
+                            if (deletedCharacter.equals("\"") && followingCharacter.equals("\"")) {
+                                styledText.replaceTextRange(caretOffset, 1, "");
+                            }
                         }
                     }
                 }
