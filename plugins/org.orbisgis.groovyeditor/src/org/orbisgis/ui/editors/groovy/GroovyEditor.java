@@ -186,6 +186,14 @@ public class GroovyEditor extends AbstractDecoratedTextEditor implements ISaveab
                             }
                         }
                     }
+                    if (caretOffset < source.length() && caretOffset != 0) {
+                        String followingCharacter = String.valueOf(source.charAt(caretOffset));
+                        if(followingCharacter.equals(lastCharacter) && followingCharacter.equals(")")
+                        || followingCharacter.equals(lastCharacter) && followingCharacter.equals("]")
+                        || followingCharacter.equals(lastCharacter) && followingCharacter.equals("}")){
+                            styledText.replaceTextRange(caretOffset, 1, "");
+                        }
+                    }
                 }else {
                     // if we type a double quotation mark and if the following character is also a double quotation mark,
                     // the cursor will go to the next position without inserting anything more.
