@@ -24,8 +24,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -62,10 +60,10 @@ import groovy.lang.GroovySystem;
  */
 public class ScrollableDialog extends TitleAreaDialog {
     private String title;
-    private HashSet<URL> urls;
+    private List<URL> urls; 
     private int countFile = 0;
 
-    public ScrollableDialog(Shell parentShell, String title, HashSet<URL> urls) {
+    public ScrollableDialog(Shell parentShell, String title, List<URL> urls) {
         super(parentShell);
         this.title = title;
         this.urls = urls;
@@ -94,10 +92,9 @@ public class ScrollableDialog extends TitleAreaDialog {
             TableColumn column = new TableColumn(table, SWT.CENTER);
             column.setText(titles[loopIndex]);
          }
-        int i = 0;
-        Iterator<URL> it = urls.iterator();
-        while(it.hasNext()){
-        	URL url = it.next();
+
+        for (int i = 0; i < urls.size(); i++) {
+        	URL url = urls.get(i);
         	String path = url.getPath().toString().replace("/d:", "");
             TableItem item = new TableItem(table, SWT.CENTER);
             if (path != "") {
@@ -128,7 +125,6 @@ public class ScrollableDialog extends TitleAreaDialog {
                 editor.setEditor(deleteButton, item, 3);
                 deleteButton.addListener(SWT.Selection, new SelectionListener(item, deleteButton, i));
             }
-            i++;
            
         }
 

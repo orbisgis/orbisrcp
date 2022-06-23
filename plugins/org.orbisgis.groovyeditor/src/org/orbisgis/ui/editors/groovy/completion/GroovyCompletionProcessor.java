@@ -124,6 +124,7 @@ public class GroovyCompletionProcessor implements IContentAssistProcessor {
 		File grabFolder = new File(System.getProperty("user.home") + File.separator + "/.groovy");
 
 		if(grabFolder.exists()&& grabFolder.isDirectory()){
+			// find files matched `png` file extension from folder C:\\test
 			try (Stream<Path> walk = Files.walk(grabFolder.toPath())) {
 				JsonArray jars = new JsonArray();
 				walk

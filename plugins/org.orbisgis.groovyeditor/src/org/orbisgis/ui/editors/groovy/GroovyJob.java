@@ -21,6 +21,7 @@ package org.orbisgis.ui.editors.groovy;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URLClassLoader;
+import java.time.format.DateTimeFormatter;
 
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
@@ -58,7 +59,6 @@ public class GroovyJob extends Job {
         configuratorConfig.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
    
         try {
-            ClassPathHandler.initGroovyGrabFolder();
         	URLClassLoader classLoader = new URLClassLoader( ClassPathHandler.getUrlsInArray(), Thread.currentThread().getContextClassLoader() );
         	shell = new GroovyShell(classLoader, binding, configuratorConfig);
         }  catch (Exception e) {
