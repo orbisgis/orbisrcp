@@ -22,17 +22,17 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<eclipse-p2-repo.url>http://download.eclipse.org/releases/2019-06/</eclipse-p2-repo.url>
+		<eclipse-p2-repo.url>http://download.eclipse.org/releases/2021-03/</eclipse-p2-repo.url>
 		<dbeaver-p2-repo.url>https://dbeaver.io/eclipse-repo</dbeaver-p2-repo.url>
 		<orbisgis-nexus-snapshot.url>https://oss.sonatype.org/content/repositories/snapshots/</orbisgis-nexus-snapshot.url>
 		<orbisgis-nexus-release.url>https://oss.sonatype.org/content/repositories/releases/</orbisgis-nexus-release.url>
-		<tycho-version>1.4.0</tycho-version>
+		<tycho-version>2.7.3</tycho-version>
 	</properties>
 
 	<repositories>
 		<repository>
 			<id>eclipse-p2-repo</id>
-			<url>http://download.eclipse.org/releases/2019-06/</url>
+			<url>http://download.eclipse.org/releases/2021-03/</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
