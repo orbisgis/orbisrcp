@@ -29,23 +29,7 @@
                         description="H2GIS Embedded"
                         categories="spatial,sql,embedded">
 
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis/2.1.0-SNAPSHOT/h2gis-2.1.0-20220225.101216-30.jar"/>
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-api/2.1.0-SNAPSHOT/h2gis-api-2.1.0-20220225.101216-30.jar"/>
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-network/2.1.0-SNAPSHOT/h2gis-network-2.1.0-20220225.101216-30.jar"/>
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-osgi/2.1.0-SNAPSHOT/h2gis-osgi-2.1.0-20220225.101216-30.jar"/>
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-test-utilities/2.1.0-SNAPSHOT/h2gis-test-utilities-2.1.0-20220225.101216-30.jar"/>
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-utilities/2.1.0-SNAPSHOT/h2gis-utilities-2.1.0-20220225.101216-30.jar"/>
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/postgis-jts/2.1.0-SNAPSHOT/postgis-jts-2.1.0-20220225.101216-30.jar"/>
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/postgis-jts-osgi/2.1.0-SNAPSHOT/postgis-jts-osgi-2.1.0-20220225.101216-30.jar"/>
-                    <file type="jar" path="maven:/org.slf4j:slf4j-simple:1.7.32"/>
-                    <file type="jar" path="maven:/com.h2database:h2:2.1.210"/>
-                    <file type="jar" path="maven:/org.slf4j:slf4j-api:1.7.32"/>
-                    <file type="jar" path="maven:/org.orbisgis:poly2tri:0.4.0"/>
-                    <file type="jar" path="maven:/org.locationtech.jts:jts-core:1.18.2"/>
-                    <file type="jar" path="maven:/org.orbisgis:java-network-analyzer:0.3.0"/>
-                    <file type="jar" path="maven:/com.fasterxml.jackson.core:jackson-core:2.13.0"/>
-                    <file type="jar" path="maven:/org.apache.commons:commons-compress:1.20"/>
-                    <file type="jar" path="maven:/org.orbisgis:cts:1.6.0"/>
+                    <file type="jar" path="maven:/org.orbisgis:h2gis:RELEASE"/>
 
                     <parameter name="query-get-active-db" value="SELECT SCHEMA()"/>
                     <parameter name="query-set-active-db" value="SET SCHEMA = ?"/>
@@ -66,23 +50,7 @@
                         description="H2GIS Embedded"
                         categories="spatial,sql,server">
 
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis/2.1.0-SNAPSHOT/h2gis-2.1.0-20220225.101216-30.jar"/>
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-api/2.1.0-SNAPSHOT/h2gis-api-2.1.0-20220225.101216-30.jar"/>
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-network/2.1.0-SNAPSHOT/h2gis-network-2.1.0-20220225.101216-30.jar"/>
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-osgi/2.1.0-SNAPSHOT/h2gis-osgi-2.1.0-20220225.101216-30.jar"/>
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-test-utilities/2.1.0-SNAPSHOT/h2gis-test-utilities-2.1.0-20220225.101216-30.jar"/>
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/h2gis-utilities/2.1.0-SNAPSHOT/h2gis-utilities-2.1.0-20220225.101216-30.jar"/>
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/postgis-jts/2.1.0-SNAPSHOT/postgis-jts-2.1.0-20220225.101216-30.jar"/>
-                    <file type="jar" path="https://oss.sonatype.org/content/repositories/snapshots/org/orbisgis/postgis-jts-osgi/2.1.0-SNAPSHOT/postgis-jts-osgi-2.1.0-20220225.101216-30.jar"/>
-                    <file type="jar" path="maven:/org.slf4j:slf4j-simple:1.7.32"/>
-                    <file type="jar" path="maven:/com.h2database:h2:2.1.210"/>
-                    <file type="jar" path="maven:/org.slf4j:slf4j-api:1.7.32"/>
-                    <file type="jar" path="maven:/org.orbisgis:poly2tri-core:0.3.0"/>
-                    <file type="jar" path="maven:/org.locationtech.jts:jts-core:1.18.2"/>
-                    <file type="jar" path="maven:/org.orbisgis:java-network-analyzer:0.3.0"/>
-                    <file type="jar" path="maven:/com.fasterxml.jackson.core:jackson-core:2.13.0"/>
-                    <file type="jar" path="maven:/org.apache.commons:commons-compress:1.20"/>
-                    <file type="jar" path="maven:/org.orbisgis:cts:1.6.0"/>
+                    <file type="jar" path="maven:/org.orbisgis:h2gis:RELEASE"/>
 
                     <parameter name="query-get-active-db" value="SELECT SCHEMA()"/>
                     <parameter name="query-set-active-db" value="SET SCHEMA = ?"/>
