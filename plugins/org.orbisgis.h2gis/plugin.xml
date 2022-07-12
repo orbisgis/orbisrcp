@@ -30,6 +30,8 @@
                         categories="spatial,sql,embedded">
 
                     <file type="jar" path="maven:/org.orbisgis:h2gis:RELEASE"/>
+                    <file type="jar" path="maven:/org.orbisgis:h2gis-api:RELEASE"/>
+                    <file type="jar" path="maven:/org.orbisgis:h2gis-utilities:RELEASE"/>
 
                     <parameter name="query-get-active-db" value="SELECT SCHEMA()"/>
                     <parameter name="query-set-active-db" value="SET SCHEMA = ?"/>
@@ -51,6 +53,8 @@
                         categories="spatial,sql,server">
 
                     <file type="jar" path="maven:/org.orbisgis:h2gis:RELEASE"/>
+                    <file type="jar" path="maven:/org.orbisgis:h2gis-api:RELEASE"/>
+                    <file type="jar" path="maven:/org.orbisgis:h2gis-utilities:RELEASE"/>
 
                     <parameter name="query-get-active-db" value="SELECT SCHEMA()"/>
                     <parameter name="query-set-active-db" value="SET SCHEMA = ?"/>
