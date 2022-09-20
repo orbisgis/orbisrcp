@@ -1,6 +1,6 @@
 # OrbisRCP
 
-OrbisRCP is the next generation of OrbisGIS components. The components are RCP eclipse based and must be used inside [DBeaver](https://dbeaver.io/).
+OrbisRCP is the next generation of OrbisGIS components. The new components are RCP eclipse based and must be used inside [DBeaver](https://dbeaver.io/).
 
 [DBeaver](https://dbeaver.io/) is a free and opensource multi-platform database tool to query, explore and manage data. Since the 6.2.2 version,the OrbisGIS team collaborates with the DBeaver team to integrate its own components : database, scripting console, map viewer...
 
