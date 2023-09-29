@@ -8,10 +8,10 @@ jobs:
     steps:
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v2
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          java-version: 17-ea
+          distribution: adopt
 
       - name: Checkout DBeaver
         uses: actions/checkout@v2
